@@ -1,2 +1,0 @@
-# keyboduck
-The KEYBODUCK PROJECT
