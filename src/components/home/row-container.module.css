@@ -8,7 +8,7 @@
 .row {
     display: flex;
     width: fit-content;
-    overflow: scroll;
+    overflow: hidden;
     padding-top: 25px;
     transition: all ease-out 100ms;
 }
@@ -33,5 +33,5 @@
 .next-button {
     position: absolute;
     top: calc(50% - 25px);
-    left: calc(100% - 25px);
+    left: calc(100% - 75px);
 }
