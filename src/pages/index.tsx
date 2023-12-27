@@ -11,8 +11,6 @@ export default function HomePage({keyboard}: Readonly<{keyboard: Tables<'keyboar
     })
     .slice(0, 5);
 
-  console.log(recentlyList);
-
   return (
     <>
       <RowContainer title={'인기 키보드'} keyboard={keyboard.slice(0, 10)} />
