@@ -1,0 +1,3 @@
+interface Brand {
+  name: string;
+}
