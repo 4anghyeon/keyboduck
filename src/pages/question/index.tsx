@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from '@/pages/qna/list/index.module.css';
+import styles from '@/pages/question/index.module.css';
 import Link from 'next/link';
 
-const Qna = () => {
+const Question = () => {
   return (
     <div className={styles['qna-container']}>
       <div className={styles['qna-title']}>
@@ -27,11 +27,11 @@ const Qna = () => {
       </div>
       <div className={styles['qna-registration-btn']}>
         <button>
-          <Link href="/qna/registration">작성하기 </Link>
+          <Link href="/question/write">작성하기 </Link>
         </button>
       </div>
     </div>
   );
 };
 
-export default Qna;
+export default Question;
