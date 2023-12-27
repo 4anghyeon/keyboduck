@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styles from './row-container.module.css';
 import KeyboardCard from '@/components/home/KeyboardCard';
 import {MdOutlineArrowBackIos, MdOutlineArrowForwardIos} from 'react-icons/md';
@@ -6,7 +6,7 @@ import {Tables} from '@/shared/supabase/types/supabase';
 
 interface Props {
   title: string;
-  keyboard: Tables<'keyboard'>[];
+  keyboardList: Tables<'keyboard'>[];
 }
 
 const CARD_MOVE_SIZE = 400;
@@ -16,7 +16,7 @@ const RowContainer = (props: Props) => {
   const rowRef = useRef<HTMLDivElement>(null);
 
   const onClickNextButton = () => {
-    if (cardIndex > props.keyboard.length) return;
+    if (cardIndex > props.keyboardList.length) return;
     setCardIndex(prev => ++prev);
     rowRef.current!.style.transform = `translateX(${-CARD_MOVE_SIZE * (cardIndex + 1)}px)`;
   };
@@ -31,7 +31,7 @@ const RowContainer = (props: Props) => {
     <div className={styles.container}>
       <h1>{props.title}</h1>
       <div className={styles.row} ref={rowRef}>
-        {props.keyboard.map(item => {
+        {props.keyboardList.map(item => {
           return <KeyboardCard key={item.id} item={item} />;
         })}
       </div>
@@ -41,7 +41,7 @@ const RowContainer = (props: Props) => {
         </button>
       )}
 
-      {cardIndex < props.keyboard.length - 1 && (
+      {cardIndex < props.keyboardList.length - 1 && (
         <button className={[styles['next-button'], styles['button']].join(' ')} onClick={onClickNextButton}>
           <MdOutlineArrowForwardIos />
         </button>
