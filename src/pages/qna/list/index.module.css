@@ -79,3 +79,6 @@
 
   cursor: pointer;
 }
+.qna-registration-btn a {
+  text-decoration: none;
+}

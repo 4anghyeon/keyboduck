@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '@/pages/qna/list/index.module.css';
+import Link from 'next/link';
 
 const Qna = () => {
   return (
@@ -25,7 +26,9 @@ const Qna = () => {
         </div>
       </div>
       <div className={styles['qna-registration-btn']}>
-        <button>작성하기</button>
+        <button>
+          <Link href="/qna/registration">작성하기 </Link>
+        </button>
       </div>
     </div>
   );
