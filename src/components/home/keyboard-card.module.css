@@ -1,14 +1,15 @@
 .card {
-    height: 300px;
-    min-width: 300px;
-    margin: 10px 100px 10px 0;
-    border-radius: 15px;
+  height: 300px;
+  min-width: 300px;
+  margin: 10px 100px 10px 0;
+  border-radius: 15px;
 }
 
 .card img {
-    height: 300px;
-    border-radius: 15px;
-    min-width: 300px;
-    border: 1px solid #B0B0B0;
-    cursor: pointer;
+  height: 300px;
+  border-radius: 15px;
+  min-width: 300px;
+  border: 1px solid #b0b0b0;
+  cursor: pointer;
+  object-fit: cover;
 }

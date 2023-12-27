@@ -1,5 +1,6 @@
 import React from 'react';
 import login from './index.module.css';
+import {signInWithGithub, googleLogin} from '../api/auth';
 
 const LoginPage = () => {
   return (
@@ -16,8 +17,12 @@ const LoginPage = () => {
       </div>
       <div className={login.buttonbox}>
         <button className={login.button}>로그인</button>
-        <button className={login.button}>Google로 로그인하기</button>
-        <button className={login.button}>Github로 로그인하기</button>
+        <button className={login.button} onClick={googleLogin}>
+          Google로 로그인하기
+        </button>
+        <button className={login.button} onClick={signInWithGithub}>
+          Github로 로그인하기
+        </button>
       </div>
     </div>
   );

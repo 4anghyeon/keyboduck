@@ -25,7 +25,7 @@ const ReviewWrite = () => {
               <Image src="" alt="preview" />
             </div>
             <div className={styles.contents}>
-              <textarea type="text" placeholder="내용을 입력해주세요(최대 300자)" />
+              <textarea placeholder="내용을 입력해주세요(최대 300자)" />
             </div>
           </div>
         </div>
