@@ -12,6 +12,7 @@ export const signInWithGithub = async () => {
     },
   });
   if (data) alert('로그인 되었습니다');
+
   if (error) console.log('error:', error);
 };
 
