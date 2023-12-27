@@ -3,12 +3,14 @@ import {Tables} from '@/shared/supabase/types/supabase';
 import Detail from '@/components/keyboard/Detail';
 import {findKeyboardById, findKeyboardIdList} from '@/pages/api/keyboard';
 import {GetStaticPaths} from 'next';
+import RelatedVideos from '@/components/keyboard/RelatedVideos';
 
 const KeyboardDetailPage = ({keyboard}: {keyboard: Tables<'keyboard'>}) => {
   console.log(keyboard);
   return (
     <div>
       <Detail item={keyboard} />
+      <RelatedVideos />
     </div>
   );
 };

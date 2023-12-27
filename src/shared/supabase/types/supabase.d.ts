@@ -46,8 +46,8 @@ export interface Database {
           name: string;
           operating_systems: string | null;
           photo: string | null;
-          price: number | null;
-          purchase_link: string | null;
+          price: number;
+          purchase_link: string;
           release_date: string;
           youtube_link: string[] | null;
         };
