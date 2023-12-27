@@ -1,9 +1,27 @@
 .container {
-    margin: 50px;
-    height: 400px;
-
+    margin: 50px 50px 10px 50px;
     display: grid;
     grid-template-columns: 1fr 1fr;
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.container img {
+    border-radius: 10px;
+    margin: 0 10px 0 10px;
+}
+
+.container hr {
+    border: 0;
+    margin: 50px;
+    grid-column: 1 / span 2;
+    border-top: 1px solid #B0B0B0;
+
+    @media screen and (max-width: 768px) {
+        margin: 0;
+    }
 }
 
 .grid-1 {
@@ -12,4 +30,99 @@
     align-items: center;
     grid-column: 1;
     grid-row: 1 / span 2;
+
+    @media screen and (max-width: 768px) {
+        grid-column: 1 / span 2;
+        grid-row: 1;
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #B0B0B0;
+
+    @media screen and (max-width: 768px) {
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        margin-top: 10px;
+    }
+}
+
+.like-button {
+    height: 50px;
+    width: 100px;
+    background: transparent;
+    border:  1px solid #83E0A5;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.like-button:hover {
+    background: #83E0A5;
+    color: white;
+}
+
+.container li {
+    width: 200px;
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+    }
+}
+
+.label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: #B0B0B0;
+    border-radius: 10px;
+    margin: 20px 0 20px 0;
+    padding: 10px;
+    height: 50px;
+}
+
+.buy-button {
+    background: #83E0A5;
+    color: white;
+    border:  1px solid #83E0A5;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 1s;
+    width: 100%;
+}
+
+.buy-button:hover {
+    transform: scale(1.05);
+}
+
+.container svg {
+    margin-right: 10px;
+
+}
+
+.buy-button a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+}
+
+.bg-maker {
+    background: #ffe8cc;
+}
+
+.bg-release {
+    background: #ffe3e3;
+}
+
+.bg-price {
+    background: #fff3bf;
+}
+
+.bg-connect {
+    background: #d0ebff;
 }
