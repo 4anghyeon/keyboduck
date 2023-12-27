@@ -10,6 +10,8 @@ import {VscDebugDisconnect} from 'react-icons/vsc';
 const Detail = ({item}: {item: Tables<'keyboard'>}) => {
   if (!item) return <p>Loading...</p>;
 
+  const onClickLike = () => {};
+
   return (
     <section className={styles.container}>
       <div className={styles['grid-1']}>
@@ -17,7 +19,9 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
       </div>
       <div className={styles.header}>
         <h1>{item.name}</h1>
-        <button className={styles['like-button']}>❤️ 1</button>
+        <button className={styles['like-button']} onClick={onClickLike}>
+          ❤️ 1
+        </button>
       </div>
       <div>
         <ul>
