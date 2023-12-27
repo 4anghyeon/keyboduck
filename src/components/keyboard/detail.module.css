@@ -66,6 +66,11 @@
     color: white;
 }
 
+.liked {
+    background: #83E0A5;
+    color: white;
+}
+
 .container li {
     width: 200px;
 
