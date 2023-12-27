@@ -2,9 +2,11 @@ import React from 'react';
 import styles from './row-container.module.css';
 import KeyboardCard from '@/components/home/KeyboardCard';
 import {MdOutlineArrowBackIos, MdOutlineArrowForwardIos} from 'react-icons/md';
+import {Tables} from '@/shared/supabase/types/supabase';
 
 interface Props {
   title: string;
+  keyboard: Tables<'keyboard'>[];
 }
 
 const RowContainer = (props: Props) => {
@@ -12,12 +14,9 @@ const RowContainer = (props: Props) => {
     <div className={styles.container}>
       <h1>{props.title}</h1>
       <div className={styles.row}>
-        <KeyboardCard />
-        <KeyboardCard />
-        <KeyboardCard />
-        <KeyboardCard />
-        <KeyboardCard />
-        <KeyboardCard />
+        {props.keyboard.map(item => {
+          return <KeyboardCard key={item.id} item={item} />;
+        })}
       </div>
       <button className={[styles['prev-button'], styles['button']].join(' ')}>
         <MdOutlineArrowBackIos />

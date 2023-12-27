@@ -2,8 +2,13 @@ import React from 'react';
 import styles from './grid-container.module.css';
 import KeyboardCard from '@/components/home/KeyboardCard';
 import {BRAND} from '@/shared/common-data';
+import {Tables} from '@/shared/supabase/types/supabase';
 
-const GridContainer = () => {
+interface Props {
+  keyboard: Tables<'keyboard'>[];
+}
+
+const GridContainer = (props: Props) => {
   return (
     <div className={styles.container}>
       <h1>브랜드별 키보드</h1>
@@ -15,11 +20,9 @@ const GridContainer = () => {
         );
       })}
       <div className={styles.grid}>
-        <KeyboardCard />
-        <KeyboardCard />
-        <KeyboardCard />
-        <KeyboardCard />
-        <KeyboardCard />
+        {props.keyboard.map(item => {
+          return <KeyboardCard item={item} key={item.id} />;
+        })}
       </div>
     </div>
   );
