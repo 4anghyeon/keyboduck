@@ -26,9 +26,9 @@ const Question = () => {
         </div>
       </div>
       <div className={styles['qna-registration-btn']}>
-        <button>
-          <Link href="/question/write">작성하기 </Link>
-        </button>
+        <Link href="/question/write">
+          <button>작성하기</button>
+        </Link>
       </div>
     </div>
   );
