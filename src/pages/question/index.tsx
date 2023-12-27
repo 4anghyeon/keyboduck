@@ -9,7 +9,7 @@ const Question = () => {
         <h2>QnA</h2>
       </div>
       <div className={styles['qna-sreach-bar']}>
-        <input placeholder="검색어를 입력해주세요" />
+        <input type="text" placeholder="검색어를 입력해주세요" />
         <button>⌕</button>
       </div>
       <div className={styles['qna-list']}>
