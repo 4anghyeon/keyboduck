@@ -12,10 +12,11 @@
   color: #83e0a5;
   text-decoration: none;
   margin: 50px;
+  font-family: YClover-Bold;
 }
 
 .category {
-  font-size: 20px;
+  font-size: 18px;
   text-decoration: none;
   color: black;
   margin: 30px;
