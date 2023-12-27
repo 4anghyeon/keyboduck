@@ -5,7 +5,7 @@ import {BRAND} from '@/shared/common-data';
 import {Tables} from '@/shared/supabase/types/supabase';
 
 interface Props {
-  keyboard: Tables<'keyboard'>[];
+  keyboardList: Tables<'keyboard'>[];
 }
 
 const GridContainer = (props: Props) => {
@@ -15,7 +15,7 @@ const GridContainer = (props: Props) => {
     setSelectedBrand(brand);
   };
 
-  const selectedBrandList = props.keyboard.filter(
+  const selectedBrandList = props.keyboardList.filter(
     k => k.brand === selectedBrand.name || k.brand === selectedBrand.enName,
   );
 
