@@ -68,11 +68,6 @@
   color: #fff;
 }
 
-.button:first-child:hover {
-  background-color: #fff;
-  color: black;
-  border: 2px solid black;
-}
 
 .button:nth-child(2) {
   border: 2px solid black;
