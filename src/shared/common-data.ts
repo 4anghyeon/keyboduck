@@ -1,8 +1,8 @@
 export const BRAND: Brand[] = [
-  {name: '키크론'},
-  {name: '바밀로'},
-  {name: '앱코'},
-  {name: '레오폴드'},
-  {name: '리얼포스'},
-  {name: '기타'},
+  {name: '키크론', enName: 'Keychron'},
+  {name: '바밀로', enName: 'Varmilo'},
+  {name: '앱코', enName: 'ABKO'},
+  {name: '레오폴드', enName: 'Leopold'},
+  {name: '리얼포스', enName: 'REALFORCE'},
+  {name: '기타', enName: 'etc'},
 ];

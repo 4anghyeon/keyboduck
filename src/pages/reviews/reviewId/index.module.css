@@ -1,0 +1,129 @@
+.container {
+  width: 100vw;
+  height: 100%;
+  padding: 150px;
+}
+
+.title {
+  font-size: 50px;
+  font-family: Pretendard-Medium;
+}
+.user-profile {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+}
+
+.user-profile p {
+  font-size: 20px;
+  font-family: Pretendard-Light;
+}
+
+.wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.container span {
+  font-size: 18px;
+  font-family: Pretendard-Light;
+  color: #b0b0b0;
+}
+.container button {
+  border-style: none;
+  background-color: transparent;
+  color: #b0b0b0;
+  word-spacing: 10px;
+}
+
+.image-slide {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+/* .image-slide > button {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+} */
+.image-container {
+  width: 100%;
+  height: 500px;
+  border: 1px solid #b0b0b0;
+  border-radius: 20px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.review-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.contents {
+  width: 100%;
+  height: 100%;
+  border-bottom: 1px solid #b0b0b0;
+  padding: 70px 50px;
+}
+
+.contents p {
+  font-size: 18px;
+  font-family: Pretendard-Light;
+}
+
+.comment-wrap {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  margin-top: 70px;
+}
+
+.comment-wrap input {
+  width: 500px;
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid #b0b0b0;
+  padding: 0 10px;
+}
+.comment-wrap button {
+  width: 100px;
+  height: 45px;
+  margin-left: 20px;
+  border-style: none;
+  border-radius: 10px;
+  background-color: #83e0a5;
+  color: white;
+}
+
+.comment-box {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-bottom: 1px solid black;
+  padding: 0 30px;
+}
+
+.comment-box p {
+  font-size: 20px;
+}
+.comment-user {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.comment-user button {
+  border-style: none;
+  background-color: transparent;
+  color: #b0b0b0;
+  word-spacing: 10px;
+}

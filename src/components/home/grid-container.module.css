@@ -27,7 +27,7 @@
     cursor: pointer;
 }
 
-.brand-button:hover {
+.selected, .brand-button:hover {
     background: #83E0A5;
     color: white;
     border: 0;

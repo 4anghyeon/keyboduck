@@ -1,5 +1,4 @@
 import React from 'react';
-import {FaSearch} from 'react-icons/fa';
 import styles from './index.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,10 +9,7 @@ const ReviewWrite = () => {
       <div className={styles.container}>
         <h1 className={styles.title}>REVIEW</h1>
         <div className={styles['search-wrap']}>
-          <button>
-            키보드 종류 검색
-            <FaSearch />
-          </button>
+          <button>키보드 종류 검색</button>
         </div>
         <div className={styles['write-container']}>
           <div className={styles.title}>
@@ -34,8 +30,8 @@ const ReviewWrite = () => {
           </div>
         </div>
         <div className={styles['submit-btn']}>
-          <button>등록하기</button>
           <Link href="/reviews/reviewId">상세페이지</Link>
+          <button>등록하기</button>
         </div>
       </div>
     </div>

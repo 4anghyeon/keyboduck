@@ -48,7 +48,7 @@ export interface Database {
           photo: string | null;
           price: number | null;
           purchase_link: string | null;
-          release_date: string | null;
+          release_date: string;
           youtube_link: string[] | null;
         };
         Insert: {

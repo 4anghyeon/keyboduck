@@ -14,7 +14,7 @@ const NavBar = () => {
             <Link href="/reviews" className={styles.category}>
               리뷰
             </Link>
-            <Link href="/qna" className={styles.category}>
+            <Link href="/question" className={styles.category}>
               QnA
             </Link>
           </div>

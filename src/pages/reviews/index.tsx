@@ -1,3 +1,5 @@
+'use Client';
+
 import Image from 'next/image';
 import React from 'react';
 import {FaSearch} from 'react-icons/fa';
@@ -20,14 +22,16 @@ const ReviewPage = () => {
         <div className={styles['content-container']}>
           <div className={styles['content-wrap']}>
             <Image src={reviewImg} alt="review-image" className={styles['content-image']} />
-            <div className={styles['user-wrap']}>
-              <div className={styles['user']}>
-                <Image src={defaultImg} alt="유저프로필" className={styles['user-profile']} />
-                <p>유저닉네임</p>
+            <div>
+              <div className={styles['user-wrap']}>
+                <div className={styles['user']}>
+                  <Image src={defaultImg} alt="유저프로필" className={styles['user-profile']} />
+                  <p>유저닉네임</p>
+                </div>
+                <p>2023-12-27</p>
               </div>
-              <p>2023-12-27</p>
+              <span>제목입니다</span>
             </div>
-            <p>제목입니다</p>
           </div>
         </div>
         <div className={styles['write-wrap']}>
