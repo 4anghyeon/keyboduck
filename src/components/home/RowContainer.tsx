@@ -16,7 +16,7 @@ const RowContainer = (props: Props) => {
   const rowRef = useRef<HTMLDivElement>(null);
 
   const onClickNextButton = () => {
-    if (cardIndex > props.keyboardList.length) return;
+    if (cardIndex > props.keyboardList.length - 1) return;
     setCardIndex(prev => ++prev);
     rowRef.current!.style.transform = `translateX(${-CARD_MOVE_SIZE * (cardIndex + 1)}px)`;
   };
