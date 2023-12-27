@@ -1,0 +1,33 @@
+.container {
+    border-bottom: 1px solid #B0B0B0;
+    margin: 50px 50px 50px 100px;
+    padding-bottom: 50px;
+    position: relative;
+}
+
+.row {
+    display: flex;
+    width: 200vw;
+    overflow: scroll;
+    padding-top: 25px;
+}
+
+.button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #B0B0B0;
+    cursor: pointer;
+}
+
+.prev-button {
+    position: absolute;
+    top: calc(50% - 25px);
+    left: calc(-60px);
+}
+
+.next-button {
+    position: absolute;
+    top: calc(50% - 25px);
+    left: calc(100% - 25px);
+}
