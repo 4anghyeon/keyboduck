@@ -7,10 +7,10 @@ import RelatedVideos from '@/components/keyboard/RelatedVideos';
 
 const KeyboardDetailPage = ({keyboard}: {keyboard: Tables<'keyboard'>}) => {
   return (
-    <div>
+    <article>
       <Detail item={keyboard} />
       <RelatedVideos />
-    </div>
+    </article>
   );
 };
 

@@ -94,3 +94,7 @@ textarea:not([rows]) {
 * {
   font-family: sans-serif;
 }
+
+body {
+  overflow-x: hidden;
+}
