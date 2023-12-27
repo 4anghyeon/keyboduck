@@ -29,9 +29,10 @@ dd {
 }
 
 /* list를 role값으로 갖는 ul, ol 요소의 기본 목록 스타일을 제거합니다. */
-ul[role='list'],
+ul,
 ol[role='list'] {
   list-style: none;
+  padding-left: 0;
 }
 
 /* 핵심 body의 기본값을 설정합니다. */

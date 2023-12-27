@@ -7,9 +7,10 @@
 
 .row {
     display: flex;
-    width: 200vw;
+    width: fit-content;
     overflow: scroll;
     padding-top: 25px;
+    transition: all ease-out 100ms;
 }
 
 .button {
