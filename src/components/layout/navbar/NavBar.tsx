@@ -11,7 +11,7 @@ const NavBar = () => {
         </Link>
         <div className={styles.wrap}>
           <div>
-            <Link href="/review" className={styles.category}>
+            <Link href="/reviews" className={styles.category}>
               리뷰
             </Link>
             <Link href="/question" className={styles.category}>
