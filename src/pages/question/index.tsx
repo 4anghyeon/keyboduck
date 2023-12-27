@@ -1,14 +1,15 @@
 import React from 'react';
-import styles from '@/pages/qna/index.module.css';
+import styles from '@/pages/question/index.module.css';
+import Link from 'next/link';
 
-const Qna = () => {
+const Question = () => {
   return (
     <div className={styles['qna-container']}>
       <div className={styles['qna-title']}>
         <h2>QnA</h2>
       </div>
       <div className={styles['qna-sreach-bar']}>
-        <input placeholder="검색어를 입력해주세요" />
+        <input type="text" placeholder="검색어를 입력해주세요" />
         <button>⌕</button>
       </div>
       <div className={styles['qna-list']}>
@@ -25,10 +26,12 @@ const Qna = () => {
         </div>
       </div>
       <div className={styles['qna-registration-btn']}>
-        <button>작성하기</button>
+        <Link href="/question/write">
+          <button>작성하기</button>
+        </Link>
       </div>
     </div>
   );
 };
 
-export default Qna;
+export default Question;
