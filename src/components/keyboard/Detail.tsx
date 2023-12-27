@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './detail.module.css';
 import Image from 'next/image';
 import {Tables} from '@/shared/supabase/types/supabase';
@@ -6,8 +6,37 @@ import {FaBluetooth, FaKeyboard} from 'react-icons/fa';
 import {AiFillCalendar, AiFillShopping} from 'react-icons/ai';
 import {GiMoneyStack} from 'react-icons/gi';
 import {VscDebugDisconnect} from 'react-icons/vsc';
+import {useKeyboardLike} from '@/hooks/useKeyboardLike';
+import {supabase} from '@/shared/supabase/supabase';
 
 const Detail = ({item}: {item: Tables<'keyboard'>}) => {
+  const {likes, isLikePending, addLike, removeLike} = useKeyboardLike(item.id);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const onClickLike = async () => {
+    const {data} = await supabase.auth.getUserIdentities();
+    if (data) {
+      if (!isLiked) {
+        addLike();
+      } else {
+        removeLike();
+      }
+    }
+  };
+
+  useEffect(() => {
+    supabase.auth.getUserIdentities().then(info => {
+      const {data} = info;
+      if (data && likes) {
+        if (likes.map(l => l.user_id).includes(data.identities[0].user_id)) {
+          setIsLiked(true);
+        } else {
+          setIsLiked(false);
+        }
+      }
+    });
+  }, [likes]);
+
   if (!item) return <p>Loading...</p>;
 
   return (
@@ -17,7 +46,9 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
       </div>
       <div className={styles.header}>
         <h1>{item.name}</h1>
-        <button className={styles['like-button']}>❤️ 1</button>
+        <button className={[styles['like-button'], isLiked ? styles['liked'] : ''].join(' ')} onClick={onClickLike}>
+          ❤️ {isLikePending ? '...' : likes?.length}
+        </button>
       </div>
       <div>
         <ul>
