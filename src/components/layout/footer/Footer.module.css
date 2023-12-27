@@ -1,0 +1,15 @@
+.container {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.footer {
+  width: 100vw;
+  height: 100px;
+  background-color: #83e0a5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
