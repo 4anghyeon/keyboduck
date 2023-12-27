@@ -1,4 +1,6 @@
 .card {
+  display: flex;
+  justify-content: center;
   height: 300px;
   min-width: 300px;
   margin: 10px 100px 10px 0;
@@ -9,7 +11,7 @@
   height: 300px;
   border-radius: 15px;
   min-width: 300px;
-  border: 1px solid #b0b0b0;
   cursor: pointer;
   object-fit: cover;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 }

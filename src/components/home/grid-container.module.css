@@ -1,6 +1,7 @@
 .container {
     padding-bottom: 50px;
     margin: 50px 100px 50px 100px;
+    text-align: center;
 }
 
 .grid {
