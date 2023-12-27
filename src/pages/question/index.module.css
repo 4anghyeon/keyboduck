@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
 
-  margin-top: 100px;
+  margin-top: 70px;
 }
 .qna-title {
   width: 60%;
@@ -65,12 +65,10 @@
 }
 .qna-registration-btn {
   width: 60%;
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
+  margin: 15px 0px 50px 0px;
 }
-.qna-registration-btn button {
-  width: 100%;
+.qna-registration-btn a button {
+  width: 15%;
   padding: 8px 15px;
   border: none;
   border-radius: 10px;
@@ -80,5 +78,8 @@
   cursor: pointer;
 }
 .qna-registration-btn a {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
   text-decoration: none;
 }
