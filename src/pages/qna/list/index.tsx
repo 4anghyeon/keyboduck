@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/pages/qna/index.module.css';
+import styles from '@/pages/qna/list/index.module.css';
 
 const Qna = () => {
   return (
