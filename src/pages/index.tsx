@@ -2,8 +2,9 @@ import RowContainer from '@/components/home/RowContainer';
 import GridContainer from '@/components/home/GridContainer';
 import {findAllKeyboardAndLikes} from '@/pages/api/keyboard';
 import {Tables} from '@/shared/supabase/types/supabase';
+import moment from 'moment';
 
-export default function HomePage({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>) {
+const HomPage = ({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>) => {
   // 인기 키보드
   const popularList = [...keyboardList]
     .sort((a, b) => {
@@ -14,7 +15,7 @@ export default function HomePage({keyboardList}: Readonly<{keyboardList: Tables<
   // 출시일 순으로 정렬한 키보드 데이터
   const recentlyList = [...keyboardList]
     .sort((a, b) => {
-      return new Date(b.release_date).getDate() - new Date(a.release_date).getDate();
+      return moment(b.release_date).isAfter(a.release_date) ? 1 : -1;
     })
     .slice(0, 5);
 
@@ -25,7 +26,9 @@ export default function HomePage({keyboardList}: Readonly<{keyboardList: Tables<
       <GridContainer keyboardList={keyboardList} />
     </>
   );
-}
+};
+
+export default HomPage;
 
 export const getStaticProps = async () => {
   const {keyboardList} = await findAllKeyboardAndLikes();
