@@ -3,6 +3,8 @@ import GridContainer from '@/components/home/GridContainer';
 import {findAllKeyboardAndLikes} from '@/pages/api/keyboard';
 import {Tables} from '@/shared/supabase/types/supabase';
 import moment from 'moment';
+import Head from 'next/head';
+import {makeTitle} from '@/shared/helper';
 
 const HomPage = ({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>) => {
   // 인기 키보드
@@ -21,6 +23,9 @@ const HomPage = ({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>)
 
   return (
     <>
+      <Head>
+        <title>{makeTitle('당신의 키보드를 찾아보세요')}</title>
+      </Head>
       <RowContainer title={'인기 키보드'} keyboardList={popularList} />
       <RowContainer title={'새로나온 키보드'} keyboardList={recentlyList} />
       <GridContainer keyboardList={keyboardList} />
