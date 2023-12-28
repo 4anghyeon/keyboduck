@@ -26,13 +26,13 @@ const NavBar = () => {
             </Link>
           </div>
           <div>
-            <Link href="/review" className={styles.category}>
+            <Link href="/" className={styles.category}>
               마이페이지
             </Link>
             <Link href="/login" className={styles.category}>
               임시로그인
             </Link>
-            <Link href="/review" className={styles.category}>
+            <Link href="/" className={styles.category}>
               로그아웃
             </Link>
             <Link href="/signup" className={styles.category}>
