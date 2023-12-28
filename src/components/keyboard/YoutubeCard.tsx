@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './youtube-card.module.css';
 
 const YoutubeCard = ({link}: {link: string}) => {
-  console.log(link);
   return (
     <div className={styles.container}>
       <iframe

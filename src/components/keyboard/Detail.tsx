@@ -10,34 +10,51 @@ import {useKeyboardLike} from '@/hooks/useKeyboardLike';
 import {supabase} from '@/shared/supabase/supabase';
 import {RiKeyboardFill} from 'react-icons/ri';
 import {IoLogoApple, IoLogoWindows} from 'react-icons/io5';
+import {useToast} from '@/hooks/useToast';
+
+interface UserInfo {
+  userId: string;
+}
 
 const Detail = ({item}: {item: Tables<'keyboard'>}) => {
   const {likes, isLikePending, addLike, removeLike} = useKeyboardLike(item.id);
   const [isLiked, setIsLiked] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const {errorTopRight} = useToast();
 
+  // 좋아요 버튼 클릭
   const onClickLike = async () => {
-    const {data} = await supabase.auth.getUserIdentities();
-    if (data) {
+    // 로그인한 유저만 가능
+    if (userInfo) {
       if (!isLiked) {
         addLike();
       } else {
         removeLike();
       }
+    } else {
+      errorTopRight({message: '로그인 후 이용해 주세요!'});
     }
   };
 
   useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      const {data} = info;
-      if (data && likes) {
-        if (likes.map(l => l.user_id).includes(data.identities[0].user_id)) {
-          setIsLiked(true);
-        } else {
-          setIsLiked(false);
-        }
+    if (userInfo && likes) {
+      if (likes.map(l => l.user_id).includes(userInfo.userId)) {
+        setIsLiked(true);
+      } else {
+        setIsLiked(false);
       }
-    });
+    }
   }, [likes]);
+
+  // TODO: 로그인 정보를 전역으로 관리되는 유저 정보에서 가져오도록 해야함
+  useEffect(() => {
+    supabase.auth.getUserIdentities().then(info => {
+      if (info)
+        setUserInfo({
+          userId: info.data?.identities[0].user_id ?? '',
+        });
+    });
+  }, []);
 
   if (!item) return <p>Loading...</p>;
 
