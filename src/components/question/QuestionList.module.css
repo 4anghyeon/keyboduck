@@ -6,7 +6,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   border-bottom: 1px solid #b0b0b0;
-  margin-left: 15px;
 }
 .qna-list-item p {
   text-align: center;
