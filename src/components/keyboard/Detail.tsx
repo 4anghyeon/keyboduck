@@ -8,6 +8,8 @@ import {GiMoneyStack} from 'react-icons/gi';
 import {VscDebugDisconnect} from 'react-icons/vsc';
 import {useKeyboardLike} from '@/hooks/useKeyboardLike';
 import {supabase} from '@/shared/supabase/supabase';
+import {RiKeyboardFill} from 'react-icons/ri';
+import {IoLogoApple, IoLogoWindows} from 'react-icons/io5';
 
 const Detail = ({item}: {item: Tables<'keyboard'>}) => {
   const {likes, isLikePending, addLike, removeLike} = useKeyboardLike(item.id);
@@ -51,7 +53,7 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
         </button>
       </div>
       <div>
-        <ul>
+        <ul className={styles['ul-grid']}>
           <li className={[styles.label, styles['bg-maker']].join(' ')}>
             <FaKeyboard /> 제조사: {item.brand}
           </li>
@@ -64,6 +66,17 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
           </li>
           <li className={[styles.label, styles['bg-connect']].join(' ')}>
             {item.is_wireless ? <FaBluetooth /> : <VscDebugDisconnect />} 연결방식: {item.is_wireless ? '무선' : '유선'}
+          </li>
+          <li className={[styles.label, styles['bg-os']].join(' ')}>
+            <RiKeyboardFill />키 배열:
+            {item.operating_systems === 'win' && <IoLogoWindows />}
+            {item.operating_systems === 'mac' && <IoLogoApple />}
+            {item.operating_systems === 'both' && (
+              <>
+                <IoLogoWindows />
+                <IoLogoApple />
+              </>
+            )}
           </li>
           <li>
             <button className={styles['buy-button']}>
