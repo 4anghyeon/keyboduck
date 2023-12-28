@@ -15,9 +15,16 @@ const GridContainer = (props: Props) => {
     setSelectedBrand(brand);
   };
 
-  const selectedBrandList = props.keyboardList.filter(
-    k => k.brand === selectedBrand.name || k.brand === selectedBrand.enName,
-  );
+  // 선택된 브랜드가 기타일 경우 목록에 없는 브랜드를 전부 포함한다.
+  const selectedBrandList =
+    selectedBrand.name === '기타'
+      ? props.keyboardList.filter(
+          k =>
+            !BRAND.map(b => [b.name, b.enName])
+              .flat()
+              .find(b => b === k.brand),
+        )
+      : props.keyboardList.filter(k => k.brand === selectedBrand.name || k.brand === selectedBrand.enName);
 
   return (
     <div className={styles.container}>

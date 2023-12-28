@@ -40,7 +40,7 @@ export interface Database {
       };
       keyboard: {
         Row: {
-          brand: string | null;
+          brand: string;
           id: number;
           is_wireless: boolean | null;
           name: string;
