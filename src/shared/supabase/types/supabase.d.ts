@@ -50,6 +50,7 @@ export interface Database {
           purchase_link: string;
           release_date: string;
           youtube_link: string[] | null;
+          keyboard_like: [{count: number}];
         };
         Insert: {
           brand?: string | null;
