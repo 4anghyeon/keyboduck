@@ -6,20 +6,14 @@ import styles from '@/pages/question/write/index.module.css';
 import {supabase} from '@/shared/supabase/supabase';
 import {useToast} from '@/hooks/useToast';
 
-const OPTION = [
-  {name: '카테고리 선택', value: 'nothing'},
-  {name: '가격', value: 'price'},
-  {name: '성능', value: 'performance'},
-  {name: '고장', value: 'breakdown'},
-  {name: '기타', value: 'atc'},
-];
+const OPTION = ['카테고리 선택', '가격', '성능', '고장', '기타'];
 
 const QuestionWrite = () => {
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
 
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [category, setCategory] = useState<string>('nothing');
+  const [category, setCategory] = useState<string>('카테고리 선택');
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
   const onChangeContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value);
@@ -34,7 +28,7 @@ const QuestionWrite = () => {
       warnTopCenter({message: '내용을 입력해주세요!', timeout: 2000});
       return false;
     }
-    if (category === 'nothing') {
+    if (category === '카테고리 선택') {
       warnTopCenter({message: '카테고리를 선택해주세요!', timeout: 2000});
       return false;
     }
@@ -60,8 +54,8 @@ const QuestionWrite = () => {
         <select onChange={onChangeCategory}>
           {OPTION.map(item => {
             return (
-              <option key={item.value} value={item.value}>
-                {item.name}
+              <option key={item} value={item}>
+                {item}
               </option>
             );
           })}

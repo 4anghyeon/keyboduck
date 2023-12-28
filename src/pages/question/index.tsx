@@ -5,6 +5,7 @@ import styles from '@/pages/question/index.module.css';
 import Link from 'next/link';
 import QuestionList from '@/components/question/QuestionList';
 import {supabase} from '@/shared/supabase/supabase';
+
 import {QuestionType} from './types/question';
 
 const Question = () => {
