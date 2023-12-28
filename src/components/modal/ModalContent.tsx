@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/components/questionModal/modalContent.module.css';
+import styles from '@/components/modal/modalContent.module.css';
 
 const ModalContent = () => {
   return (

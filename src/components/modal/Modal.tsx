@@ -1,5 +1,5 @@
 import React, {PropsWithChildren} from 'react';
-import styles from '@/components/questionModal/modal.module.css';
+import styles from '@/components/modal/modal.module.css';
 import {ModalDefaultType} from './types/modal';
 
 export const Modal = ({onClickToggleHandler, children}: PropsWithChildren<ModalDefaultType>) => {

@@ -12,6 +12,7 @@ import {Review} from '@/shared/types/review';
 import {useRef} from 'react';
 import {useToast} from '@/hooks/useToast';
 import {MdDeleteForever} from 'react-icons/md';
+import SearchKeyboard from '@/components/review/SearchKeyboard';
 
 const ReviewWrite = () => {
   const [title, setTitle] = useState<string>('');
@@ -21,10 +22,6 @@ const ReviewWrite = () => {
   // const [reviewImgUpload, setReviewImgUpload] = useState<HTMLInputElement>('');
   const fileInput = useRef<HTMLInputElement>(null);
   const {warnTopCenter} = useToast();
-
-  // const [isActive, setActive] = useState(false);
-  // const handleDragStart = () => setActive(true);
-  // const handleDragEnd = () => setActive(false);
 
   const addMutate = useMutation({
     mutationFn: addReview,
@@ -41,6 +38,7 @@ const ReviewWrite = () => {
     setContent(event.target.value);
   };
 
+  // 이미지 파일 미리보기, 최대5장
   const processImageFiles = (files: FileList, existingImageFiles: string[]): string[] => {
     let imageFiles: string[] = [...existingImageFiles];
 
@@ -72,7 +70,7 @@ const ReviewWrite = () => {
     setImageFile(processedImageFiles);
   };
 
-  // 이미지 업로드
+  // 이미지 클릭해서 가져오기
   const imageUploadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
@@ -126,9 +124,7 @@ const ReviewWrite = () => {
     <div>
       <div className={styles.container}>
         <h1 className={styles.title}>REVIEW</h1>
-        <div className={styles['search-wrap']}>
-          <button>키보드 종류 검색</button>
-        </div>
+        <SearchKeyboard />
         <div className={styles['write-container']}>
           <div className={styles.title}>
             <input
@@ -150,14 +146,7 @@ const ReviewWrite = () => {
                 onChange={e => imageUploadHandler(e)}
                 multiple
               />
-              <label
-                htmlFor="inputImg"
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                // className={styles[`preview ${isActive ? 'active' : ''}`]}
-                // onDragEnter={handleDragStart}
-                // onDragLeave={handleDragEnd}
-              >
+              <label htmlFor="inputImg" onDrop={handleDrop} onDragOver={handleDragOver}>
                 드래그하거나 클릭하여 이미지를 업로드해주세요
               </label>
             </div>

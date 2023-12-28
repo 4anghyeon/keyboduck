@@ -4,8 +4,8 @@ import React, {useCallback, useState} from 'react';
 import styles from '@/pages/question/[questionId]/index.module.css';
 import QuestionDetailContents from '@/components/question/QuestionDetailContents';
 import QuestionDetailComment from '@/components/question/QuestionDetailComment';
-import {Modal} from '@/components/questionModal/Modal';
-import ModalContent from '@/components/questionModal/ModalContent';
+import {Modal} from '@/components/modal/Modal';
+import ModalContent from '@/components/modal/ModalContent';
 
 const QuestionDetail = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);

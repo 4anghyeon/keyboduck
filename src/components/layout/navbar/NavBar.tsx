@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React, {useEffect} from 'react';
-import styles from './NavBar.module.css';
+import styles from './navBar.module.css';
 import {supabase} from '@/shared/supabase/supabase';
 
 const NavBar = () => {
@@ -29,14 +29,14 @@ const NavBar = () => {
             <Link href="/" className={styles.category}>
               마이페이지
             </Link>
+            <Link href="/signup" className={styles.category}>
+              회원가입
+            </Link>
             <Link href="/login" className={styles.category}>
-              임시로그인
+              로그인
             </Link>
             <Link href="/" className={styles.category}>
               로그아웃
-            </Link>
-            <Link href="/signup" className={styles.category}>
-              회원가입
             </Link>
           </div>
         </div>

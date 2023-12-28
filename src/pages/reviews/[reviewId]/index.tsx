@@ -6,6 +6,7 @@ import Image from 'next/image';
 import {MdOutlineArrowBackIos, MdOutlineArrowForwardIos} from 'react-icons/md';
 import defaultImg from '../../../assets/defaultImg.png';
 import reviewImg from '../../../assets/reviewImg.jpeg';
+import ReviewDetailComment from '@/components/review/ReviewDetailComment';
 
 const ReviewDetail = () => {
   return (
@@ -38,25 +39,7 @@ const ReviewDetail = () => {
         <div className={styles.contents}>
           <p>내용입니다</p>
         </div>
-        <div className={styles['comment-wrap']}>
-          <div className={styles.comment}>
-            <input type="text" placeholder="댓글을 입력해주세요" />
-            <button>등록</button>
-          </div>
-        </div>
-        <div className={styles['comment-box']}>
-          <div className={styles['comment-user']}>
-            <p>댓글입니다</p>
-            <span>닉네임입니다</span>
-          </div>
-          <div className={styles['comment-user']}>
-            <span>댓글입력시간</span>
-            <div>
-              <button>수정 |</button>
-              <button>삭제</button>
-            </div>
-          </div>
-        </div>
+        <ReviewDetailComment />
       </div>
     </div>
   );
