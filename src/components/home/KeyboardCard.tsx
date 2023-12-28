@@ -11,6 +11,11 @@ const KeyboardCard = ({item}: {item: Tables<'keyboard'>}) => {
   return (
     <div className={styles.card} onClick={() => router.push(`/keyboard/${item.id}`)}>
       <Image src={item.photo ?? ''} alt={item.name} width={300} height={300} />
+      <div className={styles['hidden-message']}>상세정보 보러 가기</div>
+      <div className={styles.description}>
+        <span>{item.name}</span>
+        <span>❤️ 4</span>
+      </div>
     </div>
   );
 };
