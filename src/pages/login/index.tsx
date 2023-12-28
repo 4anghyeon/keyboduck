@@ -1,4 +1,4 @@
-import React, {FormEventHandler, useState} from 'react';
+import React, {useState} from 'react';
 import login from './index.module.css';
 import {signInWithGithub, googleLogin} from '../api/auth';
 
@@ -6,8 +6,6 @@ const LoginPage = () => {
   const [idValue, setIdValue] = useState<string>('');
   const [pwValue, setPwValue] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(false);
-  // console.log(pwValue);
-  // console.log(idValue);
 
   const clickLoginHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,9 +24,7 @@ const LoginPage = () => {
   };
 
   const hi = () => {
-    if (isValid === true) {
-      console.log('hi');
-    }
+    console.log('hi');
   };
   return (
     <div className={login.wrapper}>

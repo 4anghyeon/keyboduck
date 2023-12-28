@@ -1,0 +1,93 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  height: 130vh;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.formbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  display: flex;
+  margin: 40px;
+
+}
+
+
+.imgbox {
+  width: 300px;
+  height: 300px;
+  margin-left: 50px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.imgbox:hover {
+  filter: drop-shadow(0px 0px 8px #B0B0B0);
+}
+
+.ptagposition {
+  margin-right: 50px;
+  display: flex;
+  align-items: center;
+  width: 8rem;
+  font-weight: 800;
+}
+
+.inputsize {
+  width: 500px;
+  height: 60px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  padding: 10px;
+  border: 1px solid #B0B0B0;
+  margin-right: 30px;
+}
+
+
+.button {
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  width: 190px;
+  color: #fff;
+  font-weight: 800;
+  background-color: #83E0A5;
+  height: 50px;
+  cursor: pointer;
+  align-self: center;
+  transition: .2s;
+}
+
+.button:hover {
+  background-color: #B0B0B0;
+  color: black;
+}
+
+
+.lastbutton {
+  margin-top: 50px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  width: 500px;
+  color: #fff;
+  font-weight: 800;
+  background-color: #83E0A5;
+  height: 50px;
+  cursor: pointer;
+  align-self: center;
+  transition: .2s;
+}
+
+
+.lastbutton:hover {
+  background-color: #B0B0B0;
+  color: black;
+}
