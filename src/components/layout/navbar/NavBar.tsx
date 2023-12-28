@@ -1,8 +1,15 @@
 import Link from 'next/link';
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './NavBar.module.css';
+import {supabase} from '@/shared/supabase/supabase';
 
 const NavBar = () => {
+  useEffect(() => {
+    supabase.auth.getUserIdentities().then(info => {
+      if (info) console.log(info);
+    });
+  }, []);
+
   return (
     <div>
       <nav className={styles.container}>
@@ -19,14 +26,17 @@ const NavBar = () => {
             </Link>
           </div>
           <div>
-            <Link href="/review" className={styles.category}>
+            <Link href="/" className={styles.category}>
               마이페이지
             </Link>
             <Link href="/login" className={styles.category}>
               임시로그인
             </Link>
-            <Link href="/review" className={styles.category}>
+            <Link href="/" className={styles.category}>
               로그아웃
+            </Link>
+            <Link href="/signup" className={styles.category}>
+              회원가입
             </Link>
           </div>
         </div>

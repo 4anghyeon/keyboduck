@@ -40,7 +40,7 @@ export interface Database {
       };
       keyboard: {
         Row: {
-          brand: string | null;
+          brand: string;
           id: number;
           is_wireless: boolean | null;
           name: string;
@@ -50,6 +50,7 @@ export interface Database {
           purchase_link: string;
           release_date: string;
           youtube_link: string[] | null;
+          keyboard_like: [{count: number}];
         };
         Insert: {
           brand?: string | null;
