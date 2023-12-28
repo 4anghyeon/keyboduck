@@ -14,8 +14,6 @@ const Question = () => {
   useEffect(() => {
     const getQuestionList = async () => {
       const {data: question, error} = await supabase.from('question').select('*');
-      console.log('list', question);
-      console.log('error', error);
 
       setQuestionList(question);
     };
