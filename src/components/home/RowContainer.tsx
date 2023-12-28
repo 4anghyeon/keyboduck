@@ -28,7 +28,7 @@ const RowContainer = (props: Props) => {
   };
 
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
       <h1>{props.title}</h1>
       <div className={styles.row} ref={rowRef}>
         {props.keyboardList.map(item => {
@@ -46,7 +46,7 @@ const RowContainer = (props: Props) => {
           <MdOutlineArrowForwardIos />
         </button>
       )}
-    </div>
+    </section>
   );
 };
 
