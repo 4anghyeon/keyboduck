@@ -1,8 +1,25 @@
-import React from 'react';
+'use client';
+
+import React, {useEffect, useState} from 'react';
 import styles from '@/pages/question/index.module.css';
 import Link from 'next/link';
+import QuestionList from '@/components/question/QuestionList';
+import {supabase} from '@/shared/supabase/supabase';
+
+import {QuestionType} from './types/question';
 
 const Question = () => {
+  const [questionList, setQuestionList] = useState<QuestionType[] | null>([]);
+
+  useEffect(() => {
+    const getQuestionList = async () => {
+      const {data: question, error} = await supabase.from('question').select('*');
+
+      setQuestionList(question);
+    };
+    getQuestionList();
+  }, []);
+
   return (
     <div className={styles['qna-container']}>
       <div className={styles['qna-title']}>
@@ -18,16 +35,14 @@ const Question = () => {
           <p>제목</p>
           <p>작성자</p>
         </div>
-        <div className={styles['qna-list-item']}>
-          {/* 데이터 들어갈 자리 */}
-          <p>2023-12-25</p>
-          <p>키크론 k8 pro 좋은가요?</p>
-          <p>HelloWorld</p>
-        </div>
+        {/* 데이터 들어갈 자리 */}
+        {questionList?.map(question => {
+          return <QuestionList key={question.id} question={question} />;
+        })}
       </div>
       <div className={styles['qna-registration-btn']}>
         <Link href="/question/write">
-          <button>작성하기</button>
+          <button>등록하기</button>
         </Link>
       </div>
     </div>
