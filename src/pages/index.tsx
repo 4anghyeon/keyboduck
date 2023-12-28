@@ -2,7 +2,6 @@ import RowContainer from '@/components/home/RowContainer';
 import GridContainer from '@/components/home/GridContainer';
 import {findAllKeyboardAndLikes} from '@/pages/api/keyboard';
 import {Tables} from '@/shared/supabase/types/supabase';
-import {useEffect} from 'react';
 import moment from 'moment';
 
 const HomPage = ({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>) => {
@@ -19,8 +18,6 @@ const HomPage = ({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>)
       return moment(b.release_date).isAfter(a.release_date) ? 1 : -1;
     })
     .slice(0, 5);
-
-  useEffect(() => {}, []);
 
   return (
     <>
