@@ -9,7 +9,7 @@ const KeyboardDetailPage = ({keyboard}: {keyboard: Tables<'keyboard'>}) => {
   return (
     <article>
       <Detail item={keyboard} />
-      <RelatedVideos />
+      <RelatedVideos item={keyboard} />
     </article>
   );
 };
