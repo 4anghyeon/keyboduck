@@ -8,34 +8,53 @@ import {GiMoneyStack} from 'react-icons/gi';
 import {VscDebugDisconnect} from 'react-icons/vsc';
 import {useKeyboardLike} from '@/hooks/useKeyboardLike';
 import {supabase} from '@/shared/supabase/supabase';
+import {RiKeyboardFill} from 'react-icons/ri';
+import {IoLogoApple, IoLogoWindows} from 'react-icons/io5';
+import {useToast} from '@/hooks/useToast';
+
+interface UserInfo {
+  userId: string;
+}
 
 const Detail = ({item}: {item: Tables<'keyboard'>}) => {
   const {likes, isLikePending, addLike, removeLike} = useKeyboardLike(item.id);
   const [isLiked, setIsLiked] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const {errorTopRight} = useToast();
 
+  // 좋아요 버튼 클릭
   const onClickLike = async () => {
-    const {data} = await supabase.auth.getUserIdentities();
-    if (data) {
+    // 로그인한 유저만 가능
+    if (userInfo) {
       if (!isLiked) {
         addLike();
       } else {
         removeLike();
       }
+    } else {
+      errorTopRight({message: '로그인 후 이용해 주세요!'});
     }
   };
 
   useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      const {data} = info;
-      if (data && likes) {
-        if (likes.map(l => l.user_id).includes(data.identities[0].user_id)) {
-          setIsLiked(true);
-        } else {
-          setIsLiked(false);
-        }
+    if (userInfo && likes) {
+      if (likes.map(l => l.user_id).includes(userInfo.userId)) {
+        setIsLiked(true);
+      } else {
+        setIsLiked(false);
       }
-    });
+    }
   }, [likes]);
+
+  // TODO: 로그인 정보를 전역으로 관리되는 유저 정보에서 가져오도록 해야함
+  useEffect(() => {
+    supabase.auth.getUserIdentities().then(info => {
+      if (info)
+        setUserInfo({
+          userId: info.data?.identities[0].user_id ?? '',
+        });
+    });
+  }, []);
 
   if (!item) return <p>Loading...</p>;
 
@@ -51,7 +70,7 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
         </button>
       </div>
       <div>
-        <ul>
+        <ul className={styles['ul-grid']}>
           <li className={[styles.label, styles['bg-maker']].join(' ')}>
             <FaKeyboard /> 제조사: {item.brand}
           </li>
@@ -64,6 +83,17 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
           </li>
           <li className={[styles.label, styles['bg-connect']].join(' ')}>
             {item.is_wireless ? <FaBluetooth /> : <VscDebugDisconnect />} 연결방식: {item.is_wireless ? '무선' : '유선'}
+          </li>
+          <li className={[styles.label, styles['bg-os']].join(' ')}>
+            <RiKeyboardFill />키 배열:
+            {item.operating_systems === 'win' && <IoLogoWindows />}
+            {item.operating_systems === 'mac' && <IoLogoApple />}
+            {item.operating_systems === 'both' && (
+              <>
+                <IoLogoWindows />
+                <IoLogoApple />
+              </>
+            )}
           </li>
           <li>
             <button className={styles['buy-button']}>

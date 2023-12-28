@@ -35,11 +35,14 @@ export const useKeyboardLike = (keyboardId: number) => {
       const previousLikes = queryClient.getQueryData<Tables<'keyboard_like'>[]>([QUERY_KEY, keyboardId]);
 
       // 캐시된 데이터에 데이터를 넣어 먼저 set하고, 실제 네트워크 요청은 나중에 들어간다.
-      if (previousLikes)
+      if (previousLikes) {
         queryClient.setQueryData([QUERY_KEY, keyboardId], () => [
           {target_id: keyboardId, user_id: userId},
           ...previousLikes,
         ]);
+      }
+
+      if (userId === '' || keyboardId === 0) return;
 
       return await addLikeByKeyboardIdAndUserId(keyboardId, userId);
     },
@@ -55,9 +58,11 @@ export const useKeyboardLike = (keyboardId: number) => {
       const previousLikes = queryClient.getQueryData<Tables<'keyboard_like'>[]>([QUERY_KEY, keyboardId]);
 
       // 캐시된 데이터에 데이터를 넣어 먼저 set하고, 실제 네트워크 요청은 나중에 들어간다.
-      if (previousLikes)
+      if (previousLikes) {
         queryClient.setQueryData([QUERY_KEY, keyboardId], () => previousLikes.filter(l => l.user_id !== userId));
+      }
 
+      if (userId === '' || keyboardId === 0) return;
       return await removeLikeByKeyboardIdAndUserId(keyboardId, userId);
     },
   });
