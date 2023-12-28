@@ -25,6 +25,7 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
   // 좋아요 버튼 클릭
   const onClickLike = async () => {
     // 로그인한 유저만 가능
+    console.log(userInfo);
     if (userInfo?.userId !== '') {
       if (!isLiked) {
         addLike();
@@ -44,15 +45,16 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
         setIsLiked(false);
       }
     }
-  }, [likes]);
+  }, [likes, userInfo]);
 
   // TODO: 로그인 정보를 전역으로 관리되는 유저 정보에서 가져오도록 해야함
   useEffect(() => {
     supabase.auth.getUserIdentities().then(info => {
-      if (info)
+      if (info) {
         setUserInfo({
           userId: info.data?.identities[0].user_id ?? '',
         });
+      }
     });
   }, []);
 
