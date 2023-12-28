@@ -65,10 +65,11 @@
 }
 .qna-registration-btn {
   width: 60%;
+  display: flex;
+  justify-content: flex-end;
   margin: 15px 0px 50px 0px;
 }
 .qna-registration-btn a button {
-  width: 15%;
   padding: 8px 15px;
   border: none;
   border-radius: 10px;
@@ -78,8 +79,5 @@
   cursor: pointer;
 }
 .qna-registration-btn a {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
   text-decoration: none;
 }
