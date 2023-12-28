@@ -1,8 +1,11 @@
 .qna-list-item {
-  display: flex;
-  justify-content: space-between;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   border-bottom: 1px solid #b0b0b0;
+  margin-left: 15px;
 }
 .qna-list-item p {
-  margin: 20px;
+  text-align: center;
+  margin: 10px 25px 10px 0px;
 }

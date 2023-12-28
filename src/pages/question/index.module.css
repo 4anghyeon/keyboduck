@@ -44,16 +44,16 @@
 }
 .qna-list-title {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   margin-top: 50px;
   border-top: 2px solid black;
   border-bottom: 1px solid black;
-
   font-weight: 700;
+  justify-items: center;
 }
 .qna-list-title p {
-  margin: 20px 30px;
+  margin: 20px;
 }
 .qna-registration-btn {
   width: 60%;
