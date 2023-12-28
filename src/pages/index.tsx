@@ -31,13 +31,13 @@ const HomPage = ({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>)
 
   useEffect(() => {
     handleScrollToTop('auto');
-    let timer: NodeJS.Timeout | null = null;
+    let timer: number | null = null;
 
     const handleScroll = () => {
       if (timer) {
         clearTimeout(timer);
       }
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         if (window.scrollY > window.outerHeight / 3) setShowTopButton(true);
         else setShowTopButton(false);
       }, 100);
