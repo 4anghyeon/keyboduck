@@ -55,14 +55,6 @@
 .qna-list-title p {
   margin: 20px 30px;
 }
-.qna-list-item {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #b0b0b0;
-}
-.qna-list-item p {
-  margin: 20px;
-}
 .qna-registration-btn {
   width: 60%;
   display: flex;

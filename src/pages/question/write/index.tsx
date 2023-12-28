@@ -38,18 +38,14 @@ const QuestionWrite = () => {
       warnTopCenter({message: '카테고리를 선택해주세요!', timeout: 2000});
       return false;
     }
-
-    try {
-      const {data, error} = await supabase
-        .from('question')
-        .insert({category, title, content, author: '테스트'})
-        .select();
+    const {data, error} = await supabase.from('question').insert({category, title, content, author: '테스트'}).select();
+    if (data) {
       setTitle('');
       setContent('');
       setCategory('nothing');
       successTopCenter({message: '등록되었습니다😀', timeout: 2000});
       router.push('/question');
-    } catch (error) {
+    } else {
       console.log(error);
       errorTopCenter({message: '오류가 발생하였습니다.', timeout: 2000});
     }
