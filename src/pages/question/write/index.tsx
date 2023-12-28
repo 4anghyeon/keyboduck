@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import router from 'next/router';
 import styles from '@/pages/question/write/index.module.css';
 import {supabase} from '@/shared/supabase/supabase';
@@ -13,11 +13,19 @@ const QuestionWrite = () => {
 
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
+  const [author, setAuthor] = useState<string>('');
   const [category, setCategory] = useState<string>('카테고리 선택');
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
   const onChangeContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value);
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value);
+
+  useEffect(() => {
+    supabase.auth.getUserIdentities().then(info => {
+      const author = info.data?.identities[0].identity_data?.name;
+      if (author) setAuthor(author);
+    });
+  }, []);
 
   const clickAddQuestion = async () => {
     if (title === '') {
@@ -32,7 +40,7 @@ const QuestionWrite = () => {
       warnTopCenter({message: '카테고리를 선택해주세요!', timeout: 2000});
       return false;
     }
-    const {data, error} = await supabase.from('question').insert({category, title, content, author: '테스트'}).select();
+    const {data, error} = await supabase.from('question').insert({category, title, content, author}).select();
     if (data) {
       setTitle('');
       setContent('');

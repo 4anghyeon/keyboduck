@@ -38,7 +38,7 @@ const QuestionDetail = () => {
         <div className={styles['detail-answer-register-btn']}>
           <button onClick={clickOpenModal}>답변 등록하기</button>
         </div>
-        {/* 댓글 들어갈 곳 */}
+        {/* 댓글 들어가는 곳 */}
         <QuestionDetailComment />
       </div>
     </div>
