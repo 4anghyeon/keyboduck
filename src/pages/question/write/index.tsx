@@ -1,6 +1,7 @@
 'use client';
 
 import React, {useState} from 'react';
+import router from 'next/router';
 import styles from '@/pages/question/write/index.module.css';
 import {supabase} from '@/shared/supabase/supabase';
 import {useToast} from '@/hooks/useToast';
@@ -47,6 +48,7 @@ const QuestionWrite = () => {
       setContent('');
       setCategory('nothing');
       successTopCenter({message: '등록되었습니다😀', timeout: 2000});
+      router.push('/question');
     } catch (error) {
       console.log(error);
       errorTopCenter({message: '오류가 발생하였습니다.', timeout: 2000});
