@@ -1,4 +1,4 @@
-interface Review {
+export interface Review {
   id: number;
   keyboardId: number;
   title: string;

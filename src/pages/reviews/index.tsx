@@ -7,8 +7,26 @@ import styles from './index.module.css';
 import Link from 'next/link';
 import defaultImg from '../../assets/defaultImg.png';
 import reviewImg from '../../assets/reviewImg.jpeg';
+import {useQuery} from '@tanstack/react-query';
+import {fetchReview} from '../api/review';
+import Loading from '@/components/layout/loading/Loading';
 
 const ReviewPage = () => {
+  const {isLoading, isError, data} = useQuery({
+    queryKey: ['fetchReviewList'],
+    queryFn: fetchReview,
+    refetchOnWindowFocus: false,
+    staleTime: 3000,
+  });
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
+  }
+
   return (
     <div>
       <div className={styles.container}>
