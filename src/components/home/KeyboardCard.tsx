@@ -14,7 +14,7 @@ const KeyboardCard = ({item}: {item: Tables<'keyboard'>}) => {
       <div className={styles['hidden-message']}>상세정보 보러 가기</div>
       <div className={styles.description}>
         <span>{item.name}</span>
-        <span>❤️ 4</span>
+        <span>❤️ {item.keyboard_like[0].count}</span>
       </div>
     </div>
   );
