@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '@/components/question/QuestionList.module.css';
-import {QuestionType} from '@/pages/question/types/question';
 import Link from 'next/link';
+import {QuestionType} from '@/pages/question/types/question';
 
 const QuestionList = ({question}: {question: QuestionType}) => {
   return (

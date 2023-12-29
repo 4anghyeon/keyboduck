@@ -32,7 +32,7 @@ const QuestionDetail = () => {
       <div className={styles['detail-answer-container']}>
         {isOpenModal && (
           <Modal onClickToggleHandler={clickOpenModal}>
-            <ModalContent />
+            <ModalContent isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
           </Modal>
         )}
         <div className={styles['detail-answer-register-btn']}>
