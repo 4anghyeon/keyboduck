@@ -2,16 +2,24 @@ import {toast, ToastOptions, ToastPosition} from 'react-toastify';
 
 class ToastOption {
   position: ToastPosition;
-  hideProgressBar = false;
+  hideProgressBar = true;
   autoClose = 1000;
   closeOnClick = true;
   pauseOnHover = false;
   draggable = false;
+  icon: string | undefined;
 
-  constructor(position: ToastPosition, timeout: number) {
+  constructor({position, timeout, icon}: Option) {
     this.autoClose = timeout;
     this.position = position;
+    if (icon) this.icon = icon;
   }
+}
+
+interface Option {
+  position: ToastPosition;
+  timeout: number;
+  icon?: string;
 }
 
 interface ToastArgs {
@@ -29,34 +37,39 @@ interface ToastArgs {
  */
 export const useToast = () => {
   const successTopCenter = ({message, timeout}: ToastArgs) => {
-    const topCenter: ToastOptions = new ToastOption('top-center', timeout ?? 1000);
+    const topCenter: ToastOptions = new ToastOption({position: 'top-center', timeout: timeout ?? 1000});
     toast.success(message, topCenter);
   };
 
   const errorTopCenter = ({message, timeout}: ToastArgs) => {
-    const topCenter: ToastOptions = new ToastOption('top-center', timeout ?? 1000);
+    const topCenter: ToastOptions = new ToastOption({position: 'top-center', timeout: timeout ?? 1000});
     toast.error(message, topCenter);
   };
 
   const warnTopCenter = ({message, timeout}: ToastArgs) => {
-    const topCenter: ToastOptions = new ToastOption('top-center', timeout ?? 1000);
+    const topCenter: ToastOptions = new ToastOption({position: 'top-center', timeout: timeout ?? 1000});
     toast.warn(message, topCenter);
   };
 
   const successTopRight = ({message, timeout}: ToastArgs) => {
-    const topCenter: ToastOptions = new ToastOption('top-right', timeout ?? 1000);
+    const topCenter: ToastOptions = new ToastOption({position: 'top-right', timeout: timeout ?? 1000});
     toast.success(message, topCenter);
   };
 
   const errorTopRight = ({message, timeout}: ToastArgs) => {
-    const topCenter: ToastOptions = new ToastOption('top-right', timeout ?? 1000);
+    const topCenter: ToastOptions = new ToastOption({position: 'top-right', timeout: timeout ?? 1000});
     toast.error(message, topCenter);
   };
 
   const warnTopRight = ({message, timeout}: ToastArgs) => {
-    const topCenter: ToastOptions = new ToastOption('top-right', timeout ?? 1000);
+    const topCenter: ToastOptions = new ToastOption({position: 'top-right', timeout: timeout ?? 1000});
     toast.warn(message, topCenter);
   };
 
-  return {successTopCenter, errorTopCenter, warnTopCenter, successTopRight, errorTopRight, warnTopRight};
+  const duckTopRight = ({message, timeout}: ToastArgs) => {
+    const topCenter: ToastOptions = new ToastOption({position: 'top-right', timeout: timeout ?? 1000, icon: '🐤'});
+    toast.success(message, topCenter);
+  };
+
+  return {successTopCenter, errorTopCenter, warnTopCenter, successTopRight, errorTopRight, warnTopRight, duckTopRight};
 };
