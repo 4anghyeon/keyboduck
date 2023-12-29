@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './NavBar.module.css';
 import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/navigation';
@@ -8,6 +8,7 @@ import MenuItem from '@/components/layout/navbar/MenuItem';
 import {IoMdMenu} from 'react-icons/io';
 
 const NavBar = () => {
+  const [showMenu, setShowMenu] = useState(false);
   const {successTopRight, errorTopRight} = useToast();
   const router = useRouter();
 
@@ -42,7 +43,17 @@ const NavBar = () => {
           <MenuItem href="/signup" name="회원가입" />
         </div>
         <div className={styles['h-menu']}>
-          <IoMdMenu />
+          <button onClick={() => setShowMenu(prev => !prev)}>
+            <IoMdMenu />
+          </button>
+          {showMenu && (
+            <div className={styles['context-menu-container']}>
+              <MenuItem href="/mypage" name="마이페이지" />
+              <MenuItem href="/login" name="로그인" />
+              <MenuItem name="로그아웃" onClick={logout} />
+              <MenuItem href="/signup" name="회원가입" />
+            </div>
+          )}
         </div>
       </div>
     </nav>
