@@ -1,33 +1,134 @@
 .container {
+  position: fixed;
+  top: 0;
   width: 100vw;
   height: 100px;
   padding: 30px 50px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid black;
+  z-index: 5;
+  background: white;
+
+  @media screen and (max-width: 768px) {
+    padding: 10px;
+    height: 60px;
+  }
+}
+
+.container button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .logo {
-  font-size: 30px;
+  font-size: 35px;
   color: #83e0a5;
   text-decoration: none;
-  margin: 50px;
+  margin: 2vw;
   font-family: YClover-Bold;
+
 }
 
 .category {
-  font-size: 18px;
+  font-size: 20px;
   text-decoration: none;
   color: black;
-  margin: 30px;
-}
-
-.category:hover {
-  border-bottom: 2px solid black;
+  margin: 0 30px 0 30px;
+  padding-bottom: 3px;
 }
 
 .wrap {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
+}
+
+.wrap div {
+  display: flex;
+}
+
+.active {
+  border-bottom: 3px #83E0A5 solid;
+}
+
+.anim-link {
+  display: inline-block;
+  text-decoration: none;
+  text-wrap: nowrap;
+}
+.anim-link::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 3px;
+  background: #83E0A5;
+  transition: width .2s;
+}
+.anim-link:hover::after {
+  width: 100%;
+}
+
+.auth {
+  @media screen and (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.h-menu {
+  display: none !important;
+  position: relative;
+  font-size: 2.1rem;
+  padding-bottom: 3px;
+  margin-right: 10px;
+  cursor: pointer;
+  @media screen and (max-width: 768px) {
+    display: flex !important;
+  }
+}
+
+.h-menu button:first-child {
+  display: flex;
+  align-items: center;
+  color: #83E0A5;
+}
+
+.context-menu-container {
+  position: fixed;
+  flex-direction: column;
+  width: 150px;
+  border: 1px solid #B0B0B0;
+  border-top: 0;
+  background: white;
+  top: 60px;
+  right: 2px;
+  z-index: 10;
+  border-radius: 0 0 5px 5px;
+  overflow: hidden;
+  animation: increment-height .2s;
+  transform-origin: top;
+}
+
+.context-menu-container a, .context-menu-container button {
+  text-align: left;
+  padding: 0;
+  margin: 10px;
+}
+
+@keyframes increment-height {
+  0% {
+    transform: scaleY(0);
+  }
+  45% {
+    /*transform: scale(1) rotate(20deg);*/
+  }
+  80% {
+    /*transform: scale(0.95) rotate(-20deg);*/
+  }
+  100% {
+    transform: scaleY(1);
+  }
 }
