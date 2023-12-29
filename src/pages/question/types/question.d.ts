@@ -14,4 +14,5 @@ export interface AnswerType {
   is_accept: boolean | null;
   question_id: number;
   write_date: string | null;
+  is_edit: boolean | null;
 }

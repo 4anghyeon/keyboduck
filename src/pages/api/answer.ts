@@ -1,7 +1,7 @@
 import {supabase} from '@/shared/supabase/supabase';
 import {Tables} from '@/shared/supabase/types/supabase';
 
-//댓글 가져오기
+//답변 가져오기
 export const getAnswer = async () => {
   const getAnswerQuery = await supabase.from('answer').select('*').returns<Tables<'answer'>[]>();
 
@@ -9,9 +9,30 @@ export const getAnswer = async () => {
   return {getAnswerData, error};
 };
 
-// 댓글 추가하기
+// 답변 추가하기
 export const addAnswer = async (author: string, comment: string, questionId: number) => {
-  // const {data: addAnswerData, error} =
-  await supabase.from('answer').insert({author, content: comment, question_id: questionId, is_accept: false}).select();
-  // return addAnswerData;
+  await supabase
+    .from('answer')
+    .insert({author, content: comment, question_id: questionId, is_accept: false, is_edit: false})
+    .select();
+};
+
+// 답변 삭제하기
+export const deleteAnswer = async (id: number) => {
+  return await supabase.from('answer').delete().eq('id', id);
+};
+
+// 답변 수정상태로 변경하기
+export const isEditAnswer = async (id: number) => {
+  await supabase.from('answer').update({is_edit: true}).eq('id', id).select();
+};
+
+// 답변 완료상태로 변경하기
+export const isCompletionAnswer = async (id: number) => {
+  await supabase.from('answer').update({is_edit: false}).eq('id', id).select();
+};
+
+// 답변 완료상태로 변경하기
+export const completionAnswer = async ({id, revisedAnswer}: {id: number; revisedAnswer: string}) => {
+  await supabase.from('answer').update({content: revisedAnswer, is_edit: false}).eq('id', id).select();
 };

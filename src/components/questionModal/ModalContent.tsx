@@ -1,8 +1,7 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import styles from '@/components/questionModal/modalContent.module.css';
-import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/router';
 import {useToast} from '@/hooks/useToast';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
@@ -20,7 +19,6 @@ const ModalContent = ({
   author: string;
 }) => {
   const [comment, setComment] = useState<string>('');
-  // const [author, setAuthor] = useState<string>('');
 
   const onChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value);
 
@@ -28,7 +26,7 @@ const ModalContent = ({
   const queryClient = useQueryClient();
   const addAnswerMutation = useMutation({
     mutationFn: async () => await addAnswer(author, comment, questionId!),
-    onSuccess(data) {
+    onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['getAnswer']});
     },
   });

@@ -11,10 +11,14 @@ import {getQuestion} from '@/pages/api/question';
 import {getAnswer} from '@/pages/api/answer';
 import Loading from '@/components/layout/loading/Loading';
 import {supabase} from '@/shared/supabase/supabase';
+import {useRouter} from 'next/router';
 
 const QuestionDetail = () => {
   const [author, setAuthor] = useState<string>('');
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+
+  const router = useRouter();
+  const questionId: number | null = Number(router.query.questionId);
 
   useEffect(() => {
     supabase.auth.getUserIdentities().then(info => {
@@ -39,6 +43,8 @@ const QuestionDetail = () => {
     setIsOpenModal(!isOpenModal);
   }, [isOpenModal]);
 
+  const answerQuestionIdFilter = answer?.getAnswerData!?.filter(item => item.question_id === questionId);
+
   if (isLoading) {
     return <Loading />;
   }
@@ -59,7 +65,9 @@ const QuestionDetail = () => {
           <button onClick={clickOpenModal}>답변 등록하기</button>
         </div>
         {/* 댓글 들어가는 곳 */}
-        <QuestionDetailComment author={author} getAnswer={answer?.getAnswerData!} />
+        {answerQuestionIdFilter?.map(item => {
+          return <QuestionDetailComment key={item.id} author={author} getAnswer={item} />;
+        })}
       </div>
     </div>
   );
