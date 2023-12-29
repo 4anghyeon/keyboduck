@@ -1,4 +1,16 @@
 /* modal */
+.modal-container {
+  width: 100%;
+}
+.modal-close-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 40px;
+}
+.modal-close {
+  cursor: pointer;
+}
 .modal-comment-container {
   width: 100%;
   display: flex;
