@@ -11,6 +11,7 @@ import {supabase} from '@/shared/supabase/supabase';
 import {RiKeyboardFill} from 'react-icons/ri';
 import {IoLogoApple, IoLogoWindows} from 'react-icons/io5';
 import {useToast} from '@/hooks/useToast';
+import Loading from '@/components/layout/loading/Loading';
 
 interface UserInfo {
   userId: string;
@@ -38,6 +39,7 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
 
   useEffect(() => {
     if (userInfo && likes) {
+      // 유저 정보가 있고, likes 목록에 현재 유저의 아이디가 들어가 있으면 좋아요가 눌렸다고 판단.
       if (likes.map(l => l.user_id).includes(userInfo.userId)) {
         setIsLiked(true);
       } else {
@@ -57,7 +59,7 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
     });
   }, []);
 
-  if (!item) return <p>Loading...</p>;
+  if (!item) return <Loading />;
 
   return (
     <section className={styles.container}>

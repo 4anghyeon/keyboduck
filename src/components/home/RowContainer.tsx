@@ -9,18 +9,21 @@ interface Props {
   keyboardList: Tables<'keyboard'>[];
 }
 
+// 슬라이드가 움직이는 사이즈 지정..
 const CARD_MOVE_SIZE = 400;
 
 const RowContainer = (props: Props) => {
   const [cardIndex, setCardIndex] = useState(0);
   const rowRef = useRef<HTMLDivElement>(null);
 
+  // 카드 다음 슬라이드
   const onClickNextButton = () => {
     if (cardIndex > props.keyboardList.length - 1) return;
     setCardIndex(prev => ++prev);
     rowRef.current!.style.transform = `translateX(${-CARD_MOVE_SIZE * (cardIndex + 1)}px)`;
   };
 
+  // 카드 이전 슬라이드
   const onClickPrevButton = () => {
     if (cardIndex < 1) return;
     setCardIndex(prev => --prev);
