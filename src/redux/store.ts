@@ -5,7 +5,7 @@ export type RootState = ReturnType<typeof store.getState>;
 
 const store = configureStore({
   reducer: {
-    userSlice: userSlice,
+    userSlice,
   },
 });
 

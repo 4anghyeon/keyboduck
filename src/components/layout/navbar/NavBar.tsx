@@ -5,7 +5,7 @@ import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/navigation';
 import {useToast} from '@/hooks/useToast';
 import {useDispatch} from 'react-redux';
-import {setUserInfo} from '@/redux/modules/userSlice';
+import {logoutUser, setUserInfo} from '@/redux/modules/userSlice';
 import MenuItem from '@/components/layout/navbar/MenuItem';
 import {IoMdMenu} from 'react-icons/io';
 import duckImg from '@/assets/images/duck.png';
@@ -16,21 +16,6 @@ const NavBar = () => {
   const {successTopRight, errorTopRight, duckTopRight} = useToast();
   const router = useRouter();
   const dispatch = useDispatch();
-  useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
-      console.log(event, session);
-      if (event === 'SIGNED_IN') {
-        // handle sign in event
-        dispatch(setUserInfo(session?.user));
-      } else if (event === 'SIGNED_OUT') {
-        // handle sign out event
-        dispatch(setUserInfo(session?.user));
-      } else if (event === 'USER_UPDATED') {
-        // handle user updated event
-        dispatch(setUserInfo(session?.user));
-      }
-    });
-  }, []);
 
   const logout = async () => {
     const {error} = await supabase.auth.signOut();
@@ -44,8 +29,16 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      if (info) console.log(info);
+    supabase.auth.onAuthStateChange((event, session) => {
+      switch (event) {
+        case 'INITIAL_SESSION':
+        case 'SIGNED_IN':
+        case 'USER_UPDATED':
+          dispatch(setUserInfo(session?.user));
+          break;
+        case 'SIGNED_OUT':
+          dispatch(logoutUser());
+      }
     });
   }, []);
 
