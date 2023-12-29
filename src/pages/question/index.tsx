@@ -1,24 +1,25 @@
-'use client';
-
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styles from '@/pages/question/index.module.css';
 import Link from 'next/link';
 import QuestionList from '@/components/question/QuestionList';
-import {supabase} from '@/shared/supabase/supabase';
-
-import {QuestionType} from './types/question';
+import {getQuestion} from '../api/question';
+import {useQuery} from '@tanstack/react-query';
+import Loading from '@/components/layout/loading/Loading';
 
 const Question = () => {
-  const [questionList, setQuestionList] = useState<QuestionType[] | null>([]);
+  const {
+    isLoading,
+    isError,
+    data: questionList,
+  } = useQuery({
+    queryKey: ['getQuestion'],
+    queryFn: getQuestion,
+    refetchOnWindowFocus: false,
+  });
 
-  useEffect(() => {
-    const getQuestionList = async () => {
-      const {data: question, error} = await supabase.from('question').select('*');
-
-      setQuestionList(question);
-    };
-    getQuestionList();
-  }, []);
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className={styles['qna-container']}>
@@ -36,7 +37,7 @@ const Question = () => {
           <p>작성자</p>
         </div>
         {/* 데이터 들어갈 자리 */}
-        {questionList?.map(question => {
+        {questionList?.getQuestionData?.map(question => {
           return <QuestionList key={question.id} question={question} />;
         })}
       </div>

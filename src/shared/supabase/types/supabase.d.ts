@@ -11,6 +11,7 @@ export interface Database {
           is_accept: boolean | null;
           question_id: number;
           write_date: string | null;
+          is_edit: boolean | null;
         };
         Insert: {
           author?: string | null;
@@ -19,6 +20,7 @@ export interface Database {
           is_accept?: boolean | null;
           question_id: number;
           write_date?: string | null;
+          is_edit: boolean | null;
         };
         Update: {
           author?: string | null;
@@ -27,6 +29,7 @@ export interface Database {
           is_accept?: boolean | null;
           question_id?: number;
           write_date?: string | null;
+          is_edit: boolean | null;
         };
         Relationships: [
           {
