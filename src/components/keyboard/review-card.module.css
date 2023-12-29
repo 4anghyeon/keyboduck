@@ -1,0 +1,52 @@
+.container {
+    width: 32%;
+    box-shadow: 5px 5px 8px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .2s;
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        margin-bottom: 25px;
+    }
+}
+
+.container:hover {
+    transform: scale(1.03);
+}
+
+.container img {
+    width: 100%;
+    height: fit-content;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 10px 10px 0 0;
+}
+
+.review-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: .9rem;
+    max-height: 100px;
+}
+
+.review-info div {
+    display: flex;
+    align-items: center;
+}
+
+.date {
+    color: #B0B0B0;
+    margin: 10px;
+}
+
+.profile {
+    width: 30px !important;
+    margin: 10px;
+}
+
+.title {
+    margin: 0 10px 10px 10px;
+    font-weight: normal;
+}

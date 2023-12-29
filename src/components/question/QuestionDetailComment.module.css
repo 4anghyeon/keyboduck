@@ -2,6 +2,8 @@
   border: 1px solid black;
   border-radius: 10px;
   padding: 10px 15px;
+
+  margin-bottom: 20px;
 }
 .detail-answer-user {
   display: flex;
@@ -44,6 +46,8 @@
   margin-right: 20px;
 }
 .detail-answer-content {
+  width: 100%;
+  resize: none;
   padding: 5px 10px;
   border-radius: 10px;
   background-color: #eaeaea;

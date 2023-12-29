@@ -1,3 +1,17 @@
+@font-face {
+  font-family: "Pretendard";
+  src: url('../assets/fonts/Pretendard-Light.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url('../assets/fonts/Pretendard-Bold.otf');
+  font-weight: bold;
+  font-style: normal;
+}
+
 /* box-sizing 규칙을 명시합니다. */
 *,
 *::before,
@@ -39,6 +53,7 @@ ol[role='list'] {
 body {
   min-height: 100vh;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 /* 제목 요소와 상호작용하는 요소에 대해 line-height를 더 짧게 설정합니다. */
@@ -92,9 +107,14 @@ textarea:not([rows]) {
 }
 
 * {
-  font-family: sans-serif;
+  font-family: 'Pretendard', sans-serif;
 }
 
-body {
-  overflow-x: hidden;
+main {
+  margin-top: 100px;
+  padding-top: 1px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 60px;
+  }
 }

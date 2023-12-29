@@ -1,7 +1,13 @@
 .container {
   width: 100vw;
   height: 100%;
-  padding: 150px 200px;
+  padding: 150px 300px;
+}
+
+.title-wrap {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 50px;
 }
 
 .title {
@@ -22,6 +28,10 @@
   font-family: Pretendard-Light;
 }
 
+.user-profile img {
+  width: 60px;
+  height: 60px;
+}
 .wrap {
   width: 100%;
   display: flex;
@@ -51,14 +61,14 @@
 } */
 .image-container {
   width: 100%;
-  height: 500px;
+  height: 600px;
   border: 1px solid #b0b0b0;
   border-radius: 20px;
   margin-top: 20px;
   overflow: hidden;
 }
 
-.review-image {
+.image-container img {
   position: relative;
   width: 100%;
   height: 100%;
@@ -74,56 +84,4 @@
 .contents p {
   font-size: 18px;
   font-family: Pretendard-Light;
-}
-
-.comment-wrap {
-  width: 100%;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  margin-top: 70px;
-}
-
-.comment-wrap input {
-  width: 500px;
-  height: 45px;
-  border-radius: 10px;
-  border: 1px solid #b0b0b0;
-  padding: 0 10px;
-}
-.comment-wrap button {
-  width: 100px;
-  height: 45px;
-  margin-left: 20px;
-  border-style: none;
-  border-radius: 10px;
-  background-color: #83e0a5;
-  color: white;
-}
-
-.comment-box {
-  width: 100%;
-  height: 120px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  border-bottom: 1px solid black;
-  padding: 0 30px;
-}
-
-.comment-box p {
-  font-size: 20px;
-}
-.comment-user {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0;
-}
-
-.comment-user button {
-  border-style: none;
-  background-color: transparent;
-  color: #b0b0b0;
-  word-spacing: 10px;
 }

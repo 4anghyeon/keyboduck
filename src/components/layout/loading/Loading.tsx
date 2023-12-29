@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import loadingBar from '../../../assets/Spinner-1s-147px.gif';
-import styles from './Loading.module.css';
+import styles from './loading.module.css';
 
 const Loading = () => {
   return (

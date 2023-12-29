@@ -1,7 +1,5 @@
 .container {
-    margin: 0 130px 0 130px;
-    padding-bottom: 50px;
-    border-bottom: 1px solid #B0B0B0;
+    margin: 30px 130px 50px 130px;
 
     @media screen and (max-width: 768px) {
         margin: 0  50px 50px 50px;
@@ -11,23 +9,33 @@
 .row {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    padding-top: 20px;
 
     @media screen and (max-width: 768px) {
         flex-direction: column;
     }
 }
 
-.row div {
-    @media screen and (max-width: 768px) {
-        margin-bottom: 25px;
-    }
-}
-
 .no-data {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
     font-size: 1rem;
     height: 60px;
+}
+
+.no-data p {
+    margin-bottom: 10px;
+}
+
+.no-data a {
+    margin-top: 10px;
+    background: #12b886;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
 }

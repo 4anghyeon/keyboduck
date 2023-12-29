@@ -2,6 +2,10 @@
     padding-bottom: 50px;
     margin: 50px 100px 50px 100px;
     text-align: center;
+
+    @media screen and (max-width: 768px) {
+        margin: 0px;
+    }
 }
 
 .grid {
@@ -12,10 +16,28 @@
     grid-row-gap: 50px;
     padding-top: 25px;
     place-items: center;
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 10px;
+
+    }
 }
 
-.grid > div {
+.grid div {
     margin: 0;
+
+    @media screen and (max-width: 768px) {
+        min-width: 200px;
+        width: 200px;
+    }
+}
+
+.grid div img {
+    @media screen and (max-width: 768px) {
+        min-width: 200px;
+        width: 200px;
+    }
 }
 
 

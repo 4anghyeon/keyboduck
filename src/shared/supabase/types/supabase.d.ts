@@ -11,6 +11,7 @@ export interface Database {
           is_accept: boolean | null;
           question_id: number;
           write_date: string | null;
+          is_edit: boolean | null;
         };
         Insert: {
           author?: string | null;
@@ -19,6 +20,7 @@ export interface Database {
           is_accept?: boolean | null;
           question_id: number;
           write_date?: string | null;
+          is_edit: boolean | null;
         };
         Update: {
           author?: string | null;
@@ -27,6 +29,7 @@ export interface Database {
           is_accept?: boolean | null;
           question_id?: number;
           write_date?: string | null;
+          is_edit: boolean | null;
         };
         Relationships: [
           {
@@ -51,6 +54,7 @@ export interface Database {
           release_date: string;
           youtube_link: string[] | null;
           keyboard_like: [{count: number}];
+          review: Tables<'review'>[];
         };
         Insert: {
           brand?: string | null;
@@ -143,8 +147,8 @@ export interface Database {
           author: string | null;
           content: string | null;
           id: number;
-          keyboard_id: number;
-          photo: string | null;
+          keyboard_id: number | null;
+          photo: string[] | null;
           title: string | null;
           write_date: string | null;
         };
@@ -152,8 +156,8 @@ export interface Database {
           author?: string | null;
           content?: string | null;
           id?: number;
-          keyboard_id: number;
-          photo?: string | null;
+          keyboard_id: number | null;
+          photo?: string[] | null;
           title?: string | null;
           write_date?: string | null;
         };
@@ -161,8 +165,8 @@ export interface Database {
           author?: string | null;
           content?: string | null;
           id?: number;
-          keyboard_id?: number;
-          photo?: string | null;
+          keyboard_id?: number | null;
+          photo?: string[] | null;
           title?: string | null;
           write_date?: string | null;
         };
