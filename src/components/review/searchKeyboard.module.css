@@ -1,0 +1,85 @@
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+.wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.wrap > p {
+  width: 100%;
+  font-size: 25px;
+  padding: 10px 0 10px 10px;
+  border-bottom: 1px solid #b0b0b0;
+  font-family: Pretendard-Medium;
+  color: #565656;
+}
+.modal-comment-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 25px;
+  margin-top: 40px;
+}
+.modal-comment {
+  width: 400px;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid #b0b0b0;
+  padding: 0 10px;
+}
+.modal-button {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 10px;
+  background-color: #83e0a5;
+  cursor: pointer;
+}
+
+.search-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.search-wrap button {
+  width: 200px;
+  height: 50px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  color: white;
+  background-color: #83e0a5;
+  cursor: pointer;
+  line-height: 50px;
+  gap: 10px;
+  margin-top: 100px;
+  font-family: Pretendard-Light;
+}
+
+.keyboard {
+  width: 80%;
+  height: 400px;
+  margin: 50px 0;
+}
+
+.keyboard > li {
+  width: 400px;
+  background-color: #e7e7e7;
+  margin: 10px;
+  border-radius: 10px;
+  padding: 15px;
+  font-family: Pretendard-Medium;
+  cursor: pointer;
+}
+
+.keyboard > li a :hover {
+  background-color: #b5b5b5;
+}

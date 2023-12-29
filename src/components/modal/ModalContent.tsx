@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useState} from 'react';
-import styles from '@/components/questionModal/modalContent.module.css';
+import styles from '@/components/modal/modalContent.module.css';
 import {useRouter} from 'next/router';
 import {useToast} from '@/hooks/useToast';
 import {AiOutlineCloseCircle} from 'react-icons/ai';

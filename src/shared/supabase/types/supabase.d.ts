@@ -147,8 +147,8 @@ export interface Database {
           author: string | null;
           content: string | null;
           id: number;
-          keyboard_id: number;
-          photo: string | null;
+          keyboard_id: number | null;
+          photo: string[] | null;
           title: string | null;
           write_date: string | null;
         };
@@ -156,8 +156,8 @@ export interface Database {
           author?: string | null;
           content?: string | null;
           id?: number;
-          keyboard_id: number;
-          photo?: string | null;
+          keyboard_id: number | null;
+          photo?: string[] | null;
           title?: string | null;
           write_date?: string | null;
         };
@@ -165,8 +165,8 @@ export interface Database {
           author?: string | null;
           content?: string | null;
           id?: number;
-          keyboard_id?: number;
-          photo?: string | null;
+          keyboard_id?: number | null;
+          photo?: string[] | null;
           title?: string | null;
           write_date?: string | null;
         };

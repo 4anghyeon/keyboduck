@@ -4,14 +4,14 @@ import React, {useCallback, useEffect, useState} from 'react';
 import styles from '@/pages/question/[questionId]/index.module.css';
 import QuestionDetailContents from '@/components/question/QuestionDetailContents';
 import QuestionDetailComment from '@/components/question/QuestionDetailComment';
-import {Modal} from '@/components/questionModal/Modal';
-import ModalContent from '@/components/questionModal/ModalContent';
 import {useQuery} from '@tanstack/react-query';
 import {getQuestion} from '@/pages/api/question';
 import {getAnswer} from '@/pages/api/answer';
 import Loading from '@/components/layout/loading/Loading';
 import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/router';
+import {Modal} from '@/components/modal/Modal';
+import ModalContent from '@/components/modal/ModalContent';
 
 const QuestionDetail = () => {
   const [author, setAuthor] = useState<string>('');
