@@ -1,7 +1,8 @@
 import React, {useRef, useState} from 'react';
 import signup from './index.module.css';
 import {signUpNewUser} from '../api/auth';
-import {v4 as uuidv4} from 'uuid';
+import {supabase} from '@/shared/supabase/supabase';
+import {useToast} from '@/hooks/useToast';
 
 const Signup = () => {
   const [idValue, setIdValue] = useState<string>('');
@@ -13,7 +14,7 @@ const Signup = () => {
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
   );
   const fileInput = useRef<HTMLInputElement>(null);
-
+  const {successTopRight, errorTopRight} = useToast();
   const handleSignUp = () => {
     signUpNewUser(idValue, pwValue, profileImg, nickNameValue);
   };
@@ -70,6 +71,30 @@ const Signup = () => {
       : setIsValid(false);
   };
 
+  const confirmId = async () => {
+    const {data, error} = await supabase.from('profiles').select('email').eq('email', idValue);
+    if (data?.length === 0 && idValue.includes('@')) {
+      successTopRight({message: '사용가능한 이메일이에요!', timeout: 2000});
+    }
+    if (data?.length >= 1 && !idValue.includes('@')) {
+      errorTopRight({message: '사용중인 이메일이에요!', timeout: 2000});
+      setIdValue('');
+    }
+    if (error) alert('오류입니다');
+  };
+
+  const confirmUserName = async () => {
+    const {data, error} = await supabase.from('profiles').select('username').eq('username', nickNameValue);
+    if (data?.length === 0 && nickNameValue.length >= 2) {
+      successTopRight({message: '사용가능한 닉네임이에요!', timeout: 2000});
+    }
+    if (data?.length! >= 1 && nickNameValue.length <= 2) {
+      errorTopRight({message: '사용중인 닉네임이거나 닉네임을 2글자 이상 써주세요!', timeout: 2000});
+      setNicknameValue('');
+    }
+    if (error) alert('오류입니다');
+  };
+
   return (
     <div className={signup.wrapper}>
       <form className={signup.formbox} onSubmit={clickLoginHandler}>
@@ -81,7 +106,9 @@ const Signup = () => {
             value={idValue}
             onChange={handleIdInput}
           />
-          <button className={signup.button}>중복확인</button>
+          <button className={signup.button} onClick={confirmId}>
+            중복확인
+          </button>
         </div>
         <div className={signup.input}>
           <p className={signup.ptagposition}>비밀번호</p>
@@ -109,7 +136,9 @@ const Signup = () => {
             value={nickNameValue}
             onChange={handleNicknameInput}
           />
-          <button className={signup.button}>중복확인</button>
+          <button className={signup.button} onClick={confirmUserName}>
+            중복확인
+          </button>
         </div>
         <div className={signup.input}>
           <p className={signup.ptagposition}>프로필이미지</p>
