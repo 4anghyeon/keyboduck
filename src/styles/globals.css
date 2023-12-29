@@ -1,3 +1,17 @@
+@font-face {
+  font-family: "Pretendard";
+  src: url('../assets/fonts/Pretendard-Light.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url('../assets/fonts/Pretendard-Bold.otf');
+  font-weight: bold;
+  font-style: normal;
+}
+
 /* box-sizing 규칙을 명시합니다. */
 *,
 *::before,
@@ -93,7 +107,7 @@ textarea:not([rows]) {
 }
 
 * {
-  font-family: sans-serif;
+  font-family: 'Pretendard', sans-serif;
 }
 
 main {
