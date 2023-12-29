@@ -38,9 +38,13 @@
 }
 
 .content-container {
+  width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-top: 100px;
+  place-items: center;
+  gap: 50px;
 }
 .content-wrap {
   width: 300px;

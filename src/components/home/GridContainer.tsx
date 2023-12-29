@@ -36,7 +36,7 @@ const GridContainer = (props: Props) => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
       <h1>브랜드별 키보드</h1>
       {BRAND.map(brand => {
         return (
@@ -54,7 +54,7 @@ const GridContainer = (props: Props) => {
           return <KeyboardCard item={item} key={item.id} />;
         })}
       </div>
-    </div>
+    </section>
   );
 };
 

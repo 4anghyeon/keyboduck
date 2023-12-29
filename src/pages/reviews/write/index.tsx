@@ -5,38 +5,32 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {useState} from 'react';
 import Swal from 'sweetalert2';
-import {useMutation} from '@tanstack/react-query';
-import {addReview} from '@/pages/api/review';
-import {queryClient} from '@/pages/_app';
-import {Review} from '@/shared/types/review';
 import {useRef} from 'react';
 import {useToast} from '@/hooks/useToast';
 import {MdDeleteForever} from 'react-icons/md';
 import SearchKeyboard from '@/components/review/SearchKeyboard';
+import {useEffect} from 'react';
+import {supabase} from '@/shared/supabase/supabase';
+import router from 'next/router';
 
 const ReviewWrite = () => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [imageFile, setImageFile] = useState<string[]>([]);
-  const [imageUrl, setImageUrl] = useState<string>('');
-  // const [reviewImgUpload, setReviewImgUpload] = useState<HTMLInputElement>('');
+  const [author, setAuthor] = useState<string>('');
+  // const [imageUrl, setImageUrl] = useState<string>('');
   const fileInput = useRef<HTMLInputElement>(null);
-  const {warnTopCenter} = useToast();
+  const {warnTopCenter, errorTopCenter} = useToast();
 
-  const addMutate = useMutation({
-    mutationFn: addReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['fetchReviewList']});
-    },
-  });
+  useEffect(() => {
+    supabase.auth.getUserIdentities().then(info => {
+      const author = info.data?.identities[0].identity_data?.name;
+      if (author) setAuthor(author);
+    });
+  }, []);
 
-  const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setTitle(event.target.value);
-  };
-
-  const contentChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
-    setContent(event.target.value);
-  };
+  const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
+  const contentChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void => setContent(event.target.value);
 
   // 이미지 파일 미리보기, 최대5장
   const processImageFiles = (files: FileList, existingImageFiles: string[]): string[] => {
@@ -77,6 +71,7 @@ const ReviewWrite = () => {
     const files: FileList = event.target.files;
     const processedImageFiles = processImageFiles(files, imageFile);
     setImageFile(processedImageFiles);
+    // setImageFile((prev) => [...prev, event.target.files![0]]);
   };
 
   // 이미지 삭제
@@ -86,8 +81,8 @@ const ReviewWrite = () => {
     setImageFile(updatedImageFiles);
   };
 
-  // 등록하기 작업 진행중...
-  const onSubmitButtonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+  // 리뷰 등록하기
+  const onSubmitButtonHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
     if (!title) {
       warnTopCenter({message: '제목을 입력해주세요', timeout: 2000});
       return;
@@ -102,17 +97,16 @@ const ReviewWrite = () => {
       return;
     }
 
-    const newReview: Review = {
-      id: 1,
-      keyboardId: 1,
-      title,
-      content,
-      author: 'nickname',
-      writeDate: new Date(),
-      photo: imageUrl,
-    };
-
-    addMutate.mutate(newReview);
+    const {data: addReviewData, error} = await supabase
+      .from('review')
+      .insert({title, keyboard_id: 27, content, author, photo: imageFile})
+      .select();
+    if (addReviewData) {
+      router.push('/reviews');
+    } else {
+      console.log(error);
+      errorTopCenter({message: '등록에 실패하였습니다🙅🏻‍♀️', timeout: 2000});
+    }
 
     Swal.fire({
       title: '등록되었습니다',

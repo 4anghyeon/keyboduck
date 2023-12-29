@@ -1,9 +1,9 @@
-export interface Review {
+export interface ReviewType {
   id: number;
-  keyboardId: number;
-  title: string;
-  content: string;
-  author: string;
-  writeDate: Date;
-  photo: string;
+  keyboard_id: number;
+  title: string | null;
+  content: string | null;
+  author: string | null;
+  write_date: string | null;
+  photo: string[] | null;
 }

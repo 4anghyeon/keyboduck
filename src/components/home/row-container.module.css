@@ -17,21 +17,28 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 1px solid #B0B0B0;
+    background: rgba(131, 224, 165, 0.90);
+    border: 1px solid #83E0A5;
+    color: white;
     cursor: pointer;
+}
+
+.button:hover {
+    background: #83E0A5;
+    border: 1px solid white;
 }
 
 .prev-button {
     position: absolute;
     top: calc(50% - 25px);
-    left: calc(-60px);
+    left: calc(-35px);
 }
 
 .next-button {
     position: absolute;
     top: calc(50% - 25px);
-    left: calc(100% - 75px);
+    left: calc(100% - 35px);
 }
