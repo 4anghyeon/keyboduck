@@ -3,8 +3,7 @@ import styles from '@/components/question/QuestionDetailComment.module.css';
 import {AnswerType} from '@/pages/question/types/question';
 import {useRouter} from 'next/router';
 
-const QuestionDetailComment = ({getAnswer}: {getAnswer: AnswerType[] | null}) => {
-  console.log(getAnswer);
+const QuestionDetailComment = ({getAnswer, author}: {getAnswer: AnswerType[] | null; author: string}) => {
   const router = useRouter();
   const questionId: number | null = Number(router.query.questionId);
 
@@ -19,10 +18,12 @@ const QuestionDetailComment = ({getAnswer}: {getAnswer: AnswerType[] | null}) =>
               <p>{item.author}</p>
               <div className={styles['detail-answer-select']}>
                 <button>채택하기</button>
-                <div className={styles['detail-answer-btn']}>
-                  <button>수정</button>
-                  <button>삭제</button>
-                </div>
+                {item.author === author ? (
+                  <div className={styles['detail-answer-btn']}>
+                    <button>수정</button>
+                    <button>삭제</button>
+                  </div>
+                ) : null}
               </div>
             </div>
             <div className={styles['detail-answer-date']}>

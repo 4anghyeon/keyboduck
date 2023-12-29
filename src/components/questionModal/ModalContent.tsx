@@ -13,12 +13,14 @@ import {addAnswer} from '@/pages/api/answer';
 const ModalContent = ({
   isOpenModal,
   setIsOpenModal,
+  author,
 }: {
   isOpenModal: boolean;
   setIsOpenModal: (value: React.SetStateAction<boolean>) => void;
+  author: string;
 }) => {
   const [comment, setComment] = useState<string>('');
-  const [author, setAuthor] = useState<string>('');
+  // const [author, setAuthor] = useState<string>('');
 
   const onChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value);
 
@@ -32,13 +34,6 @@ const ModalContent = ({
   });
   const questionId: number | null = Number(router.query.questionId);
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
-
-  useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      const author = info.data?.identities[0].identity_data?.name;
-      if (author) setAuthor(author);
-    });
-  }, []);
 
   const clickOpenModal = () => {
     if (comment !== '') {

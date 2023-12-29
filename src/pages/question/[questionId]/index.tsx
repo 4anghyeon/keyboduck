@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from '@/pages/question/[questionId]/index.module.css';
 import QuestionDetailContents from '@/components/question/QuestionDetailContents';
 import QuestionDetailComment from '@/components/question/QuestionDetailComment';
@@ -10,9 +10,18 @@ import {useQuery} from '@tanstack/react-query';
 import {getQuestion} from '@/pages/api/question';
 import {getAnswer} from '@/pages/api/answer';
 import Loading from '@/components/layout/loading/Loading';
+import {supabase} from '@/shared/supabase/supabase';
 
 const QuestionDetail = () => {
+  const [author, setAuthor] = useState<string>('');
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    supabase.auth.getUserIdentities().then(info => {
+      const author = info.data?.identities[0].identity_data?.name;
+      if (author) setAuthor(author);
+    });
+  }, []);
 
   const {isLoading, isError, data} = useQuery({
     queryKey: ['getQuestion'],
@@ -43,14 +52,14 @@ const QuestionDetail = () => {
       <div className={styles['detail-answer-container']}>
         {isOpenModal && (
           <Modal onClickToggleHandler={clickOpenModal}>
-            <ModalContent isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
+            <ModalContent author={author} isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
           </Modal>
         )}
         <div className={styles['detail-answer-register-btn']}>
           <button onClick={clickOpenModal}>답변 등록하기</button>
         </div>
         {/* 댓글 들어가는 곳 */}
-        <QuestionDetailComment getAnswer={answer?.getAnswerData!} />
+        <QuestionDetailComment author={author} getAnswer={answer?.getAnswerData!} />
       </div>
     </div>
   );
