@@ -6,17 +6,13 @@ import {useRouter} from 'next/navigation';
 import {useToast} from '@/hooks/useToast';
 import MenuItem from '@/components/layout/navbar/MenuItem';
 import {IoMdMenu} from 'react-icons/io';
+import duckImg from '@/assets/images/duck.png';
+import Image from 'next/image';
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const {successTopRight, errorTopRight} = useToast();
+  const {successTopRight, errorTopRight, duckTopRight} = useToast();
   const router = useRouter();
-
-  useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      if (info) console.log(info);
-    });
-  }, []);
 
   const logout = async () => {
     const {error} = await supabase.auth.signOut();
@@ -25,9 +21,28 @@ const NavBar = () => {
     if (error) errorTopRight({message: '로그아웃이 안됐어요!!', timeout: 4000});
   };
 
+  const onClickDuck = () => {
+    duckTopRight({message: '꽥꽥'});
+  };
+
+  useEffect(() => {
+    supabase.auth.getUserIdentities().then(info => {
+      if (info) console.log(info);
+    });
+  }, []);
+
   // TODO: 로그인 여부에 따라 조건부 렌더링! (전역 관리가 되면 구현 예정)
   return (
     <nav className={styles.container}>
+      <Image src={duckImg} alt={'duck'} width={30} height={30} className={styles.duck} onClick={onClickDuck} />
+      <Image
+        src={duckImg}
+        alt={'duck'}
+        width={30}
+        height={30}
+        className={[styles.duck, styles.delay].join(' ')}
+        onClick={onClickDuck}
+      />
       <Link href="/" className={styles.logo}>
         Keyboduck
       </Link>
