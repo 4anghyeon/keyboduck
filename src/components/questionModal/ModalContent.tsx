@@ -7,6 +7,8 @@ import {useRouter} from 'next/router';
 import {useToast} from '@/hooks/useToast';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
 import Swal from 'sweetalert2';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {addAnswer} from '@/pages/api/answer';
 
 const ModalContent = ({
   isOpenModal,
@@ -21,6 +23,13 @@ const ModalContent = ({
   const onChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value);
 
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const addAnswerMutation = useMutation({
+    mutationFn: async () => await addAnswer(author, comment, questionId!),
+    onSuccess(data) {
+      queryClient.invalidateQueries({queryKey: ['getAnswer']});
+    },
+  });
   const questionId: number | null = Number(router.query.questionId);
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
 
@@ -60,14 +69,11 @@ const ModalContent = ({
       warnTopCenter({message: '답변을 입력해주세요!', timeout: 2000});
       return false;
     }
-    const {data, error} = await supabase
-      .from('answer')
-      .insert({author, content: comment, question_id: questionId, is_accept: false})
-      .select();
-    if (data) {
+    try {
+      addAnswerMutation.mutate();
       successTopCenter({message: '답변 등록이 완료되었습니다😀', timeout: 2000});
       setIsOpenModal(!isOpenModal);
-    } else {
+    } catch (error) {
       console.log(error);
       errorTopCenter({message: '답변 등록에 실패하였습니다', timeout: 2000});
     }

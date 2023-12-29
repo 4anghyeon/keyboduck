@@ -8,3 +8,10 @@ export const getAnswer = async () => {
   const {data: getAnswerData, error} = getAnswerQuery;
   return {getAnswerData, error};
 };
+
+// 댓글 추가하기
+export const addAnswer = async (author: string, comment: string, questionId: number) => {
+  // const {data: addAnswerData, error} =
+  await supabase.from('answer').insert({author, content: comment, question_id: questionId, is_accept: false}).select();
+  // return addAnswerData;
+};
