@@ -18,7 +18,7 @@
 
 .container hr {
     border: 0;
-    margin: 50px;
+    margin: 50px 80px 30px 80px;
     grid-column: 1 / span 2;
     border-top: 1px solid #B0B0B0;
 
