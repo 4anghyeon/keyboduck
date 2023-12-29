@@ -103,7 +103,7 @@ const QuestionDetailComment = ({getAnswer, author}: {getAnswer: AnswerType; auth
         <p>{getAnswer.author}</p>
         <div className={styles['detail-answer-select']}>
           <button>채택하기</button>
-          {getAnswer.author === author ? (
+          {getAnswer.author === author && user !== null ? (
             <div className={styles['detail-answer-btn']}>
               {isEdit ? (
                 <>
