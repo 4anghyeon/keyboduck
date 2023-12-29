@@ -25,7 +25,6 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
   // 좋아요 버튼 클릭
   const onClickLike = async () => {
     // 로그인한 유저만 가능
-    console.log(userInfo);
     if (userInfo?.userId !== '') {
       if (!isLiked) {
         addLike();
