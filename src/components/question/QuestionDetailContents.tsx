@@ -1,26 +1,33 @@
 import React from 'react';
 import styles from '@/components/question/QusetionDetailContents.module.css';
 import {FaRegUserCircle} from 'react-icons/fa';
+import {useRouter} from 'next/router';
 
-const QuestionDetailContents = () => {
+import {QuestionType} from '@/pages/question/types/question';
+
+const QuestionDetailContents = ({questionData}: {questionData: QuestionType[] | null}) => {
+  const router = useRouter();
+  const questionId: number | null = Number(router.query.questionId);
+  const findQuestion = questionData?.find(question => question.id === questionId);
+
   return (
     <div className={styles['detail-contents-container']}>
       <div className={styles['detail-category']}>
         {/* 카테고리 이름 */}
-        <p>카테고리</p>
+        <p>{findQuestion?.category}</p>
       </div>
       <div className={styles['detail-title']}>
-        <h2>키크론이랑 바밀로 중에 고민되네요</h2>
+        <h2>{findQuestion?.title}</h2>
         <div className={styles['detail-user']}>
           <FaRegUserCircle size="25" color="#83e0a5" />
-          <p>작성자</p>
+          <p>{findQuestion?.author}</p>
         </div>
       </div>
       <div className={styles['detail-date']}>
-        <p>2023-12-27</p>
+        <p>{findQuestion?.write_date}</p>
       </div>
       <div className={styles['detail-contents']}>
-        <p>질문 내용</p>
+        <p>{findQuestion?.content}</p>
       </div>
       <div className={styles['detail-board-btn']}>
         <button>수정</button>

@@ -1,35 +1,76 @@
 import RowContainer from '@/components/home/RowContainer';
 import GridContainer from '@/components/home/GridContainer';
-import {findAllKeyboard} from '@/pages/api/keyboard';
+import {findAllKeyboardAndLikes} from '@/pages/api/keyboard';
 import {Tables} from '@/shared/supabase/types/supabase';
+import moment from 'moment';
+import Head from 'next/head';
+import {makeTitle} from '@/shared/helper';
+import styles from './index.module.css';
+import React, {useEffect, useState} from 'react';
+import {GoMoveToTop} from 'react-icons/go';
 
-export default function HomePage({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>) {
+const HomPage = ({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>) => {
+  const [showTopButton, setShowTopButton] = useState(false);
   // 인기 키보드
-  // TODO: 나중에 좋아요 순으로 정렬 해야함
   const popularList = [...keyboardList]
     .sort((a, b) => {
-      return new Date(a.release_date).getDate() - new Date(b.release_date).getDate();
+      return b.keyboard_like[0].count - a.keyboard_like[0].count;
     })
     .slice(0, 10);
 
   // 출시일 순으로 정렬한 키보드 데이터
   const recentlyList = [...keyboardList]
     .sort((a, b) => {
-      return new Date(b.release_date).getDate() - new Date(a.release_date).getDate();
+      return moment(b.release_date).isAfter(a.release_date) ? 1 : -1;
     })
     .slice(0, 5);
 
+  const handleScrollToTop = (behavior: 'smooth' | 'auto') => {
+    window.scrollTo({top: 0, behavior: behavior});
+  };
+
+  useEffect(() => {
+    handleScrollToTop('auto');
+    let timer: number | null = null;
+
+    const handleScroll = () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = window.setTimeout(() => {
+        if (window.scrollY > window.outerHeight / 3) setShowTopButton(true);
+        else setShowTopButton(false);
+      }, 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <>
+    <div className={styles.container}>
+      <Head>
+        <title>{makeTitle('당신의 키보드를 찾아보세요')}</title>
+      </Head>
       <RowContainer title={'인기 키보드'} keyboardList={popularList} />
       <RowContainer title={'새로나온 키보드'} keyboardList={recentlyList} />
       <GridContainer keyboardList={keyboardList} />
-    </>
+      {showTopButton && (
+        <button className={styles['top-button']} onClick={handleScrollToTop.bind(null, 'smooth')}>
+          <GoMoveToTop />
+        </button>
+      )}
+    </div>
   );
-}
+};
+
+export default HomPage;
 
 export const getStaticProps = async () => {
-  const {keyboardList, error} = await findAllKeyboard();
+  const {keyboardList} = await findAllKeyboardAndLikes();
 
   return {
     props: {

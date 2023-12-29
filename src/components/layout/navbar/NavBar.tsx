@@ -3,8 +3,10 @@ import React, {useEffect} from 'react';
 import styles from './NavBar.module.css';
 import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/navigation';
+import {useToast} from '@/hooks/useToast';
 
 const NavBar = () => {
+  const {successTopRight, errorTopRight} = useToast();
   const router = useRouter();
 
   useEffect(() => {
@@ -16,7 +18,8 @@ const NavBar = () => {
   const logout = async () => {
     const {error} = await supabase.auth.signOut();
     router.push('/login');
-    if (error) alert('로그아웃이 안됐어요');
+    successTopRight({message: '로그아웃 되었어요!!', timeout: 4000});
+    if (error) errorTopRight({message: '로그아웃이 안됐어요!!', timeout: 4000});
   };
 
   return (

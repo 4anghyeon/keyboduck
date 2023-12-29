@@ -3,7 +3,7 @@ import login from './index.module.css';
 import {signInWithGithub, googleLogin} from '../api/auth';
 import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/navigation';
-
+import {useToast} from '@/hooks/useToast';
 const LoginPage = () => {
   // 정보 테스트용 useEffect
   useEffect(() => {
@@ -20,7 +20,7 @@ const LoginPage = () => {
   const [pwValue, setPwValue] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(false);
   const router = useRouter();
-
+  const {successTopRight, errorTopRight} = useToast();
   const clickLoginHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
@@ -43,8 +43,11 @@ const LoginPage = () => {
       password: pwValue,
     });
     console.log(data);
-    if (data !== null) router.push('/');
-    if (error) alert('로그인이 안됐어요');
+    if (data !== null) {
+      router.push('/');
+      successTopRight({message: '로그인 되었어요!', timeout: 2000});
+    }
+    if (error) errorTopRight({message: '로그인 후 이용해 주세요!', timeout: 2000});
   };
 
   return (

@@ -9,6 +9,17 @@ export const findAllKeyboard = async () => {
   return {keyboardList, error};
 };
 
+export const findAllKeyboardAndLikes = async () => {
+  const findAllKeyboardAndLikesQuery = await supabase
+    .from('keyboard')
+    .select(`*, keyboard_like(count)`)
+    .returns<Tables<'keyboard'>[]>();
+
+  const {data: keyboardList, error} = findAllKeyboardAndLikesQuery;
+
+  return {keyboardList, error};
+};
+
 export const findKeyboardById = async (id: number) => {
   const findKeyboardByIdQuery = await supabase
     .from('keyboard')

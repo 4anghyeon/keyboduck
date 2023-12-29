@@ -4,12 +4,17 @@ import Detail from '@/components/keyboard/Detail';
 import {findKeyboardById, findKeyboardIdList} from '@/pages/api/keyboard';
 import {GetStaticPaths} from 'next';
 import RelatedVideos from '@/components/keyboard/RelatedVideos';
+import Head from 'next/head';
+import {makeTitle} from '@/shared/helper';
 
 const KeyboardDetailPage = ({keyboard}: {keyboard: Tables<'keyboard'>}) => {
   return (
     <article>
+      <Head>
+        <title>{makeTitle(keyboard.name)}</title>
+      </Head>
       <Detail item={keyboard} />
-      <RelatedVideos />
+      <RelatedVideos item={keyboard} />
     </article>
   );
 };

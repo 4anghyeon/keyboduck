@@ -1,0 +1,14 @@
+.qna-a-tag a {
+  text-decoration: none;
+}
+.qna-list-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid #b0b0b0;
+}
+.qna-list-item p {
+  text-align: center;
+  text-decoration: none;
+  margin: 10px 25px 10px 0px;
+}
