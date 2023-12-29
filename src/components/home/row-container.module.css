@@ -3,6 +3,10 @@
     margin: 50px 50px 50px 100px;
     padding-bottom: 50px;
     position: relative;
+
+    @media screen and (max-width: 768px) {
+        margin: 20px 50px 50px 75px;
+    }
 }
 
 .row {

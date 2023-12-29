@@ -7,6 +7,7 @@
   width: 300px;
   margin: 10px 100px 10px 0;
   border-radius: 15px;
+  padding-left: 1px;
 }
 
 .card img {
@@ -15,7 +16,7 @@
   min-width: 300px;
   cursor: pointer;
   object-fit: cover;
-  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .card:hover .description {

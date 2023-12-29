@@ -6,8 +6,12 @@ import {GetStaticPaths} from 'next';
 import RelatedVideos from '@/components/keyboard/RelatedVideos';
 import Head from 'next/head';
 import {makeTitle} from '@/shared/helper';
+import {useRouter} from 'next/router';
+import Loading from '@/components/layout/loading/Loading';
 
 const KeyboardDetailPage = ({keyboard}: {keyboard: Tables<'keyboard'>}) => {
+  const router = useRouter();
+  if (router.isFallback) return <Loading />;
   return (
     <article>
       <Head>
@@ -41,6 +45,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
         keyboardId: keyboard.id.toString(),
       },
     })),
-    fallback: false,
+    fallback: true,
   };
 };
