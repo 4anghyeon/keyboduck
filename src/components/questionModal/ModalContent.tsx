@@ -4,6 +4,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import styles from '@/components/questionModal/modalContent.module.css';
 import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/router';
+import {useToast} from '@/hooks/useToast';
 
 const ModalContent = ({
   isOpenModal,
@@ -19,6 +20,7 @@ const ModalContent = ({
 
   const router = useRouter();
   const questionId: number | null = Number(router.query.questionId);
+  const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
 
   useEffect(() => {
     supabase.auth.getUserIdentities().then(info => {
@@ -32,12 +34,21 @@ const ModalContent = ({
   }, [isOpenModal]);
 
   const writeComment = async () => {
+    if (comment === '') {
+      warnTopCenter({message: '답변을 입력해주세요!', timeout: 2000});
+      return false;
+    }
     const {data, error} = await supabase
       .from('answer')
       .insert({author, content: comment, question_id: questionId, is_accept: false})
       .select();
-    clickOpenModal();
-    console.log('data', data, 'error', error);
+    if (data) {
+      successTopCenter({message: '답변 등록이 완료되었습니다😀', timeout: 2000});
+      clickOpenModal();
+    } else {
+      console.log(error);
+      errorTopCenter({message: '답변 등록에 실패하였습니다', timeout: 2000});
+    }
   };
 
   return (
