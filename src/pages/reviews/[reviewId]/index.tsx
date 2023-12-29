@@ -11,22 +11,37 @@ import {useState} from 'react';
 import {ReviewType} from '@/shared/types/review';
 import {useEffect} from 'react';
 import {supabase} from '@/shared/supabase/supabase';
+import {useQuery} from '@tanstack/react-query';
+import Loading from '@/components/layout/loading/Loading';
+import {fetchReview} from '@/pages/api/review';
 
 const ReviewDetail = () => {
-  const [reviewList, setReviewList] = useState<ReviewType[] | null>([]);
+  // const [reviewList, setReviewList] = useState<ReviewType[] | null>([]);
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
-  const detailReviewId = reviewList?.find(review => {
-    return review.id === reviewId;
+
+  const {
+    isLoading,
+    isError,
+    data: fetchReviewData,
+  } = useQuery({
+    queryKey: ['fetchReviewList'],
+    queryFn: fetchReview,
+    refetchOnWindowFocus: false,
+    staleTime: 3000,
   });
 
-  useEffect(() => {
-    const getReviewList = async () => {
-      const {data: fetchReviewList, error} = await supabase.from('review').select('*');
-      setReviewList(fetchReviewList);
-    };
-    getReviewList();
-  }, []);
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
+  }
+
+  const detailReviewId = fetchReviewData?.data?.find(review => {
+    return review.id === reviewId;
+  });
 
   return (
     <div>

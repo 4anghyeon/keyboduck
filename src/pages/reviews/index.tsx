@@ -9,38 +9,29 @@ import defaultImg from '../../assets/defaultImg.png';
 import {useQuery} from '@tanstack/react-query';
 import {fetchReview} from '../api/review';
 import Loading from '@/components/layout/loading/Loading';
-import {useEffect} from 'react';
-import {useState} from 'react';
-import {supabase} from '@/shared/supabase/supabase';
-import {ReviewType} from '@/shared/types/review';
 
 const ReviewPage = () => {
-  const [reviewList, setReviewList] = useState<ReviewType[] | null>([]);
-  // const {isLoading, isError, data} = useQuery({
-  //   queryKey: ['fetchReviewList'],
-  //   queryFn: fetchReview,
-  //   refetchOnWindowFocus: false,
-  //   staleTime: 3000,
-  // });
+  const {
+    isLoading,
+    isError,
+    data: fetchReviewData,
+  } = useQuery({
+    queryKey: ['fetchReviewList'],
+    queryFn: fetchReview,
+    refetchOnWindowFocus: false,
+    staleTime: 3000,
+  });
 
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
+  if (isLoading) {
+    return <Loading />;
+  }
 
-  // if (isError) {
-  //   return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
-  // }
-
-  useEffect(() => {
-    const getReviewList = async () => {
-      const {data: fetchReviewList, error} = await supabase.from('review').select('*');
-      setReviewList(fetchReviewList);
-    };
-    getReviewList();
-  }, []);
+  if (isError) {
+    return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
+  }
 
   // 작동안함
-  if (reviewList?.length === 0) {
+  if (fetchReviewData?.data?.length === 0) {
     <h1>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</h1>;
   }
 
@@ -55,7 +46,7 @@ const ReviewPage = () => {
           </button>
         </div>
         <div className={styles['grid-container']}>
-          {reviewList?.map(review => {
+          {fetchReviewData?.data?.map(review => {
             console.log(review);
             return (
               <div className={styles['content-container']} key={review.id}>

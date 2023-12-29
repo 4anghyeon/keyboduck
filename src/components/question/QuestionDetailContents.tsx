@@ -5,10 +5,10 @@ import {useRouter} from 'next/router';
 
 import {QuestionType} from '@/pages/question/types/question';
 
-const QuestionDetailContents = ({questionData}: {questionData: QuestionType[] | null}) => {
+const QuestionDetailContents = ({getQuestionData}: {getQuestionData: QuestionType[] | null}) => {
   const router = useRouter();
   const questionId: number | null = Number(router.query.questionId);
-  const findQuestion = questionData?.find(question => question.id === questionId);
+  const findQuestion = getQuestionData?.find(question => question.id === questionId);
 
   return (
     <div className={styles['detail-contents-container']}>
@@ -24,7 +24,7 @@ const QuestionDetailContents = ({questionData}: {questionData: QuestionType[] | 
         </div>
       </div>
       <div className={styles['detail-date']}>
-        <p>{findQuestion?.write_date}</p>
+        <p>{findQuestion?.write_date?.substring(0, 10)}</p>
       </div>
       <div className={styles['detail-contents']}>
         <p>{findQuestion?.content}</p>

@@ -5,7 +5,16 @@ import {useCallback} from 'react';
 import {useKeyboard} from '@/hooks/useKeyboard';
 import {ReviewModal} from './ReviewModal';
 
-const SearchKeyboard = ({onSelectedKeyboard}) => {
+interface SearchKeyboardProps {
+  onSelectedKeyboard: (keyboardId: number) => void;
+}
+
+interface Keyboard {
+  id: number;
+  name: string;
+}
+
+const SearchKeyboard: React.FC<SearchKeyboardProps> = ({onSelectedKeyboard}) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [selectedKeyboard, setSelectedKeyboard] = useState<string | null>(null);
   const [keyboardName, setKeyboardName] = useState<string>('');
@@ -17,7 +26,7 @@ const SearchKeyboard = ({onSelectedKeyboard}) => {
     setFilteredKeyboardList(data?.keyboardList || null);
   }, [isOpenModal, data]);
 
-  const selectKeyboard = (keyboard): void => {
+  const selectKeyboard = (keyboard: Keyboard): void => {
     setSelectedKeyboard(keyboard.name);
     setKeyboardName(keyboard.name);
     onSelectedKeyboard(keyboard.id);
