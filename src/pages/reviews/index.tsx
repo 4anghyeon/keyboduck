@@ -17,28 +17,28 @@ import {ReviewType} from '@/shared/types/review';
 
 const ReviewPage = () => {
   const [reviewList, setReviewList] = useState<ReviewType[] | null>([]);
-  // const {isLoading, isError, data} = useQuery({
-  //   queryKey: ['fetchReviewList'],
-  //   queryFn: fetchReview,
-  //   refetchOnWindowFocus: false,
-  //   staleTime: 3000,
-  // });
+  const {isLoading, isError, data} = useQuery({
+    queryKey: ['fetchReviewList'],
+    queryFn: fetchReview,
+    refetchOnWindowFocus: false,
+    staleTime: 3000,
+  });
 
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
+  if (isLoading) {
+    return <Loading />;
+  }
 
-  // if (isError) {
-  //   return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
-  // }
+  if (isError) {
+    return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
+  }
 
-  useEffect(() => {
-    const getReviewList = async () => {
-      const {data: fetchReviewList, error} = await supabase.from('review').select('*');
-      setReviewList(fetchReviewList);
-    };
-    getReviewList();
-  }, []);
+  // useEffect(() => {
+  //   const getReviewList = async () => {
+  //     const {data: fetchReviewList, error} = await supabase.from('review').select('*');
+  //     setReviewList(fetchReviewList);
+  //   };
+  //   getReviewList();
+  // }, []);
 
   return (
     <div>
@@ -50,7 +50,7 @@ const ReviewPage = () => {
             <FaSearch />
           </button>
         </div>
-        {reviewList?.map(review => {
+        {data?.map(review => {
           console.log(review);
           return (
             <div className={styles['content-container']} key={review.id}>

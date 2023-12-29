@@ -12,6 +12,7 @@ import SearchKeyboard from '@/components/review/SearchKeyboard';
 import {useEffect} from 'react';
 import {supabase} from '@/shared/supabase/supabase';
 import router from 'next/router';
+import {createClient} from '@supabase/supabase-js';
 
 const ReviewWrite = () => {
   const [title, setTitle] = useState<string>('');
@@ -49,7 +50,7 @@ const ReviewWrite = () => {
     return imageFiles;
   };
 
-  // 이미지 드래그 앤 드롭
+  // 이미지 드래그 앤 드롭으로 가져오기
   const handleDragOver = (event: React.DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
   };
@@ -64,7 +65,7 @@ const ReviewWrite = () => {
     setImageFile(processedImageFiles);
   };
 
-  // 이미지 클릭해서 가져오기
+  // 이미지 클릭해서 업로드하기
   const imageUploadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
@@ -73,12 +74,37 @@ const ReviewWrite = () => {
     setImageFile(processedImageFiles);
     // setImageFile((prev) => [...prev, event.target.files![0]]);
   };
+  // const imgRef = useRef()
+  // // 이미지 blob변환
+  // const imageFileChange = async () => {
+  //   const imageFiles=imgRef.current!.file[0];
+  //   const reader = new FileReader()
+  //   reader.onloadend=()=>{
+  //     if(reader.result instanceof ArrayBuffer) {
+  //       const blob = new Blob([reader.result], {type: 'image/png'});
+  //       const blobUrl = URL.createObjectURL(blob)
+  //       setImageFile(blobUrl)
+  //     }
+  //   }
+  //   reader.readAsArrayBuffer(imageFiles)
+  // }
 
   // 이미지 삭제
   const imageDeleteHandler = (index: number) => {
     const updatedImageFiles = [...imageFile];
     updatedImageFiles.splice(index, 1);
     setImageFile(updatedImageFiles);
+  };
+
+  // 이미지 스토리지에 업로드
+  const reviewImgUpload = async file => {
+    const {data: reviewImageData, error} = await supabase.storage.from('review_images').upload(`${author}/`, file);
+    if (reviewImageData) {
+      router.push('/reviews');
+    } else {
+      console.log(error);
+      errorTopCenter({message: '등록에 실패하였습니다🙅🏻‍♀️', timeout: 2000});
+    }
   };
 
   // 리뷰 등록하기
