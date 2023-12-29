@@ -11,12 +11,12 @@ export const fetchReview = async () => {
 };
 
 // 리뷰데이터 추가하기
-export const addReview = async (newReview: Review) => {
-  const addReviewQuery = await supabase.from('review').insert([newReview]).select();
+// export const addReview = async (newReview: Review) => {
+//   const addReviewQuery = await supabase.from('review').insert([newReview]).select();
 
-  const {data: addReviewData, error} = addReviewQuery;
-  return {addReviewData, error};
-};
+//   const {data: addReviewData, error} = addReviewQuery;
+//   return {addReviewData, error};
+// };
 
 // // 리뷰데이터 수정하기
 // export const updateReview = async () => {
