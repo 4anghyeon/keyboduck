@@ -25,7 +25,10 @@ const MenuItem = ({href, name, onClick}: MenuItemProps) => {
   return (
     <Link
       href={`${href}`}
-      className={[styles.category, router.pathname === href ? styles.active : styles['anim-link']].join(' ')}
+      className={[
+        styles.category,
+        href && router.pathname.includes(href ?? '') ? styles.active : styles['anim-link'],
+      ].join(' ')}
     >
       {name}
     </Link>
