@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import styles from './index.module.css';
 import {useState} from 'react';
@@ -10,7 +9,6 @@ import SearchKeyboard from '@/components/review/SearchKeyboard';
 import {useEffect} from 'react';
 import {supabase} from '@/shared/supabase/supabase';
 import router from 'next/router';
-import {createClient} from '@supabase/supabase-js';
 
 const ReviewWrite = () => {
   const [title, setTitle] = useState<string>('');
@@ -84,51 +82,6 @@ const ReviewWrite = () => {
     setImageFile(updatedImageFiles);
   };
 
-  // 이미지 스토리지에 업로드
-  const reviewImgUpload = async (files: File[]) => {
-    const updateImageFiles = [...imageFile];
-
-    // 이미지 Blob에서 URL형식으로 변환
-    const imageUrls = await Promise.all(
-      files.map(async file => {
-        const response = await fetch(URL.createObjectURL(file));
-        const blob = await response.blob();
-        return URL.createObjectURL(blob);
-      }),
-    );
-
-    // supabase storage에 이미지 업로드하기
-    for (const imageUrl of imageUrls) {
-      const fileName = `${author}/${new Date().getTime()}_${Math.floor(Math.random() * 1000)}.png`; // 파일 이름 생성
-      // const file = dataURLtoFile(imageUrl, fileName); // Data URL을 File 객체로 변환
-      // await reviewImgUploadSingle(file);
-    }
-    router.push('/reviews');
-  };
-
-  // Supabase Storage에 개별 이미지 업로드
-  const reviewImgUploadSingle = async (file: File) => {
-    const {data: reviewImageData, error} = await supabase.storage.from('review_images').upload(file.name, file);
-    if (!reviewImageData) {
-      console.error(error);
-      errorTopCenter({message: '등록에 실패하였습니다🙅🏻‍♀️', timeout: 2000});
-    }
-  };
-
-  // Data URL을 File 객체로 변환
-  // const dataURLtoFile=(dataurl:string, filename:string)=> {
-  //   let arr:string[] = dataurl.split(',')
-  //     const mimeMatch  = arr[0].match(/:(.*?);/)[1];
-  //     const mime:string = mimeMatch?.[1] || "",
-  //     bstr:string = atob(arr[1]),
-  //     n = bstr.length,
-  //     u8arr = new Uint8Array(n);
-  //   while (n--) {
-  //     u8arr[n] = bstr.charCodeAt(n);
-  //   }
-  //   return new File([u8arr], filename, {type: mime});
-  // }
-
   // 리뷰 등록하기
   const onSubmitButtonHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
     if (selectedKeyboardId === null) {
@@ -150,8 +103,26 @@ const ReviewWrite = () => {
 
     try {
       // 1. 이미지 스토리지에 업로드
-      // await reviewImgUpload(imageFile);
+      const uploadImages = [];
+      for (const images of imageFile) {
+        const {data: file, error: uploadError} = await supabase.storage
+          .from('review_images')
+          .upload(`images/${Date.now()}_${Math.floor(Math.random() * 1000)}.png`, images);
+        // if (uploadError) {
+        //   console.log(uploadError);
+        //   errorTopCenter({message: '이미지 업로드 중 오류가 발생했습니다🙅🏻‍♀️', timeout: 2000});
+        //   return;
+        // }
+        // uploadImages.push(file);
+        // if (file && file.publicURL) {
+        //   uploadImages.push(file.publicURL);
+        // }
+        // console.log('file', file);
+      }
 
+      // for (const image of imageFile) {
+      //   URL.revokeObjectURL(image);
+      // }
       // 2. 리뷰 내용 등록
       const {data: addReviewData, error} = await supabase
         .from('review')
@@ -160,9 +131,6 @@ const ReviewWrite = () => {
 
       if (addReviewData) {
         router.push('/reviews');
-      } else {
-        console.log(error);
-        errorTopCenter({message: '등록에 실패하였습니다🙅🏻‍♀️', timeout: 2000});
       }
 
       Swal.fire({
@@ -171,7 +139,7 @@ const ReviewWrite = () => {
       });
     } catch (error) {
       console.log(error);
-      errorTopCenter({message: '오류가 발생하였습니다🙅🏻‍♀️', timeout: 2000});
+      errorTopCenter({message: '등록에 실패하였습니다🙅🏻‍♀️', timeout: 2000});
     }
   };
 

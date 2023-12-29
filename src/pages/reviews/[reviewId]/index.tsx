@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import styles from './index.module.css';
 import Image from 'next/image';
@@ -12,7 +10,6 @@ import Loading from '@/components/layout/loading/Loading';
 import {fetchReview} from '@/pages/api/review';
 
 const ReviewDetail = () => {
-  // const [reviewList, setReviewList] = useState<ReviewType[] | null>([]);
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
 
