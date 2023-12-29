@@ -1,5 +1,3 @@
-'use client';
-
 import React, {useCallback, useEffect, useState} from 'react';
 import styles from '@/pages/question/[questionId]/index.module.css';
 import QuestionDetailContents from '@/components/question/QuestionDetailContents';
