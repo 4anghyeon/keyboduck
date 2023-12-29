@@ -3,6 +3,20 @@
   justify-content: center;
   flex-direction: column;
 }
+.wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.wrap > h3 {
+  width: 100%;
+  font-size: 25px;
+  padding: 10px 0 10px 10px;
+  border-bottom: 1px solid #b0b0b0;
+  font-family: Pretendard-Light;
+  color: #b0b0b0;
+}
 .modal-comment-container {
   width: 100%;
   display: flex;

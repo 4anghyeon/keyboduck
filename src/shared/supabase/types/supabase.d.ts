@@ -51,6 +51,7 @@ export interface Database {
           release_date: string;
           youtube_link: string[] | null;
           keyboard_like: [{count: number}];
+          review: Tables<'review'>[];
         };
         Insert: {
           brand?: string | null;

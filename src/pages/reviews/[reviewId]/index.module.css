@@ -4,6 +4,12 @@
   padding: 150px 300px;
 }
 
+.title-wrap {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 50px;
+}
+
 .title {
   font-size: 50px;
   font-family: Pretendard-Medium;
@@ -22,6 +28,10 @@
   font-family: Pretendard-Light;
 }
 
+.user-profile img {
+  width: 60px;
+  height: 60px;
+}
 .wrap {
   width: 100%;
   display: flex;
@@ -51,14 +61,14 @@
 } */
 .image-container {
   width: 100%;
-  height: 500px;
+  height: 600px;
   border: 1px solid #b0b0b0;
   border-radius: 20px;
   margin-top: 20px;
   overflow: hidden;
 }
 
-.review-image {
+.image-container img {
   position: relative;
   width: 100%;
   height: 100%;

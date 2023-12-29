@@ -1,12 +1,14 @@
 import {supabase} from '@/shared/supabase/supabase';
 import {Tables} from '@/shared/supabase/types/supabase';
+import {ReviewType} from '@/shared/types/review';
+import {PostgrestError} from '@supabase/supabase-js';
 
 // 리뷰데이터 가져오기
-export const fetchReview = async () => {
+export const fetchReview = async (): Promise<{data: ReviewType[] | null; error: PostgrestError | null}> => {
   const fetchReviewQuery = await supabase.from('review').select('*').returns<Tables<'review'>[]>();
 
   const {data: fetchReviewData, error} = fetchReviewQuery;
-  return {fetchReviewData, error};
+  return {data: fetchReviewData, error};
 };
 
 // 리뷰데이터 추가하기

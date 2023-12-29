@@ -74,20 +74,6 @@ const ReviewWrite = () => {
     setImageFile(processedImageFiles);
     // setImageFile((prev) => [...prev, event.target.files![0]]);
   };
-  // const imgRef = useRef()
-  // // 이미지 blob변환
-  // const imageFileChange = async () => {
-  //   const imageFiles=imgRef.current!.file[0];
-  //   const reader = new FileReader()
-  //   reader.onloadend=()=>{
-  //     if(reader.result instanceof ArrayBuffer) {
-  //       const blob = new Blob([reader.result], {type: 'image/png'});
-  //       const blobUrl = URL.createObjectURL(blob)
-  //       setImageFile(blobUrl)
-  //     }
-  //   }
-  //   reader.readAsArrayBuffer(imageFiles)
-  // }
 
   // 이미지 삭제
   const imageDeleteHandler = (index: number) => {
@@ -97,15 +83,49 @@ const ReviewWrite = () => {
   };
 
   // 이미지 스토리지에 업로드
-  const reviewImgUpload = async file => {
-    const {data: reviewImageData, error} = await supabase.storage.from('review_images').upload(`${author}/`, file);
-    if (reviewImageData) {
-      router.push('/reviews');
-    } else {
-      console.log(error);
+  const reviewImgUpload = async (files: File[]) => {
+    const updateImageFiles = [...imageFile];
+
+    // 이미지 Blob에서 URL형식으로 변환
+    const imageUrls = await Promise.all(
+      files.map(async file => {
+        const response = await fetch(URL.createObjectURL(file));
+        const blob = await response.blob();
+        return URL.createObjectURL(blob);
+      }),
+    );
+
+    // supabase storage에 이미지 업로드하기
+    for (const imageUrl of imageUrls) {
+      const fileName = `${author}/${new Date().getTime()}_${Math.floor(Math.random() * 1000)}.png`; // 파일 이름 생성
+      // const file = dataURLtoFile(imageUrl, fileName); // Data URL을 File 객체로 변환
+      // await reviewImgUploadSingle(file);
+    }
+    router.push('/reviews');
+  };
+
+  // Supabase Storage에 개별 이미지 업로드
+  const reviewImgUploadSingle = async (file: File) => {
+    const {data: reviewImageData, error} = await supabase.storage.from('review_images').upload(file.name, file);
+    if (!reviewImageData) {
+      console.error(error);
       errorTopCenter({message: '등록에 실패하였습니다🙅🏻‍♀️', timeout: 2000});
     }
   };
+
+  // Data URL을 File 객체로 변환
+  // const dataURLtoFile=(dataurl:string, filename:string)=> {
+  //   let arr:string[] = dataurl.split(',')
+  //     const mimeMatch  = arr[0].match(/:(.*?);/)[1];
+  //     const mime:string = mimeMatch?.[1] || "",
+  //     bstr:string = atob(arr[1]),
+  //     n = bstr.length,
+  //     u8arr = new Uint8Array(n);
+  //   while (n--) {
+  //     u8arr[n] = bstr.charCodeAt(n);
+  //   }
+  //   return new File([u8arr], filename, {type: mime});
+  // }
 
   // 리뷰 등록하기
   const onSubmitButtonHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -113,7 +133,6 @@ const ReviewWrite = () => {
       warnTopCenter({message: '제목을 입력해주세요', timeout: 2000});
       return;
     }
-
     if (imageFile.length === 0) {
       warnTopCenter({message: '이미지를 업로드해주세요', timeout: 2000});
       return;
@@ -123,21 +142,31 @@ const ReviewWrite = () => {
       return;
     }
 
-    const {data: addReviewData, error} = await supabase
-      .from('review')
-      .insert({title, keyboard_id: 27, content, author, photo: imageFile})
-      .select();
-    if (addReviewData) {
-      router.push('/reviews');
-    } else {
-      console.log(error);
-      errorTopCenter({message: '등록에 실패하였습니다🙅🏻‍♀️', timeout: 2000});
-    }
+    try {
+      // 1. 이미지 스토리지에 업로드
+      // await reviewImgUpload(imageFile);
 
-    Swal.fire({
-      title: '등록되었습니다',
-      icon: 'success',
-    });
+      // 2. 리뷰 내용 등록
+      const {data: addReviewData, error} = await supabase
+        .from('review')
+        .insert({title, keyboard_id: 27, content, author, photo: imageFile})
+        .select();
+
+      if (addReviewData) {
+        router.push('/reviews');
+      } else {
+        console.log(error);
+        errorTopCenter({message: '등록에 실패하였습니다🙅🏻‍♀️', timeout: 2000});
+      }
+
+      Swal.fire({
+        title: '등록되었습니다',
+        icon: 'success',
+      });
+    } catch (error) {
+      console.log(error);
+      errorTopCenter({message: '오류가 발생하였습니다🙅🏻‍♀️', timeout: 2000});
+    }
   };
 
   return (
@@ -199,7 +228,6 @@ const ReviewWrite = () => {
           </div>
         </div>
         <div className={styles['submit-btn']}>
-          <Link href="/reviews/reviewId">상세페이지</Link>
           <button onClick={onSubmitButtonHandler}>등록하기</button>
         </div>
       </div>

@@ -6,7 +6,6 @@ import {FaSearch} from 'react-icons/fa';
 import styles from './index.module.css';
 import Link from 'next/link';
 import defaultImg from '../../assets/defaultImg.png';
-import reviewImg from '../../assets/reviewImg.jpeg';
 import {useQuery} from '@tanstack/react-query';
 import {fetchReview} from '../api/review';
 import Loading from '@/components/layout/loading/Loading';
@@ -17,28 +16,33 @@ import {ReviewType} from '@/shared/types/review';
 
 const ReviewPage = () => {
   const [reviewList, setReviewList] = useState<ReviewType[] | null>([]);
-  const {isLoading, isError, data} = useQuery({
-    queryKey: ['fetchReviewList'],
-    queryFn: fetchReview,
-    refetchOnWindowFocus: false,
-    staleTime: 3000,
-  });
+  // const {isLoading, isError, data} = useQuery({
+  //   queryKey: ['fetchReviewList'],
+  //   queryFn: fetchReview,
+  //   refetchOnWindowFocus: false,
+  //   staleTime: 3000,
+  // });
 
-  if (isLoading) {
-    return <Loading />;
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
+
+  // if (isError) {
+  //   return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
+  // }
+
+  useEffect(() => {
+    const getReviewList = async () => {
+      const {data: fetchReviewList, error} = await supabase.from('review').select('*');
+      setReviewList(fetchReviewList);
+    };
+    getReviewList();
+  }, []);
+
+  // 작동안함
+  if (reviewList?.length === 0) {
+    <h1>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</h1>;
   }
-
-  if (isError) {
-    return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
-  }
-
-  // useEffect(() => {
-  //   const getReviewList = async () => {
-  //     const {data: fetchReviewList, error} = await supabase.from('review').select('*');
-  //     setReviewList(fetchReviewList);
-  //   };
-  //   getReviewList();
-  // }, []);
 
   return (
     <div>
@@ -50,29 +54,32 @@ const ReviewPage = () => {
             <FaSearch />
           </button>
         </div>
-        {data?.map(review => {
-          console.log(review);
-          return (
-            <div className={styles['content-container']} key={review.id}>
-              <div className={styles['content-wrap']}>
-                {review.photo ? (
-                  <img src={review.photo[0]} alt="review-image" className={styles['content-image']} />
-                ) : null}
-                <div>
-                  <div className={styles['user-wrap']}>
-                    <div className={styles['user']}>
-                      <Image src={defaultImg} alt="유저프로필" className={styles['user-profile']} />
-                      <p>{review.author}</p>
+        <div className={styles['grid-container']}>
+          {reviewList?.map(review => {
+            console.log(review);
+            return (
+              <div className={styles['content-container']} key={review.id}>
+                <Link href={`/reviews/${review.id}`} className={styles['content-link']}>
+                  <div className={styles['content-wrap']}>
+                    {review.photo ? (
+                      <img src={review.photo[0]} alt="review-image" className={styles['content-image']} />
+                    ) : null}
+                    <div>
+                      <div className={styles['user-wrap']}>
+                        <div className={styles['user']}>
+                          <Image src={defaultImg} alt="유저프로필" className={styles['user-profile']} />
+                          <p>{review.author}</p>
+                        </div>
+                        <p>{review.write_date?.substring(0, 10)}</p>
+                      </div>
+                      <span>{review.title}</span>
                     </div>
-                    <p>{review.write_date?.substring(0, 10)}</p>
                   </div>
-                  <span>{review.title}</span>
-                </div>
+                </Link>
               </div>
-            </div>
-          );
-        })}
-
+            );
+          })}
+        </div>
         <div className={styles['write-wrap']}>
           <Link href="/reviews/write" className={styles['write-btn']}>
             작성하기

@@ -1,13 +1,20 @@
 import React from 'react';
 import {Tables} from '@/shared/supabase/types/supabase';
 import Detail from '@/components/keyboard/Detail';
-import {findKeyboardById, findKeyboardIdList} from '@/pages/api/keyboard';
+import {findKeyboardByIdWithReview, findKeyboardIdList} from '@/pages/api/keyboard';
 import {GetStaticPaths} from 'next';
 import RelatedVideos from '@/components/keyboard/RelatedVideos';
 import Head from 'next/head';
 import {makeTitle} from '@/shared/helper';
+import {useRouter} from 'next/router';
+import Loading from '@/components/layout/loading/Loading';
+import RelatedReviews from '@/components/keyboard/RelatedReviews';
 
 const KeyboardDetailPage = ({keyboard}: {keyboard: Tables<'keyboard'>}) => {
+  const router = useRouter();
+  if (router.isFallback) return <Loading />;
+
+  console.log(keyboard);
   return (
     <article>
       <Head>
@@ -15,6 +22,7 @@ const KeyboardDetailPage = ({keyboard}: {keyboard: Tables<'keyboard'>}) => {
       </Head>
       <Detail item={keyboard} />
       <RelatedVideos item={keyboard} />
+      <RelatedReviews reviews={keyboard.review} />
     </article>
   );
 };
@@ -22,7 +30,7 @@ const KeyboardDetailPage = ({keyboard}: {keyboard: Tables<'keyboard'>}) => {
 export default KeyboardDetailPage;
 
 export const getStaticProps = async (props: {params: {keyboardId: string}}) => {
-  const {keyboard} = await findKeyboardById(+props.params.keyboardId);
+  const {keyboard} = await findKeyboardByIdWithReview(+props.params.keyboardId);
 
   return {
     props: {
@@ -41,6 +49,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
         keyboardId: keyboard.id.toString(),
       },
     })),
-    fallback: false,
+    fallback: true,
   };
 };
