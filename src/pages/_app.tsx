@@ -19,7 +19,9 @@ export default function App({Component, pageProps}: AppProps) {
         <title>{makeTitle('')}</title>
       </Head>
       <NavBar />
-      <Component {...pageProps} />
+      <main>
+        <Component {...pageProps} />
+      </main>
       <ToastContainer />
       <Footer />
     </QueryClientProvider>

@@ -5,8 +5,12 @@ import {Tables} from '@/shared/supabase/types/supabase';
 import moment from 'moment';
 import Head from 'next/head';
 import {makeTitle} from '@/shared/helper';
+import styles from './index.module.css';
+import React, {useEffect, useState} from 'react';
+import {GoMoveToTop} from 'react-icons/go';
 
 const HomPage = ({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>) => {
+  const [showTopButton, setShowTopButton] = useState(false);
   // 인기 키보드
   const popularList = [...keyboardList]
     .sort((a, b) => {
@@ -21,15 +25,45 @@ const HomPage = ({keyboardList}: Readonly<{keyboardList: Tables<'keyboard'>[]}>)
     })
     .slice(0, 5);
 
+  const handleScrollToTop = (behavior: 'smooth' | 'auto') => {
+    window.scrollTo({top: 0, behavior: behavior});
+  };
+
+  useEffect(() => {
+    handleScrollToTop('auto');
+    let timer: number | null = null;
+
+    const handleScroll = () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = window.setTimeout(() => {
+        if (window.scrollY > window.outerHeight / 3) setShowTopButton(true);
+        else setShowTopButton(false);
+      }, 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <>
+    <div className={styles.container}>
       <Head>
         <title>{makeTitle('당신의 키보드를 찾아보세요')}</title>
       </Head>
       <RowContainer title={'인기 키보드'} keyboardList={popularList} />
       <RowContainer title={'새로나온 키보드'} keyboardList={recentlyList} />
       <GridContainer keyboardList={keyboardList} />
-    </>
+      {showTopButton && (
+        <button className={styles['top-button']} onClick={handleScrollToTop.bind(null, 'smooth')}>
+          <GoMoveToTop />
+        </button>
+      )}
+    </div>
   );
 };
 
