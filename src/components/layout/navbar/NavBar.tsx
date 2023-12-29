@@ -2,13 +2,22 @@ import Link from 'next/link';
 import React, {useEffect} from 'react';
 import styles from './NavBar.module.css';
 import {supabase} from '@/shared/supabase/supabase';
+import {useRouter} from 'next/navigation';
 
 const NavBar = () => {
+  const router = useRouter();
+
   useEffect(() => {
     supabase.auth.getUserIdentities().then(info => {
       if (info) console.log(info);
     });
   }, []);
+
+  const logout = async () => {
+    const {error} = await supabase.auth.signOut();
+    router.push('/login');
+    if (error) alert('로그아웃이 안됐어요');
+  };
 
   return (
     <div>
@@ -32,9 +41,9 @@ const NavBar = () => {
             <Link href="/login" className={styles.category}>
               임시로그인
             </Link>
-            <Link href="/review" className={styles.category}>
+            <button className={styles.category} onClick={logout}>
               로그아웃
-            </Link>
+            </button>
             <Link href="/signup" className={styles.category}>
               회원가입
             </Link>
