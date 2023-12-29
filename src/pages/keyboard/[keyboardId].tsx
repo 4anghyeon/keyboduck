@@ -14,7 +14,6 @@ const KeyboardDetailPage = ({keyboard}: {keyboard: Tables<'keyboard'>}) => {
   const router = useRouter();
   if (router.isFallback) return <Loading />;
 
-  console.log(keyboard);
   return (
     <article>
       <Head>
@@ -43,6 +42,7 @@ export const getStaticProps = async (props: {params: {keyboardId: string}}) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   const {keyboardIdList} = await findKeyboardIdList();
 
+  // 데이터베이스에서 모든 키보드 아이디를 불러온 후 해당 키보드들의 상세 페이지를 사전 렌더링 한다.
   return {
     paths: keyboardIdList!.map(keyboard => ({
       params: {

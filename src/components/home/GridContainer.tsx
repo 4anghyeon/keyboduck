@@ -3,7 +3,6 @@ import styles from './grid-container.module.css';
 import KeyboardCard from '@/components/home/KeyboardCard';
 import {BRAND} from '@/shared/common-data';
 import {Tables} from '@/shared/supabase/types/supabase';
-import {useSearchParams} from 'next/navigation';
 
 interface Props {
   keyboardList: Tables<'keyboard'>[];
@@ -17,7 +16,7 @@ const GridContainer = (props: Props) => {
     localStorage.setItem('selectedBrand', JSON.stringify(brand));
   };
 
-  // 선택된 브랜드가 기타일 경우 목록에 없는 브랜드를 전부 포함한다.
+  // 선택된 브랜드가 기타일 경우 미리 지정된 브랜드(BRAND) 목록에 없는 브랜드를 전부 포함한다.
   const selectedBrandList =
     selectedBrand.name === '기타'
       ? props.keyboardList.filter(
@@ -29,6 +28,7 @@ const GridContainer = (props: Props) => {
       : props.keyboardList.filter(k => k.brand === selectedBrand.name || k.brand === selectedBrand.enName);
 
   useEffect(() => {
+    // 페이지가 이동 후 되돌아왔을 때 선택된 브랜드를 유지하기 위해 localStorage를 사용한다.
     const prevSelected = localStorage.getItem('selectedBrand');
     if (prevSelected) {
       setSelectedBrand(JSON.parse(prevSelected));

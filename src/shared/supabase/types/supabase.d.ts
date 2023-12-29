@@ -1,3 +1,8 @@
+/**
+ * Supabase 데이터베이스의 타입을 지정합니다.
+ * 데이터베이스의 테이블이 업데이트 될 경우 수정이 필요합니다.
+ */
+
 export type Json = string | number | boolean | null | {[key: string]: Json | undefined} | Json[];
 
 export interface Database {
@@ -110,6 +115,38 @@ export interface Database {
             foreignKeyName: 'keyboard_like_user_id_fkey';
             columns: ['user_id'];
             isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      profiles: {
+        Row: {
+          avatar_url: string | null;
+          email: string | null;
+          full_name: string | null;
+          id: string;
+          username: string | null;
+        };
+        Insert: {
+          avatar_url?: string | null;
+          email?: string | null;
+          full_name?: string | null;
+          id: string;
+          username?: string | null;
+        };
+        Update: {
+          avatar_url?: string | null;
+          email?: string | null;
+          full_name?: string | null;
+          id?: string;
+          username?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'profiles_id_fkey';
+            columns: ['id'];
+            isOneToOne: true;
             referencedRelation: 'users';
             referencedColumns: ['id'];
           },

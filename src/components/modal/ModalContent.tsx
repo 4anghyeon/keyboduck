@@ -1,5 +1,3 @@
-'use client';
-
 import React, {useState} from 'react';
 import styles from '@/components/modal/modalContent.module.css';
 import {useRouter} from 'next/router';
