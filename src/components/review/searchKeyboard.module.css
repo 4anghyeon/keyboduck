@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+  height: 100%;
 }
 .wrap {
   display: flex;
@@ -9,13 +10,13 @@
   align-items: flex-end;
 }
 
-.wrap > h3 {
+.wrap > p {
   width: 100%;
   font-size: 25px;
   padding: 10px 0 10px 10px;
   border-bottom: 1px solid #b0b0b0;
-  font-family: Pretendard-Light;
-  color: #b0b0b0;
+  font-family: Pretendard-Medium;
+  color: #565656;
 }
 .modal-comment-container {
   width: 100%;
@@ -26,7 +27,7 @@
   margin-top: 40px;
 }
 .modal-comment {
-  width: 500px;
+  width: 400px;
   height: 50px;
   border-radius: 10px;
   border: 1px solid #b0b0b0;
@@ -65,11 +66,20 @@
 
 .keyboard {
   width: 80%;
-  height: 500px;
+  height: 400px;
   margin: 50px 0;
 }
 
 .keyboard > li {
-  border-bottom: 1px solid #b0b0b0;
+  width: 400px;
+  background-color: #e7e7e7;
+  margin: 10px;
+  border-radius: 10px;
   padding: 15px;
+  font-family: Pretendard-Medium;
+  cursor: pointer;
+}
+
+.keyboard > li a :hover {
+  background-color: #b5b5b5;
 }

@@ -3,11 +3,11 @@ import {findAllKeyboard} from '@/pages/api/keyboard';
 
 const QUERY_KEY = 'keyboard';
 
-const useKeyboard = () => {
-  const {data: keyboardList, isPending: isKeyboardListPending} = useQuery({
+export const useKeyboard = () => {
+  const {data, isPending: isKeyboardListPending} = useQuery({
     queryKey: [QUERY_KEY],
     queryFn: () => findAllKeyboard(),
   });
 
-  return {keyboardList, isKeyboardListPending};
+  return {data, isKeyboardListPending};
 };

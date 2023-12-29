@@ -1,8 +1,6 @@
 'use client';
 import React from 'react';
 import styles from './index.module.css';
-import Image from 'next/image';
-import Link from 'next/link';
 import {useState} from 'react';
 import Swal from 'sweetalert2';
 import {useRef} from 'react';
@@ -19,7 +17,8 @@ const ReviewWrite = () => {
   const [content, setContent] = useState<string>('');
   const [imageFile, setImageFile] = useState<string[]>([]);
   const [author, setAuthor] = useState<string>('');
-  // const [imageUrl, setImageUrl] = useState<string>('');
+  const [selectedKeyboardId, setSelectedKeyboardId] = useState<number | null>(null);
+
   const fileInput = useRef<HTMLInputElement>(null);
   const {warnTopCenter, errorTopCenter} = useToast();
 
@@ -33,6 +32,9 @@ const ReviewWrite = () => {
   const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
   const contentChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void => setContent(event.target.value);
 
+  const selectKeyboardHandler = (keyboardId: number) => {
+    setSelectedKeyboardId(keyboardId);
+  };
   // 이미지 파일 미리보기, 최대5장
   const processImageFiles = (files: FileList, existingImageFiles: string[]): string[] => {
     let imageFiles: string[] = [...existingImageFiles];
@@ -129,6 +131,10 @@ const ReviewWrite = () => {
 
   // 리뷰 등록하기
   const onSubmitButtonHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (selectedKeyboardId === null) {
+      warnTopCenter({message: '키보드를 선택해주세요', timeout: 2000});
+      return;
+    }
     if (!title) {
       warnTopCenter({message: '제목을 입력해주세요', timeout: 2000});
       return;
@@ -149,7 +155,7 @@ const ReviewWrite = () => {
       // 2. 리뷰 내용 등록
       const {data: addReviewData, error} = await supabase
         .from('review')
-        .insert({title, keyboard_id: 27, content, author, photo: imageFile})
+        .insert({title, keyboard_id: selectedKeyboardId, content, author, photo: imageFile})
         .select();
 
       if (addReviewData) {
@@ -173,7 +179,7 @@ const ReviewWrite = () => {
     <div>
       <div className={styles.container}>
         <h1 className={styles.title}>REVIEW</h1>
-        <SearchKeyboard />
+        <SearchKeyboard onSelectedKeyboard={selectKeyboardHandler} />
         <div className={styles['write-container']}>
           <div className={styles.title}>
             <input
@@ -206,7 +212,7 @@ const ReviewWrite = () => {
                   <button onClick={() => imageDeleteHandler(index)} className={styles['delete-button']}>
                     <MdDeleteForever />
                   </button>
-                  <Image
+                  <img
                     key={index}
                     src={imageFile}
                     alt="preview"

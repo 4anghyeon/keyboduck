@@ -2,45 +2,68 @@ import React from 'react';
 import styles from './searchKeyboard.module.css';
 import {useState} from 'react';
 import {useCallback} from 'react';
-import {Modal} from '../modal/Modal';
-import {useQuery} from '@tanstack/react-query';
-import {findAllKeyboard} from '@/pages/api/keyboard';
-import {Tables} from '@/shared/supabase/types/supabase';
-import {ReactNode} from 'react';
+import {useKeyboard} from '@/hooks/useKeyboard';
+import {ReviewModal} from './ReviewModal';
 
-interface Props {
-  keyboardList: Tables<'keyboard'>[];
-}
-
-const SearchKeyboard = (props: Props) => {
+const SearchKeyboard = ({onSelectedKeyboard}) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-
-  // const {data} = useQuery({
-  //   queryKey: ['allKeyboardData'],
-  //   queryFn: findAllKeyboard,
-  // });
+  const [selectedKeyboard, setSelectedKeyboard] = useState<string | null>(null);
+  const [keyboardName, setKeyboardName] = useState<string>('');
+  const {data} = useKeyboard();
+  const [filteredKeyboardList, setFilteredKeyboardList] = useState(data?.keyboardList || null);
 
   const clickOpenModal = useCallback(() => {
     setIsOpenModal(!isOpenModal);
-  }, [isOpenModal]);
+    setFilteredKeyboardList(data?.keyboardList || null);
+  }, [isOpenModal, data]);
+
+  const selectKeyboard = (keyboard): void => {
+    setSelectedKeyboard(keyboard.name);
+    setKeyboardName(keyboard.name);
+    onSelectedKeyboard(keyboard.id);
+  };
+
+  const nameInputChangehandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const search: string = e.target.value.toLocaleLowerCase();
+    const filteredList = data?.keyboardList?.filter(keyboard => {
+      return keyboard.name.toLowerCase().includes(search);
+    });
+    setFilteredKeyboardList(filteredList || []);
+    setKeyboardName(search);
+  };
+
+  const handleInputClick = (e: React.MouseEvent<HTMLInputElement>): void => {
+    e.stopPropagation();
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.wrap}>
-        <h3>검색한키보드</h3>
+        <p>제품명 {selectedKeyboard && `: ${selectedKeyboard}`}</p>
         {isOpenModal && (
           <div>
-            <Modal onClickToggleHandler={clickOpenModal}>
+            <ReviewModal onClickToggleHandler={clickOpenModal}>
               <div className={styles['modal-comment-container']}>
-                <input className={styles['modal-comment']} placeholder="키보드를 검색하세요" />
-                <button className={styles['modal-button']}>🔎</button>
+                <input
+                  type="text"
+                  value={keyboardName}
+                  className={styles['modal-comment']}
+                  placeholder="키보드를 검색하세요"
+                  onClick={handleInputClick}
+                  onChange={nameInputChangehandler}
+                />
+                {/* <button className={styles['modal-button']}>🔎</button> */}
               </div>
               <ul className={styles.keyboard}>
-                {props.keyboardList?.map((keyboard, index) => {
-                  <li key={index}>{keyboard.name}</li>;
+                {filteredKeyboardList?.map(keyboard => {
+                  return (
+                    <li key={keyboard.id} onClick={() => selectKeyboard(keyboard)}>
+                      {keyboard.name}
+                    </li>
+                  );
                 })}
               </ul>
-            </Modal>
+            </ReviewModal>
           </div>
         )}
         <div className={styles['search-wrap']}>
