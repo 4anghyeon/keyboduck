@@ -5,29 +5,82 @@
   display: flex;
   align-items: center;
   border-bottom: 1px solid black;
+
+  @media screen and (max-width: 768px) {
+    padding: 10px;
+    height: 60px;
+  }
+}
+
+.container button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .logo {
-  font-size: 30px;
+  font-size: 35px;
   color: #83e0a5;
   text-decoration: none;
-  margin: 50px;
+  margin: 2vw;
   font-family: YClover-Bold;
+
 }
 
 .category {
-  font-size: 18px;
+  font-size: 20px;
   text-decoration: none;
   color: black;
   margin: 30px;
-}
-
-.category:hover {
-  border-bottom: 2px solid black;
+  padding-bottom: 3px;
 }
 
 .wrap {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+.wrap div {
+  display: flex;
+}
+
+.active {
+  border-bottom: 3px #83E0A5 solid;
+}
+
+.anim-link {
+  display: inline-block;
+  text-decoration: none;
+  text-wrap: nowrap;
+}
+.anim-link::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 3px;
+  background: #83E0A5;
+  transition: width .2s;
+}
+.anim-link:hover::after {
+  width: 100%;
+}
+
+.auth {
+  @media screen and (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.h-menu {
+  display: none !important;
+  align-items: center;
+  font-size: 2.1rem;
+  padding-bottom: 3px;
+  margin-right: 10px;
+  cursor: pointer;
+  color: #83E0A5;
+  @media screen and (max-width: 768px) {
+    display: flex !important;
+  }
 }
