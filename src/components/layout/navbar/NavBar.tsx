@@ -4,14 +4,26 @@ import styles from './NavBar.module.css';
 import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/navigation';
 import {useToast} from '@/hooks/useToast';
+import {useDispatch} from 'react-redux';
+import {setUserInfo} from '@/redux/modules/userSlice';
 
 const NavBar = () => {
   const {successTopRight, errorTopRight} = useToast();
   const router = useRouter();
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      if (info) console.log(info);
+    supabase.auth.onAuthStateChange((event, session) => {
+      console.log(event, session);
+      if (event === 'SIGNED_IN') {
+        // handle sign in event
+        dispatch(setUserInfo(session?.user));
+      } else if (event === 'SIGNED_OUT') {
+        // handle sign out event
+        dispatch(setUserInfo(session?.user));
+      } else if (event === 'USER_UPDATED') {
+        // handle user updated event
+        dispatch(setUserInfo(session?.user));
+      }
     });
   }, []);
 

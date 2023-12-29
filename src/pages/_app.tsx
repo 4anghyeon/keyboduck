@@ -9,21 +9,25 @@ import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Head from 'next/head';
 import {makeTitle} from '@/shared/helper';
+import {Provider} from 'react-redux';
+import store from '@/redux/store';
 
 export const queryClient = new QueryClient();
 
 export default function App({Component, pageProps}: AppProps) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Head>
-        <title>{makeTitle('')}</title>
-      </Head>
-      <NavBar />
-      <main>
-        <Component {...pageProps} />
-      </main>
-      <ToastContainer />
-      <Footer />
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Head>
+          <title>{makeTitle('')}</title>
+        </Head>
+        <NavBar />
+        <main>
+          <Component {...pageProps} />
+        </main>
+        <ToastContainer />
+        <Footer />
+      </QueryClientProvider>
+    </Provider>
   );
 }
