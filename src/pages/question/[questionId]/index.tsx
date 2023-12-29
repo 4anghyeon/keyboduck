@@ -61,9 +61,12 @@ const QuestionDetail = () => {
             <ModalContent author={author} isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
           </Modal>
         )}
-        <div className={styles['detail-answer-register-btn']}>
-          <button onClick={clickOpenModal}>답변 등록하기</button>
-        </div>
+        {!!author ? (
+          <div className={styles['detail-answer-register-btn']}>
+            <button onClick={clickOpenModal}>답변 등록하기</button>
+          </div>
+        ) : null}
+
         {/* 댓글 들어가는 곳 */}
         {answerQuestionIdFilter?.map(item => {
           return <QuestionDetailComment key={item.id} author={author} getAnswer={item} />;
