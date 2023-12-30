@@ -241,7 +241,7 @@ export interface Database {
       };
       review_comment: {
         Row: {
-          author: string | null;
+          user_id: string | null;
           content: string | null;
           id: number;
           review_id: number;
@@ -249,14 +249,14 @@ export interface Database {
           profiles: Tables<'profiles'>;
         };
         Insert: {
-          author?: string | null;
+          user_id?: string | null;
           content?: string | null;
           id?: number;
           review_id: number;
           write_date?: string | null;
         };
         Update: {
-          author?: string | null;
+          user_id?: string | null;
           content?: string | null;
           id?: number;
           review_id?: number;
@@ -265,7 +265,7 @@ export interface Database {
         Relationships: [
           {
             foreignKeyName: 'review_comment_author_fkey';
-            columns: ['author'];
+            columns: ['user_id'];
             isOneToOne: false;
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
