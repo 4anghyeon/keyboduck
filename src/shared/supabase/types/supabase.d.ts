@@ -195,30 +195,31 @@ export interface Database {
       };
       review: {
         Row: {
-          author: string | null;
           content: string | null;
           id: number;
-          keyboard_id: number | null;
+          keyboard_id: number;
           photo: string[] | null;
           title: string | null;
+          user_id: string | null;
           write_date: string | null;
+          profiles: Tables<'profiles'>;
         };
         Insert: {
-          author?: string | null;
           content?: string | null;
           id?: number;
-          keyboard_id: number | null;
+          keyboard_id: number;
           photo?: string[] | null;
           title?: string | null;
+          user_id?: string | null;
           write_date?: string | null;
         };
         Update: {
-          author?: string | null;
           content?: string | null;
           id?: number;
-          keyboard_id?: number | null;
+          keyboard_id?: number;
           photo?: string[] | null;
           title?: string | null;
+          user_id?: string | null;
           write_date?: string | null;
         };
         Relationships: [
@@ -227,6 +228,13 @@ export interface Database {
             columns: ['keyboard_id'];
             isOneToOne: false;
             referencedRelation: 'keyboard';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'review_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
         ];

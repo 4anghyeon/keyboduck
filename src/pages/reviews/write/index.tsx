@@ -11,23 +11,23 @@ import {useEffect} from 'react';
 import {supabase} from '@/shared/supabase/supabase';
 import router from 'next/router';
 import {createClient} from '@supabase/supabase-js';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/redux/store';
 
 const ReviewWrite = () => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [imageFile, setImageFile] = useState<string[]>([]);
-  const [author, setAuthor] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
   const [selectedKeyboardId, setSelectedKeyboardId] = useState<number | null>(null);
+  const userInfo = useSelector((state: RootState) => state.userSlice);
 
   const fileInput = useRef<HTMLInputElement>(null);
   const {warnTopCenter, errorTopCenter} = useToast();
 
   useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      const author = info.data?.identities[0].identity_data?.name;
-      if (author) setAuthor(author);
-    });
-  }, []);
+    if (userInfo.id !== '') setUserId(userInfo.id);
+  }, [userInfo]);
 
   const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
   const contentChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void => setContent(event.target.value);
@@ -99,7 +99,7 @@ const ReviewWrite = () => {
 
     // supabase storage에 이미지 업로드하기
     for (const imageUrl of imageUrls) {
-      const fileName = `${author}/${new Date().getTime()}_${Math.floor(Math.random() * 1000)}.png`; // 파일 이름 생성
+      const fileName = `${userId}/${new Date().getTime()}_${Math.floor(Math.random() * 1000)}.png`; // 파일 이름 생성
       // const file = dataURLtoFile(imageUrl, fileName); // Data URL을 File 객체로 변환
       // await reviewImgUploadSingle(file);
     }
@@ -155,7 +155,7 @@ const ReviewWrite = () => {
       // 2. 리뷰 내용 등록
       const {data: addReviewData, error} = await supabase
         .from('review')
-        .insert({title, keyboard_id: selectedKeyboardId, content, author, photo: imageFile})
+        .insert({title, keyboard_id: selectedKeyboardId, content, user_id: userId, photo: imageFile})
         .select();
 
       if (addReviewData) {
