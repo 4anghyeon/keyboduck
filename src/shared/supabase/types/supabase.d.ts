@@ -8,6 +8,44 @@ export type Json = string | number | boolean | null | {[key: string]: Json | und
 export interface Database {
   public: {
     Tables: {
+      alert_message: {
+        Row: {
+          created_at: string;
+          id: string;
+          message: string | null;
+          read: boolean | null;
+          target_id: number | null;
+          type: string | null;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          message?: string | null;
+          read?: boolean | null;
+          target_id?: number | null;
+          type?: string | null;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          message?: string | null;
+          read?: boolean | null;
+          target_id?: number | null;
+          type?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'alert_message_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       answer: {
         Row: {
           user_id: string | null;
@@ -163,7 +201,7 @@ export interface Database {
           content: string | null;
           id: number;
           title: string | null;
-          user_id: string | null;
+          user_id: string;
           write_date: string | null;
           profiles: Tables<'profiles'>;
         };

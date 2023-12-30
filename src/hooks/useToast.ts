@@ -71,5 +71,19 @@ export const useToast = () => {
     toast.success(message, topCenter);
   };
 
-  return {successTopCenter, errorTopCenter, warnTopCenter, successTopRight, errorTopRight, warnTopRight, duckTopRight};
+  const alertTopRight = ({message, timeout}: ToastArgs) => {
+    const topCenter: ToastOptions = new ToastOption({position: 'top-right', timeout: timeout ?? 1000, icon: '🔔'});
+    toast.info(message, topCenter);
+  };
+
+  return {
+    successTopCenter,
+    errorTopCenter,
+    warnTopCenter,
+    successTopRight,
+    errorTopRight,
+    warnTopRight,
+    duckTopRight,
+    alertTopRight,
+  };
 };
