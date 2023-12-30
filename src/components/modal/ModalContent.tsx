@@ -10,11 +10,11 @@ import {addAnswer} from '@/pages/api/answer';
 const ModalContent = ({
   isOpenModal,
   setIsOpenModal,
-  author,
+  userId,
 }: {
   isOpenModal: boolean;
   setIsOpenModal: (value: React.SetStateAction<boolean>) => void;
-  author: string;
+  userId: string;
 }) => {
   const [comment, setComment] = useState<string>('');
 
@@ -23,7 +23,7 @@ const ModalContent = ({
   const router = useRouter();
   const queryClient = useQueryClient();
   const addAnswerMutation = useMutation({
-    mutationFn: async () => await addAnswer(author, comment, questionId!),
+    mutationFn: async () => await addAnswer(userId, comment, questionId!),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['getAnswer']});
     },

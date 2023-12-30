@@ -10,33 +10,41 @@ export interface Database {
     Tables: {
       answer: {
         Row: {
-          author: string | null;
+          user_id: string | null;
           content: string | null;
           id: number;
           is_accept: boolean | null;
+          is_edit: boolean | null;
           question_id: number;
           write_date: string | null;
-          is_edit: boolean | null;
+          profiles: Tables<'profiles'>;
         };
         Insert: {
-          author?: string | null;
+          user_id?: string | null;
           content?: string | null;
           id?: number;
           is_accept?: boolean | null;
+          is_edit?: boolean | null;
           question_id: number;
           write_date?: string | null;
-          is_edit: boolean | null;
         };
         Update: {
-          author?: string | null;
+          user_id?: string | null;
           content?: string | null;
           id?: number;
           is_accept?: boolean | null;
+          is_edit?: boolean | null;
           question_id?: number;
           write_date?: string | null;
-          is_edit: boolean | null;
         };
         Relationships: [
+          {
+            foreignKeyName: 'answer_author_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
           {
             foreignKeyName: 'answer_question_id_fkey';
             columns: ['question_id'];
