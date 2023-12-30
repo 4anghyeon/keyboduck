@@ -10,19 +10,18 @@ const Pagination = ({
   setPage: React.Dispatch<React.SetStateAction<number>>;
   numPages: number;
 }) => {
-  // 전체 페이지 수만큼 숫자 생성
-  const showedLecture = new Array(numPages).fill(0);
-
+  if (!numPages) return;
   return (
     <div className={styles['btn-container']}>
-      {showedLecture.map((item, index) => {
+      {[...Array(numPages)].map((_, index) => {
+        const pageNumber = index + 1;
         return (
           <button
-            key={index + 1}
-            onClick={() => setPage(index + 1)}
-            className={index + 1 === page ? styles['select-btn'] : styles['btn']}
+            key={pageNumber}
+            onClick={() => setPage(pageNumber)}
+            className={pageNumber === page ? styles['select-btn'] : styles['btn']}
           >
-            {index + 1}
+            {pageNumber}
           </button>
         );
       })}
