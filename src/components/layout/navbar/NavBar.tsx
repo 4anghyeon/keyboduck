@@ -11,10 +11,11 @@ import {IoMdMenu} from 'react-icons/io';
 import duckImg from '@/assets/images/duck.png';
 import Image from 'next/image';
 import {RootState} from '@/redux/store';
+import {RealtimeChannel} from '@supabase/realtime-js';
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const {successTopRight, errorTopRight, duckTopRight} = useToast();
+  const {successTopRight, errorTopRight, duckTopRight, alertTopRight} = useToast();
   const router = useRouter();
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.userSlice);
@@ -31,17 +32,36 @@ const NavBar = () => {
   };
 
   useEffect(() => {
+    let alertMessageChannel: RealtimeChannel | null = null;
+    // auth 정보 구독
     supabase.auth.onAuthStateChange((event, session) => {
       switch (event) {
         case 'INITIAL_SESSION':
         case 'SIGNED_IN':
         case 'USER_UPDATED':
           dispatch(setUserInfo(session?.user));
+          // answer 테이블 구독
+          alertMessageChannel = supabase
+            .channel('alert-message-insert-channel')
+            .on(
+              'postgres_changes',
+              {event: 'INSERT', schema: 'public', table: 'alert_message', filter: `user_id=eq.${session?.user.id}`},
+              payload => {
+                const message = payload.new.message;
+                alertTopRight({message, timeout: 2000});
+              },
+            )
+            .subscribe();
           break;
         case 'SIGNED_OUT':
           dispatch(logoutUser());
+          alertMessageChannel?.unsubscribe();
       }
     });
+
+    return () => {
+      alertMessageChannel?.unsubscribe();
+    };
   }, []);
 
   return (
