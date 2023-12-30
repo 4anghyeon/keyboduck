@@ -10,7 +10,6 @@ const Pagination = ({
   setPage: React.Dispatch<React.SetStateAction<number>>;
   numPages: number;
 }) => {
-  if (!numPages) return;
   return (
     <div className={styles['btn-container']}>
       {[...Array(numPages)].map((_, index) => {
