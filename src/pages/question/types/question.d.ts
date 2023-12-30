@@ -1,5 +1,5 @@
 export interface QuestionType {
-  author: string | null;
+  user_id: string | null;
   category: string;
   content: string | null;
   id: number;

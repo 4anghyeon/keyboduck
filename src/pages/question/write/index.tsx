@@ -3,15 +3,17 @@ import router from 'next/router';
 import styles from '@/pages/question/write/index.module.css';
 import {supabase} from '@/shared/supabase/supabase';
 import {useToast} from '@/hooks/useToast';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/redux/store';
 
 const OPTION = ['카테고리 선택', '가격', '성능', '고장', '기타'];
 
 const QuestionWrite = () => {
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
-
+  const userInfo = useSelector((state: RootState) => state.userSlice);
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [author, setAuthor] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
   const [category, setCategory] = useState<string>('카테고리 선택');
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
@@ -19,11 +21,8 @@ const QuestionWrite = () => {
   const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value);
 
   useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      const author = info.data?.identities[0].identity_data?.name;
-      if (author) setAuthor(author);
-    });
-  }, []);
+    if (userInfo.id !== '') setUserId(userInfo.id);
+  }, [userInfo]);
 
   const clickAddQuestion = async () => {
     if (title === '') {
@@ -38,7 +37,7 @@ const QuestionWrite = () => {
       warnTopCenter({message: '카테고리를 선택해주세요!', timeout: 2000});
       return false;
     }
-    const {data, error} = await supabase.from('question').insert({category, title, content, author}).select();
+    const {data, error} = await supabase.from('question').insert({category, title, content, user_id: userId}).select();
     if (data) {
       setTitle('');
       setContent('');

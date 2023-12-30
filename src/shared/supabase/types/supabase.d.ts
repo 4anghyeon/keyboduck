@@ -124,21 +124,18 @@ export interface Database {
         Row: {
           avatar_url: string | null;
           email: string | null;
-          full_name: string | null;
           id: string;
           username: string | null;
         };
         Insert: {
           avatar_url?: string | null;
           email?: string | null;
-          full_name?: string | null;
           id: string;
           username?: string | null;
         };
         Update: {
           avatar_url?: string | null;
           email?: string | null;
-          full_name?: string | null;
           id?: string;
           username?: string | null;
         };
@@ -154,30 +151,39 @@ export interface Database {
       };
       question: {
         Row: {
-          author: string | null;
           category: string;
           content: string | null;
           id: number;
           title: string | null;
+          user_id: string | null;
           write_date: string | null;
+          profiles: Tables<'profiles'>;
         };
         Insert: {
-          author?: string | null;
           category: string;
           content?: string | null;
           id?: number;
           title?: string | null;
+          user_id?: string | null;
           write_date?: string | null;
         };
         Update: {
-          author?: string | null;
           category?: string;
           content?: string | null;
           id?: number;
           title?: string | null;
+          user_id?: string | null;
           write_date?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'question_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       review: {
         Row: {
