@@ -246,6 +246,7 @@ export interface Database {
           id: number;
           review_id: number;
           write_date: string | null;
+          profiles: Tables<'profiles'>;
         };
         Insert: {
           author?: string | null;
@@ -262,6 +263,13 @@ export interface Database {
           write_date?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: 'review_comment_author_fkey';
+            columns: ['author'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
           {
             foreignKeyName: 'review_comment_review_id_fkey';
             columns: ['review_id'];
