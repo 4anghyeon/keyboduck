@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import styles from '@/components/modal/modalContent.module.css';
-import {useRouter} from 'next/router';
 import {useToast} from '@/hooks/useToast';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
 import Swal from 'sweetalert2';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {addAnswer} from '@/pages/api/answer';
-import {useAlertMessage} from '@/hooks/useAlertMessage';
 import {QuestionType} from '@/pages/question/types/question';
+import {useAlertMessage} from '@/hooks/useAlertMessage';
 
 const ModalContent = ({
   isOpenModal,

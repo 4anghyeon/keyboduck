@@ -12,10 +12,12 @@ import duckImg from '@/assets/images/duck.png';
 import Image from 'next/image';
 import {RootState} from '@/redux/store';
 import {RealtimeChannel} from '@supabase/realtime-js';
+import {BiSolidBell, BiSolidBellRing} from 'react-icons/bi';
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const {successTopRight, errorTopRight, duckTopRight, alertTopRight} = useToast();
+  const [ringBell, setRingBell] = useState(false);
+  const {successTopRight, errorTopRight, duckTopRight, alertBottomRight} = useToast();
   const router = useRouter();
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.userSlice);
@@ -48,7 +50,11 @@ const NavBar = () => {
               {event: 'INSERT', schema: 'public', table: 'alert_message', filter: `user_id=eq.${session?.user.id}`},
               payload => {
                 const message = payload.new.message;
-                alertTopRight({message, timeout: 2000});
+                alertBottomRight({message, timeout: 2000});
+                setRingBell(true);
+                setTimeout(() => {
+                  setRingBell(false);
+                }, 1000);
               },
             )
             .subscribe();
@@ -86,6 +92,14 @@ const NavBar = () => {
         <div className={styles.auth}>
           {userInfo.id !== '' ? (
             <>
+              <button className={[styles.bell, ringBell ? styles.hide : ''].join(' ')}>
+                <BiSolidBell size={25} />
+                <span className={styles['message-count']}>1</span>
+              </button>
+              <button className={[styles['ring-bell'], ringBell ? '' : styles.hide].join(' ')}>
+                <BiSolidBellRing size={25} />
+                <span className={styles['message-count']}>1</span>
+              </button>
               <MenuItem href="/mypage" name="마이페이지" />
               <MenuItem name="로그아웃" onClick={logout} />
             </>
