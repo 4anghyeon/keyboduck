@@ -8,12 +8,12 @@ import ReviewDetailComment from '@/components/review/ReviewDetailComment';
 import {useQuery} from '@tanstack/react-query';
 import Loading from '@/components/layout/loading/Loading';
 import {fetchReview} from '@/pages/api/review';
-import {useState} from 'react';
 import {useKeyboard} from '@/hooks/useKeyboard';
+import {useState} from 'react';
 
-const ReviewDetail = () => {
+const ReviewDetail: React.FC = () => {
+  const [currentImage, setCurrentImage] = useState(0);
   const {data: keyboardData} = useKeyboard();
-
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
 
@@ -35,6 +35,21 @@ const ReviewDetail = () => {
   const selectKeyboardName = keyboardData?.keyboardList?.find(keyboard => {
     return keyboard.id === detailReviewId?.keyboard_id;
   });
+  const showMultiImages = detailReviewId?.photo && detailReviewId.photo.length > 1;
+
+  const prevImageButtonHandler = () => {
+    if (detailReviewId?.photo && detailReviewId.photo.length > 0) {
+      setCurrentImage(prevIndex => (prevIndex > 0 ? prevIndex - 1 : detailReviewId?.photo.length - 1));
+    }
+  };
+
+  const nextImageButtonHandler = () => {
+    if (detailReviewId?.photo && detailReviewId.photo.length > 0) {
+      setCurrentImage(prevIndex => (prevIndex + 1) % detailReviewId?.photo.length);
+    }
+  };
+
+  const totalImages = detailReviewId?.photo?.length || 0;
 
   if (isLoading) {
     return <Loading />;
@@ -65,16 +80,32 @@ const ReviewDetail = () => {
               </div>
             </div>
           </div>
-          <div className={styles['image-slide']}>
-            <button>
-              <MdOutlineArrowBackIos />
-            </button>
-            <div className={styles['image-container']}>
-              {detailReviewId?.photo ? <img src={detailReviewId.photo[0]} alt="review-image" /> : null}
+          {showMultiImages ? (
+            <div className={styles['image-slide']}>
+              <button onClick={prevImageButtonHandler}>
+                <MdOutlineArrowBackIos />
+              </button>
+              <div className={styles['image-container']}>
+                <img src={detailReviewId?.photo?.[currentImage]} alt="Review Image" />
+                {/* {detailReviewId?.photo && detailReviewId.photo.length > 0 ? (
+                  <img src={detailReviewId.photo[currentImage]} alt="Review Image" />
+                ) : null} */}
+              </div>
+              <button onClick={nextImageButtonHandler}>
+                <MdOutlineArrowForwardIos />
+              </button>
             </div>
-            <button>
-              <MdOutlineArrowForwardIos />
-            </button>
+          ) : (
+            detailReviewId?.photo?.length === 1 && (
+              <div className={styles['image-container']}>
+                <img src={detailReviewId.photo[0]} alt="Review Image" />
+              </div>
+            )
+          )}
+          <div className={styles.progressBar}>
+            {Array.from({length: totalImages}, (_, index) => (
+              <span key={index} className={`${styles.circle} ${index === currentImage ? styles.active : ''}`} />
+            ))}
           </div>
           <div className={styles.contents}>
             <p>{detailReviewId?.content}</p>

@@ -22,6 +22,7 @@ const ReviewWrite = () => {
 
   const fileInput = useRef<HTMLInputElement>(null);
   const {warnTopCenter, errorTopCenter} = useToast();
+  // const uploadImages: string[] = [];
 
   useEffect(() => {
     if (userInfo.id !== '') setUserId(userInfo.id);
