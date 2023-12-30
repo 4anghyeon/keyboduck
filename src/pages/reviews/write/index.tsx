@@ -20,6 +20,7 @@ const ReviewWrite = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const {warnTopCenter, errorTopCenter} = useToast();
 
+  const uploadImages: string[] = [];
   useEffect(() => {
     supabase.auth.getUserIdentities().then(info => {
       const author = info.data?.identities[0].identity_data?.name;
@@ -107,22 +108,25 @@ const ReviewWrite = () => {
       for (const images of imageFile) {
         const {data: file, error: uploadError} = await supabase.storage
           .from('review_images')
-          .upload(`images/${Date.now()}_${Math.floor(Math.random() * 1000)}.png`, images);
-        // if (uploadError) {
-        //   console.log(uploadError);
-        //   errorTopCenter({message: '이미지 업로드 중 오류가 발생했습니다🙅🏻‍♀️', timeout: 2000});
-        //   return;
-        // }
-        // uploadImages.push(file);
-        // if (file && file.publicURL) {
-        //   uploadImages.push(file.publicURL);
-        // }
-        // console.log('file', file);
+          .upload(`images/${Date.now()}_${Math.floor(Math.random() * 1000)}.png`, images, {
+            contentType: 'image/png',
+          });
+        console.log('file', file);
+
+        if (uploadError) {
+          console.log(uploadError);
+          errorTopCenter({message: '이미지 업로드 중 오류가 발생했습니다🙅🏻‍♀️', timeout: 2000});
+          return;
+        }
+        // const publicURL = `${supabase.storage.from('review_images').url}/${file?.metadata.name}`;
+        // console.log('publicURL', publicURL);
+
+        // uploadImages.push(publicURL);
       }
 
-      // for (const image of imageFile) {
-      //   URL.revokeObjectURL(image);
-      // }
+      for (const image of imageFile) {
+        URL.revokeObjectURL(image);
+      }
       // 2. 리뷰 내용 등록
       const {data: addReviewData, error} = await supabase
         .from('review')
