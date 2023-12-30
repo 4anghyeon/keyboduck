@@ -31,7 +31,10 @@ const Question = () => {
   if (isLoading) {
     return <Loading />;
   }
-  console.log(questionList?.getQuestionData?.slice(offset, offset + limit));
+
+  if (isError) {
+    return <div>🙇정보를 불러오지 못했습니다🙇</div>;
+  }
 
   return (
     <div className={styles['qna-container']}>
@@ -53,12 +56,12 @@ const Question = () => {
           return <QuestionList key={question.id} question={question} />;
         })}
       </div>
-      <Pagination page={page} setPage={setPage} numPages={numPages} />
       <div className={styles['qna-registration-btn']}>
         <Link href="/question/write">
           <button>등록하기</button>
         </Link>
       </div>
+      <Pagination page={page} setPage={setPage} numPages={numPages} />
     </div>
   );
 };
