@@ -5,6 +5,12 @@ export interface QuestionType {
   id: number;
   title: string | null;
   write_date: string | null;
+  profiles: {
+    avatar_url: string | null;
+    email: string | null;
+    id: string | null;
+    username: string | null;
+  };
 }
 
 export interface AnswerType {

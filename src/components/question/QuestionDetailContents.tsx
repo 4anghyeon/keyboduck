@@ -9,6 +9,7 @@ const QuestionDetailContents = ({getQuestionData}: {getQuestionData: QuestionTyp
   const router = useRouter();
   const questionId: number | null = Number(router.query.questionId);
   const findQuestion = getQuestionData?.find(question => question.id === questionId);
+  console.log(findQuestion);
 
   return (
     <div className={styles['detail-contents-container']}>
@@ -20,7 +21,7 @@ const QuestionDetailContents = ({getQuestionData}: {getQuestionData: QuestionTyp
         <h2>{findQuestion?.title}</h2>
         <div className={styles['detail-user']}>
           <FaRegUserCircle size="25" color="#83e0a5" />
-          <p>{findQuestion?.author}</p>
+          <p>{findQuestion?.profiles.username}</p>
         </div>
       </div>
       <div className={styles['detail-date']}>
