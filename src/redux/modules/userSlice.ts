@@ -24,12 +24,20 @@ const userSlice = createSlice({
       }
       // google로 로그인한 경우
       if (action.payload?.app_metadata.provider === 'google') {
-        state = action.payload?.identities?.[0].identity_data;
+        state = {
+          id: action.payload.id,
+          username: action.payload.identities[0].identity_data.name,
+          avatar: action.payload.identities[0].identity_data.avatar_url,
+        };
         return state;
       }
       // github로 로그인한 경우
       if (action.payload?.app_metadata.provider === 'github') {
-        state = action.payload?.identities?.[0].identity_data;
+        state = {
+          id: action.payload.id,
+          username: action.payload.identities[0].identity_data.name,
+          avatar: action.payload.identities[0].identity_data.avatar_url,
+        };
         return state;
       }
     },

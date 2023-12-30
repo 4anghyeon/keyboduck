@@ -57,7 +57,7 @@ const ReviewPage = () => {
                       <div className={styles['user-wrap']}>
                         <div className={styles['user']}>
                           <Image src={defaultImg} alt="유저프로필" className={styles['user-profile']} />
-                          <p>{review.author}</p>
+                          <p>{review.profiles.username}</p>
                         </div>
                         <p>{review.write_date?.substring(0, 10)}</p>
                       </div>

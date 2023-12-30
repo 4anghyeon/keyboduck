@@ -44,7 +44,7 @@ const ReviewDetail = () => {
             <h1 className={styles.title}>{detailReviewId?.title}</h1>
             <div className={styles['user-profile']}>
               <Image src={defaultImg} alt="profile-image" width={60} height={60} />
-              <p>{detailReviewId?.author}</p>
+              <p>{detailReviewId?.profiles.username}</p>
             </div>
             <div className={styles.wrap}>
               <span>{detailReviewId?.write_date!.replace('T', ' ').substring(0, 19)}</span>

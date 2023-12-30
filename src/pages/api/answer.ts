@@ -3,17 +3,17 @@ import {Tables} from '@/shared/supabase/types/supabase';
 
 //답변 가져오기
 export const getAnswer = async () => {
-  const getAnswerQuery = await supabase.from('answer').select('*').returns<Tables<'answer'>[]>();
+  const getAnswerQuery = await supabase.from('answer').select('*,  profiles(*)').returns<Tables<'answer'>[]>();
 
   const {data: getAnswerData, error} = getAnswerQuery;
   return {getAnswerData, error};
 };
 
 // 답변 추가하기
-export const addAnswer = async (author: string, comment: string, questionId: number) => {
+export const addAnswer = async (userId: string, comment: string, questionId: number) => {
   await supabase
     .from('answer')
-    .insert({author, content: comment, question_id: questionId, is_accept: false, is_edit: false})
+    .insert({user_id: userId, content: comment, question_id: questionId, is_accept: false, is_edit: false})
     .select();
 };
 
