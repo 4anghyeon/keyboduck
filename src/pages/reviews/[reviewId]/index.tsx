@@ -8,8 +8,12 @@ import ReviewDetailComment from '@/components/review/ReviewDetailComment';
 import {useQuery} from '@tanstack/react-query';
 import Loading from '@/components/layout/loading/Loading';
 import {fetchReview} from '@/pages/api/review';
+import {useState} from 'react';
+import {useKeyboard} from '@/hooks/useKeyboard';
 
 const ReviewDetail = () => {
+  const {data: keyboardData} = useKeyboard();
+
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
 
@@ -24,6 +28,14 @@ const ReviewDetail = () => {
     staleTime: 3000,
   });
 
+  const detailReviewId = fetchReviewData?.data?.find(review => {
+    return review.id === reviewId;
+  });
+
+  const selectKeyboardName = keyboardData?.keyboardList?.find(keyboard => {
+    return keyboard.id === detailReviewId?.keyboard_id;
+  });
+
   if (isLoading) {
     return <Loading />;
   }
@@ -32,19 +44,18 @@ const ReviewDetail = () => {
     return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
   }
 
-  const detailReviewId = fetchReviewData?.data?.find(review => {
-    return review.id === reviewId;
-  });
-
   return (
     <div>
       <div className={styles.container}>
         <div>
           <div className={styles['title-wrap']}>
             <h1 className={styles.title}>{detailReviewId?.title}</h1>
-            <div className={styles['user-profile']}>
-              <Image src={defaultImg} alt="profile-image" width={60} height={60} />
-              <p>{detailReviewId?.profiles.username}</p>
+            <div className={styles['keyboard-wrap']}>
+              <p>{selectKeyboardName?.name}</p>
+              <div className={styles['user-profile']}>
+                <Image src={defaultImg} alt="profile-image" width={60} height={60} />
+                <p>{detailReviewId?.profiles.username}</p>
+              </div>
             </div>
             <div className={styles.wrap}>
               <span>{detailReviewId?.write_date!.replace('T', ' ').substring(0, 19)}</span>

@@ -14,11 +14,24 @@
   font-size: 50px;
   font-family: Pretendard-Medium;
 }
-.user-profile {
+
+.keyboard-wrap {
   width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.keyboard-wrap p {
+  font-size: 20px;
+  font-family: Pretendard-Medium;
+  color: #83e0a5;
+}
+
+.user-profile {
   height: 100px;
   display: flex;
-  justify-content: flex-end;
   gap: 10px;
   align-items: center;
 }
@@ -26,22 +39,26 @@
 .user-profile p {
   font-size: 20px;
   font-family: Pretendard-Light;
+  color: black;
 }
 
 .user-profile img {
   width: 60px;
   height: 60px;
 }
+
 .wrap {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
+
 .container span {
   font-size: 18px;
   font-family: Pretendard-Light;
   color: #b0b0b0;
 }
+
 .container button {
   border-style: none;
   background-color: transparent;

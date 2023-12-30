@@ -9,24 +9,23 @@ import SearchKeyboard from '@/components/review/SearchKeyboard';
 import {useEffect} from 'react';
 import {supabase} from '@/shared/supabase/supabase';
 import router from 'next/router';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/redux/store';
 
 const ReviewWrite = () => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [imageFile, setImageFile] = useState<string[]>([]);
-  const [author, setAuthor] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
   const [selectedKeyboardId, setSelectedKeyboardId] = useState<number | null>(null);
+  const userInfo = useSelector((state: RootState) => state.userSlice);
 
   const fileInput = useRef<HTMLInputElement>(null);
   const {warnTopCenter, errorTopCenter} = useToast();
-  const uploadImages: string[] = [];
 
   useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      const author = info.data?.identities[0].identity_data?.name;
-      if (author) setAuthor(author);
-    });
-  }, []);
+    if (userInfo.id !== '') setUserId(userInfo.id);
+  }, [userInfo]);
 
   const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
   const contentChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void => setContent(event.target.value);
@@ -73,14 +72,6 @@ const ReviewWrite = () => {
     const files: FileList = event.target.files;
     const processedImageFiles = processImageFiles(files, imageFile);
     setImageFile(processedImageFiles);
-    // setImageFile((prev) => [...prev, event.target.files![0]]);
-  };
-
-  // blob형태를 url로 변환
-  const fetchImageFile = async blobUrl => {
-    const response = await fetch(blobUrl);
-    const blob = await response.blob();
-    return new File([blob], 'upload.png', {type: 'image/png'});
   };
 
   // 이미지 삭제
@@ -88,6 +79,13 @@ const ReviewWrite = () => {
     const updatedImageFiles = [...imageFile];
     updatedImageFiles.splice(index, 1);
     setImageFile(updatedImageFiles);
+  };
+
+  // blob형태를 url로 변환
+  const fetchImageFile = async (blobUrl: string): Promise<File> => {
+    const response = await fetch(blobUrl);
+    const blob = await response.blob();
+    return new File([blob], 'upload.png', {type: 'image/png'});
   };
 
   // 리뷰 등록하기
@@ -111,6 +109,7 @@ const ReviewWrite = () => {
 
     try {
       // 1. 이미지 스토리지에 업로드
+      let uploadPaths = [];
       for (const imageUrl of imageFile) {
         const file = await fetchImageFile(imageUrl);
 
@@ -126,36 +125,19 @@ const ReviewWrite = () => {
           return;
         }
 
-        const publicURL = `${supabase.storage.from('review_images').getPublicUrl(uploadData.key).publicURL}`;
-        uploadImages.push(publicURL);
+        if (uploadData) {
+          uploadPaths.push(uploadData.path);
+        }
       }
-      // const uploadImages = [];
-      // for (const images of imageFile) {
-      //   const {data: file, error: uploadError} = await supabase.storage
-      //     .from('review_images')
-      //     .upload(`images/${Date.now()}_${Math.floor(Math.random() * 1000)}.png`, images, {
-      //       contentType: 'image/png',
-      //     });
-      //   console.log('file', file);
 
-      //   if (uploadError) {
-      //     console.log(uploadError);
-      //     errorTopCenter({message: '이미지 업로드 중 오류가 발생했습니다🙅🏻‍♀️', timeout: 2000});
-      //     return;
-      //   }
-      //   // const publicURL = `${supabase.storage.from('review_images').url}/${file?.metadata.name}`;
-      //   // console.log('publicURL', publicURL);
+      // 2. 리뷰내용 테이블에 등록
+      const bucketName = 'review_images';
+      const supabaseUrl = 'https://eaxjoqjnwoyrpkpvzosu.supabase.co';
+      const publicUrls = uploadPaths.map(path => `${supabaseUrl}/storage/v1/object/public/${bucketName}/${path}`);
 
-      //   // uploadImages.push(publicURL);
-      // }
-
-      // for (const image of imageFile) {
-      //   URL.revokeObjectURL(image);
-      // }
-      // 2. 리뷰 내용 등록
       const {data: addReviewData, error} = await supabase
         .from('review')
-        .insert({title, keyboard_id: selectedKeyboardId, content, author, photo: uploadImages})
+        .insert({title, keyboard_id: selectedKeyboardId, content, user_id: userId, photo: publicUrls})
         .select();
 
       if (addReviewData) {
