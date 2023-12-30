@@ -59,10 +59,11 @@
   width: 60%;
   display: flex;
   justify-content: flex-end;
-  margin: 15px 0px 50px 0px;
+  margin: 15px 0px 30px 0px;
 }
-.qna-registration-btn a button {
-  padding: 8px 15px;
+.qna-registration-btn a,
+.qna-registration-btn button {
+  padding: 5px 15px;
   border: none;
   border-radius: 10px;
   background-color: #83e0a5;
