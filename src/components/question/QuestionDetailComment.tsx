@@ -6,8 +6,9 @@ import {completionAnswer, deleteAnswer, isEditAnswer} from '@/pages/api/answer';
 import Swal from 'sweetalert2';
 import {useToast} from '@/hooks/useToast';
 import {supabase} from '@/shared/supabase/supabase';
+import {Tables} from '@/shared/supabase/types/supabase';
 
-const QuestionDetailComment = ({getAnswer, author}: {getAnswer: AnswerType; author: string}) => {
+const QuestionDetailComment = ({getAnswer, userId}: {getAnswer: Tables<'answer'>; userId: string}) => {
   const [isEdit, setIsEdit] = useState(getAnswer.is_edit);
   const [user, setUser] = useState(null);
   const [answerContent, setAnswerContent] = useState(getAnswer.content);
@@ -98,10 +99,10 @@ const QuestionDetailComment = ({getAnswer, author}: {getAnswer: AnswerType; auth
   return (
     <div key={getAnswer.id} className={styles['detail-answer']}>
       <div className={styles['detail-answer-user']}>
-        <p>{getAnswer.author}</p>
+        <p>{getAnswer.profiles.username}</p>
         <div className={styles['detail-answer-select']}>
           <button>채택하기</button>
-          {getAnswer.author === author && user !== null ? (
+          {getAnswer.profiles.id === userId && user !== null ? (
             <div className={styles['detail-answer-btn']}>
               {isEdit ? (
                 <>

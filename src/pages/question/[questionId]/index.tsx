@@ -10,20 +10,20 @@ import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/router';
 import {Modal} from '@/components/modal/Modal';
 import ModalContent from '@/components/modal/ModalContent';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/redux/store';
 
 const QuestionDetail = () => {
-  const [author, setAuthor] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const userInfo = useSelector((state: RootState) => state.userSlice);
 
   const router = useRouter();
   const questionId: number | null = Number(router.query.questionId);
 
   useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      const author = info.data?.identities[0].identity_data?.name;
-      if (author) setAuthor(author);
-    });
-  }, []);
+    if (userInfo.id !== '') setUserId(userInfo.id);
+  }, [userInfo]);
 
   const {isLoading, isError, data} = useQuery({
     queryKey: ['getQuestion'],
@@ -56,10 +56,10 @@ const QuestionDetail = () => {
       <div className={styles['detail-answer-container']}>
         {isOpenModal && (
           <Modal onClickToggleHandler={clickOpenModal}>
-            <ModalContent author={author} isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
+            <ModalContent userId={userId} isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
           </Modal>
         )}
-        {!!author ? (
+        {!!userId ? (
           <div className={styles['detail-answer-register-btn']}>
             <button onClick={clickOpenModal}>답변 등록하기</button>
           </div>
@@ -67,7 +67,7 @@ const QuestionDetail = () => {
 
         {/* 댓글 들어가는 곳 */}
         {answerQuestionIdFilter?.map(item => {
-          return <QuestionDetailComment key={item.id} author={author} getAnswer={item} />;
+          return <QuestionDetailComment key={item.id} userId={userId} getAnswer={item} />;
         })}
       </div>
     </div>

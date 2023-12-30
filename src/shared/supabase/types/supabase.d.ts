@@ -10,33 +10,41 @@ export interface Database {
     Tables: {
       answer: {
         Row: {
-          author: string | null;
+          user_id: string | null;
           content: string | null;
           id: number;
           is_accept: boolean | null;
+          is_edit: boolean | null;
           question_id: number;
           write_date: string | null;
-          is_edit: boolean | null;
+          profiles: Tables<'profiles'>;
         };
         Insert: {
-          author?: string | null;
+          user_id?: string | null;
           content?: string | null;
           id?: number;
           is_accept?: boolean | null;
+          is_edit?: boolean | null;
           question_id: number;
           write_date?: string | null;
-          is_edit: boolean | null;
         };
         Update: {
-          author?: string | null;
+          user_id?: string | null;
           content?: string | null;
           id?: number;
           is_accept?: boolean | null;
+          is_edit?: boolean | null;
           question_id?: number;
           write_date?: string | null;
-          is_edit: boolean | null;
         };
         Relationships: [
+          {
+            foreignKeyName: 'answer_author_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
           {
             foreignKeyName: 'answer_question_id_fkey';
             columns: ['question_id'];
@@ -124,21 +132,18 @@ export interface Database {
         Row: {
           avatar_url: string | null;
           email: string | null;
-          full_name: string | null;
           id: string;
           username: string | null;
         };
         Insert: {
           avatar_url?: string | null;
           email?: string | null;
-          full_name?: string | null;
           id: string;
           username?: string | null;
         };
         Update: {
           avatar_url?: string | null;
           email?: string | null;
-          full_name?: string | null;
           id?: string;
           username?: string | null;
         };
@@ -154,57 +159,67 @@ export interface Database {
       };
       question: {
         Row: {
-          author: string | null;
           category: string;
           content: string | null;
           id: number;
           title: string | null;
+          user_id: string | null;
           write_date: string | null;
+          profiles: Tables<'profiles'>;
         };
         Insert: {
-          author?: string | null;
           category: string;
           content?: string | null;
           id?: number;
           title?: string | null;
+          user_id?: string | null;
           write_date?: string | null;
         };
         Update: {
-          author?: string | null;
           category?: string;
           content?: string | null;
           id?: number;
           title?: string | null;
+          user_id?: string | null;
           write_date?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'question_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       review: {
         Row: {
-          author: string | null;
           content: string | null;
           id: number;
-          keyboard_id: number | null;
+          keyboard_id: number;
           photo: string[] | null;
           title: string | null;
+          user_id: string | null;
           write_date: string | null;
+          profiles: Tables<'profiles'>;
         };
         Insert: {
-          author?: string | null;
           content?: string | null;
           id?: number;
-          keyboard_id: number | null;
+          keyboard_id: number;
           photo?: string[] | null;
           title?: string | null;
+          user_id?: string | null;
           write_date?: string | null;
         };
         Update: {
-          author?: string | null;
           content?: string | null;
           id?: number;
-          keyboard_id?: number | null;
+          keyboard_id?: number;
           photo?: string[] | null;
           title?: string | null;
+          user_id?: string | null;
           write_date?: string | null;
         };
         Relationships: [
@@ -213,6 +228,13 @@ export interface Database {
             columns: ['keyboard_id'];
             isOneToOne: false;
             referencedRelation: 'keyboard';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'review_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
         ];
@@ -224,6 +246,7 @@ export interface Database {
           id: number;
           review_id: number;
           write_date: string | null;
+          profiles: Tables<'profiles'>;
         };
         Insert: {
           author?: string | null;
@@ -240,6 +263,13 @@ export interface Database {
           write_date?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: 'review_comment_author_fkey';
+            columns: ['author'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
           {
             foreignKeyName: 'review_comment_review_id_fkey';
             columns: ['review_id'];
