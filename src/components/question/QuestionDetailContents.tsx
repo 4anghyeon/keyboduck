@@ -9,7 +9,6 @@ const QuestionDetailContents = ({getQuestionData}: {getQuestionData: QuestionTyp
   const router = useRouter();
   const questionId: number | null = Number(router.query.questionId);
   const findQuestion = getQuestionData?.find(question => question.id === questionId);
-  console.log(findQuestion);
 
   return (
     <div className={styles['detail-contents-container']}>
