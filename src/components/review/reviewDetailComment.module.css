@@ -6,6 +6,10 @@
   margin-top: 70px;
 }
 
+.blank {
+  text-align: center;
+}
+
 .comment-wrap input {
   width: 500px;
   height: 45px;
@@ -36,11 +40,16 @@
 .comment-box p {
   font-size: 20px;
 }
+
 .comment-user {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
+  margin: 10px auto;
+}
+
+.comment-user > div {
+  margin: 0;
 }
 
 .comment-user button {
@@ -48,4 +57,8 @@
   background-color: transparent;
   color: #b0b0b0;
   word-spacing: 10px;
+}
+
+.comment-user button :hover {
+  color: #83e0a5;
 }

@@ -28,7 +28,6 @@ const ReviewPage = () => {
     return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
   }
 
-  // 작동안함
   if (fetchReviewData?.data?.length === 0) {
     <h1>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</h1>;
   }
@@ -44,30 +43,33 @@ const ReviewPage = () => {
           </button>
         </div>
         <div className={styles['grid-container']}>
-          {fetchReviewData?.data?.map(review => {
-            console.log(review);
-            return (
-              <div className={styles['content-container']} key={review.id}>
-                <Link href={`/reviews/${review.id}`} className={styles['content-link']}>
-                  <div className={styles['content-wrap']}>
-                    {review.photo ? (
-                      <img src={review.photo[0]} alt="review-image" className={styles['content-image']} />
-                    ) : null}
-                    <div>
-                      <div className={styles['user-wrap']}>
-                        <div className={styles['user']}>
-                          <Image src={defaultImg} alt="유저프로필" className={styles['user-profile']} />
-                          <p>{review.profiles.username}</p>
+          {fetchReviewData?.data?.length === 0 ? (
+            <h1>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</h1>
+          ) : (
+            fetchReviewData?.data?.map(review => {
+              return (
+                <div className={styles['content-container']} key={review.id}>
+                  <Link href={`/reviews/${review.id}`} className={styles['content-link']}>
+                    <div className={styles['content-wrap']}>
+                      {review.photo ? (
+                        <img src={review.photo[0]} alt="review-image" className={styles['content-image']} />
+                      ) : null}
+                      <div>
+                        <div className={styles['user-wrap']}>
+                          <div className={styles['user']}>
+                            <Image src={defaultImg} alt="유저프로필" className={styles['user-profile']} />
+                            <p>{review.profiles.username}</p>
+                          </div>
+                          <p>{review.write_date?.substring(0, 10)}</p>
                         </div>
-                        <p>{review.write_date?.substring(0, 10)}</p>
+                        <span>{review.title}</span>
                       </div>
-                      <span>{review.title}</span>
                     </div>
-                  </div>
-                </Link>
-              </div>
-            );
-          })}
+                  </Link>
+                </div>
+              );
+            })
+          )}
         </div>
         <div className={styles['write-wrap']}>
           <Link href="/reviews/write" className={styles['write-btn']}>

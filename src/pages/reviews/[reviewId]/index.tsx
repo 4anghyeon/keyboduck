@@ -108,7 +108,6 @@ const ReviewDetail: React.FC = () => {
             <p>{detailReviewId?.content}</p>
           </div>
         </div>
-
         <ReviewDetailComment />
       </div>
     </div>
