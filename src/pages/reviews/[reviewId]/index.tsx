@@ -39,13 +39,13 @@ const ReviewDetail: React.FC = () => {
 
   const prevImageButtonHandler = () => {
     if (detailReviewId?.photo && detailReviewId.photo.length > 0) {
-      setCurrentImage(prevIndex => (prevIndex > 0 ? prevIndex - 1 : detailReviewId?.photo.length - 1));
+      setCurrentImage(prevIndex => (prevIndex > 0 ? prevIndex - 1 : detailReviewId.photo.length - 1));
     }
   };
 
   const nextImageButtonHandler = () => {
     if (detailReviewId?.photo && detailReviewId.photo.length > 0) {
-      setCurrentImage(prevIndex => (prevIndex + 1) % detailReviewId?.photo.length);
+      setCurrentImage(prevIndex => (prevIndex + 1) % detailReviewId.photo.length);
     }
   };
 
@@ -73,7 +73,7 @@ const ReviewDetail: React.FC = () => {
               </div>
             </div>
             <div className={styles.wrap}>
-              <span>{detailReviewId?.write_date!.replace('T', ' ').substring(0, 19)}</span>
+              <span>{detailReviewId?.write_date!.replace('T', ' ').substring(0, 16)}</span>
               <div>
                 <button>수정 |</button>
                 <button>삭제</button>
@@ -87,9 +87,6 @@ const ReviewDetail: React.FC = () => {
               </button>
               <div className={styles['image-container']}>
                 <img src={detailReviewId?.photo?.[currentImage]} alt="Review Image" />
-                {/* {detailReviewId?.photo && detailReviewId.photo.length > 0 ? (
-                  <img src={detailReviewId.photo[currentImage]} alt="Review Image" />
-                ) : null} */}
               </div>
               <button onClick={nextImageButtonHandler}>
                 <MdOutlineArrowForwardIos />
