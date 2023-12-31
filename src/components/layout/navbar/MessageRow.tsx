@@ -1,18 +1,27 @@
 import React from 'react';
 import {Tables} from '@/shared/supabase/types/supabase';
 import styles from './message-row.module.css';
-import Link from 'next/link';
+import {useRouter} from 'next/router';
+import {useAlertMessage} from '@/hooks/useAlertMessage';
 
 const MessageRow = ({item}: {item: Tables<'alert_message'>}) => {
+  const router = useRouter();
+  const {updateAlertMessage} = useAlertMessage();
   let link = '/';
   if (item.type === 'answer') {
     link = `/question/${item.target_id}`;
   }
 
+  const onClickMessage = () => {
+    router.push(link).then(() => {
+      updateAlertMessage(item.id);
+    });
+  };
+
   return (
-    <Link href={link} className={[styles.row, !item.read ? styles.read : ''].join(' ')}>
+    <div className={[styles.row, !item.read ? styles.read : ''].join(' ')} onClick={onClickMessage}>
       {item.message}
-    </Link>
+    </div>
   );
 };
 

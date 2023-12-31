@@ -13,9 +13,9 @@ import Image from 'next/image';
 import {RootState} from '@/redux/store';
 import {RealtimeChannel} from '@supabase/realtime-js';
 import {BiSolidBell, BiSolidBellRing} from 'react-icons/bi';
-import {useAlertMessage} from '@/hooks/useAlertMessage';
-import MessageRow from '@/components/layout/navbar/MessageRow';
+import {ALERT_MESSAGE_QUERY_KEY, useAlertMessage} from '@/hooks/useAlertMessage';
 import MessageListContainer from '@/components/layout/navbar/MessageListContainer';
+import {queryClient} from '@/pages/_app';
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -25,7 +25,7 @@ const NavBar = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.userSlice);
-  const {messageList} = useAlertMessage(userInfo.id);
+  const {messageList, hasNextPage, fetchNextMessageList} = useAlertMessage(userInfo.id);
 
   const logout = async () => {
     const {error} = await supabase.auth.signOut();
@@ -59,6 +59,10 @@ const NavBar = () => {
                   // alsert_message 테이블에 데이터가 들어오는데, user_id(메시지 받는 사람)이 본인 아이디일 경우 알람을 띄운다.
                   const message = payload.new.message;
                   alertBottomRight({message, timeout: 2000});
+
+                  queryClient.invalidateQueries({
+                    queryKey: [ALERT_MESSAGE_QUERY_KEY],
+                  });
 
                   // 알람 아이콘 흔들림 효과
                   setRingBell(true);
@@ -111,19 +115,24 @@ const NavBar = () => {
                 onClick={() => setShowMessageList(prev => !prev)}
               >
                 <BiSolidBell size={25} />
-                <span className={styles['message-count']}>{messageList?.data?.length}</span>
+                {/*<span className={styles['message-count']}>{messageList?.map(d => d?.filter(d => !d.read).length)}</span>*/}
               </button>
               <button
                 className={[styles['ring-bell'], ringBell ? '' : styles.hide].join(' ')}
                 onClick={() => setShowMessageList(prev => !prev)}
               >
                 <BiSolidBellRing size={25} />
-                <span className={styles['message-count']}>{messageList?.data?.length}</span>
+                {/*<span className={styles['message-count']}>{messageList?.map(d => d?.filter(d => !d.read).length)}</span>*/}
               </button>
               <MenuItem href="/mypage" name="마이페이지" />
               <MenuItem name="로그아웃" onClick={logout} />
               {showMessageList && (
-                <MessageListContainer messageList={messageList?.data ?? []} setShowMessageList={setShowMessageList} />
+                <MessageListContainer
+                  messageList={messageList?.map(p => p!).flat() ?? []}
+                  setShowMessageList={setShowMessageList}
+                  hasNextPage={hasNextPage}
+                  fetchNextMessageList={fetchNextMessageList}
+                />
               )}
             </>
           ) : (
