@@ -7,8 +7,19 @@ import defaultImg from '../../assets/defaultImg.png';
 import {useQuery} from '@tanstack/react-query';
 import {fetchReview} from '../api/review';
 import Loading from '@/components/layout/loading/Loading';
+import {useState} from 'react';
+import {useEffect} from 'react';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/redux/store';
+import {useToast} from '@/hooks/useToast';
+import {useRouter} from 'next/router';
 
 const ReviewPage = () => {
+  const [userId, setUserId] = useState<string>('');
+  const userInfo = useSelector((state: RootState) => state.userSlice);
+  const {warnTopCenter} = useToast();
+  const router = useRouter();
+
   const {
     isLoading,
     isError,
@@ -20,6 +31,17 @@ const ReviewPage = () => {
     staleTime: 3000,
   });
 
+  useEffect(() => {
+    if (userInfo.id !== '') setUserId(userInfo.id);
+  }, [userInfo]);
+
+  const writeButtonHandler = () => {
+    if (userId === '') {
+      warnTopCenter({message: '로그인 후 리뷰 작성이 가능합니다', timeout: 2000});
+      return;
+    }
+    router.push('/reviews/write');
+  };
   if (isLoading) {
     return <Loading />;
   }
@@ -72,9 +94,9 @@ const ReviewPage = () => {
           )}
         </div>
         <div className={styles['write-wrap']}>
-          <Link href="/reviews/write" className={styles['write-btn']}>
+          <button onClick={writeButtonHandler} className={styles['write-btn']}>
             작성하기
-          </Link>
+          </button>
         </div>
       </div>
     </div>

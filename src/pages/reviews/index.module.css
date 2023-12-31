@@ -128,10 +128,15 @@
   background-color: #83e0a5;
   cursor: pointer;
   border-radius: 10px;
-  text-decoration: none;
+  border-style: none;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 18px;
   font-family: Pretendard-Light;
+}
+
+.write-btn:hover {
+  transform: scale(1.1);
+  transition: all 0.3s;
 }
