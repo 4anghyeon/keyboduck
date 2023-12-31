@@ -1,0 +1,18 @@
+.row {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #B0B0B0;
+    cursor: pointer;
+    color: #b5b5b5;
+    text-decoration: none;
+
+}
+
+.row:hover {
+    background: #83E0A5;
+    color: white;
+}
+
+.read {
+    color: #12b886;
+}

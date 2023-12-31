@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React, {useEffect, useState} from 'react';
-import styles from './NavBar.module.css';
+import styles from './nav-bar.module.css';
 import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/navigation';
 import {useToast} from '@/hooks/useToast';
@@ -13,14 +13,19 @@ import Image from 'next/image';
 import {RootState} from '@/redux/store';
 import {RealtimeChannel} from '@supabase/realtime-js';
 import {BiSolidBell, BiSolidBellRing} from 'react-icons/bi';
+import {useAlertMessage} from '@/hooks/useAlertMessage';
+import MessageRow from '@/components/layout/navbar/MessageRow';
+import MessageListContainer from '@/components/layout/navbar/MessageListContainer';
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showMessageList, setShowMessageList] = useState(false);
   const [ringBell, setRingBell] = useState(false);
   const {successTopRight, errorTopRight, duckTopRight, alertBottomRight} = useToast();
   const router = useRouter();
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.userSlice);
+  const {messageList} = useAlertMessage(userInfo.id);
 
   const logout = async () => {
     const {error} = await supabase.auth.signOut();
@@ -42,30 +47,39 @@ const NavBar = () => {
         case 'SIGNED_IN':
         case 'USER_UPDATED':
           dispatch(setUserInfo(session?.user));
-          // answer 테이블 구독
-          alertMessageChannel = supabase
-            .channel('alert-message-insert-channel')
-            .on(
-              'postgres_changes',
-              {event: 'INSERT', schema: 'public', table: 'alert_message', filter: `user_id=eq.${session?.user.id}`},
-              payload => {
-                const message = payload.new.message;
-                alertBottomRight({message, timeout: 2000});
-                setRingBell(true);
-                setTimeout(() => {
-                  setRingBell(false);
-                }, 1000);
-              },
-            )
-            .subscribe();
+
+          if (session?.user) {
+            // 로그인이 된 경우만 alert_message 테이블 구독
+            alertMessageChannel = supabase
+              .channel('alert-message-insert-channel')
+              .on(
+                'postgres_changes',
+                {event: 'INSERT', schema: 'public', table: 'alert_message', filter: `user_id=eq.${session?.user.id}`},
+                payload => {
+                  // alsert_message 테이블에 데이터가 들어오는데, user_id(메시지 받는 사람)이 본인 아이디일 경우 알람을 띄운다.
+                  const message = payload.new.message;
+                  alertBottomRight({message, timeout: 2000});
+
+                  // 알람 아이콘 흔들림 효과
+                  setRingBell(true);
+                  setTimeout(() => {
+                    setRingBell(false);
+                  }, 1000);
+                },
+              )
+              .subscribe();
+          }
+
           break;
         case 'SIGNED_OUT':
+          // 로그아웃을 할 경우 현재 로그인 정보를 날리고, 모든 구독을 취소한다.
           dispatch(logoutUser());
           alertMessageChannel?.unsubscribe();
       }
     });
 
     return () => {
+      // navbar에서 이 cleanup 함수가 일어난다는 것은 페이지를 아예 나간다는 뜻
       alertMessageChannel?.unsubscribe();
     };
   }, []);
@@ -92,16 +106,25 @@ const NavBar = () => {
         <div className={styles.auth}>
           {userInfo.id !== '' ? (
             <>
-              <button className={[styles.bell, ringBell ? styles.hide : ''].join(' ')}>
+              <button
+                className={[styles.bell, ringBell ? styles.hide : ''].join(' ')}
+                onClick={() => setShowMessageList(prev => !prev)}
+              >
                 <BiSolidBell size={25} />
-                <span className={styles['message-count']}>1</span>
+                <span className={styles['message-count']}>{messageList?.data?.length}</span>
               </button>
-              <button className={[styles['ring-bell'], ringBell ? '' : styles.hide].join(' ')}>
+              <button
+                className={[styles['ring-bell'], ringBell ? '' : styles.hide].join(' ')}
+                onClick={() => setShowMessageList(prev => !prev)}
+              >
                 <BiSolidBellRing size={25} />
-                <span className={styles['message-count']}>1</span>
+                <span className={styles['message-count']}>{messageList?.data?.length}</span>
               </button>
               <MenuItem href="/mypage" name="마이페이지" />
               <MenuItem name="로그아웃" onClick={logout} />
+              {showMessageList && (
+                <MessageListContainer messageList={messageList?.data ?? []} setShowMessageList={setShowMessageList} />
+              )}
             </>
           ) : (
             <>
@@ -116,10 +139,17 @@ const NavBar = () => {
           </button>
           {showMenu && (
             <div className={styles['context-menu-container']}>
-              <MenuItem href="/mypage" name="마이페이지" />
-              <MenuItem href="/login" name="로그인" />
-              <MenuItem name="로그아웃" onClick={logout} />
-              <MenuItem href="/signup" name="회원가입" />
+              {userInfo.id !== '' ? (
+                <>
+                  <MenuItem href="/mypage" name="마이페이지" />
+                  <MenuItem name="로그아웃" onClick={logout} />
+                </>
+              ) : (
+                <>
+                  <MenuItem href="/login" name="로그인" />
+                  <MenuItem href="/signup" name="회원가입" />
+                </>
+              )}
             </div>
           )}
         </div>

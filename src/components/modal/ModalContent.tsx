@@ -32,10 +32,11 @@ const ModalContent = ({
     mutationFn: async () => await addAnswer(userId, comment, questionId!),
     onSuccess: result => {
       queryClient.invalidateQueries({queryKey: ['getAnswer']});
+
       if (userId !== findQuestion?.user_id) {
         addAlertMessage({
           type: 'answer',
-          targetId: result.data![0].id,
+          targetId: findQuestion?.id ?? 0,
           userId: findQuestion?.user_id ?? '',
           message: `작성하신 질문 ${findQuestion?.title}에 답변이 등록되었습니다.`,
         });
