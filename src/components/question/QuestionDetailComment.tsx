@@ -1,29 +1,36 @@
 import React, {useEffect, useState} from 'react';
 import styles from '@/components/question/QuestionDetailComment.module.css';
-import {AnswerType} from '@/pages/question/types/question';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {completionAnswer, deleteAnswer, isEditAnswer} from '@/pages/api/answer';
+import {completionAnswer, deleteAnswer} from '@/pages/api/answer';
 import Swal from 'sweetalert2';
 import {useToast} from '@/hooks/useToast';
 import {supabase} from '@/shared/supabase/supabase';
 import {Tables} from '@/shared/supabase/types/supabase';
+import {RootState} from '@/redux/store';
+import {useSelector} from 'react-redux';
 
-const QuestionDetailComment = ({getAnswer, userId}: {getAnswer: Tables<'answer'>; userId: string}) => {
+const QuestionDetailComment = ({
+  getAnswer,
+  userId,
+  getQuestionUserId,
+}: {
+  getAnswer: Tables<'answer'>;
+  userId: string;
+  getQuestionUserId: string;
+}) => {
   const [isEdit, setIsEdit] = useState(getAnswer.is_edit);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState('');
   const [answerContent, setAnswerContent] = useState(getAnswer.content);
   const [revisedAnswer, setRevisedAnswer] = useState<string>(getAnswer.content!);
+  const userInfo = useSelector((state: RootState) => state.userSlice);
 
   const {successTopCenter, warnTopCenter} = useToast();
 
   const onChangeRevisedAnswer = (e: React.ChangeEvent<HTMLTextAreaElement>) => setRevisedAnswer(e.target.value);
 
   useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      const author = info.data?.identities[0].identity_data?.name;
-      if (author) setUser(author);
-    });
-  }, []);
+    if (userInfo.username !== '') setUser(userInfo.username);
+  }, [userInfo]);
 
   const queryClient = useQueryClient();
   const deleteAnswerMutation = useMutation({
@@ -101,7 +108,8 @@ const QuestionDetailComment = ({getAnswer, userId}: {getAnswer: Tables<'answer'>
       <div className={styles['detail-answer-user']}>
         <p>{getAnswer.profiles.username}</p>
         <div className={styles['detail-answer-select']}>
-          <button>채택하기</button>
+          {userId === getQuestionUserId ? <button>채택하기</button> : null}
+
           {getAnswer.profiles.id === userId && user !== null ? (
             <div className={styles['detail-answer-btn']}>
               {isEdit ? (

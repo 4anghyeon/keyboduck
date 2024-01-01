@@ -3,19 +3,13 @@ import styles from '@/components/question/QusetionDetailContents.module.css';
 import {FaRegUserCircle} from 'react-icons/fa';
 import {useRouter} from 'next/router';
 
-import {QuestionType} from '@/pages/question/types/question';
 import Link from 'next/link';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {deleteQuestion} from '@/pages/api/question';
 import Swal from 'sweetalert2';
+import {Tables} from '@/shared/supabase/types/supabase';
 
-const QuestionDetailContents = ({
-  getQuestionData,
-  userId,
-}: {
-  getQuestionData: QuestionType[] | null;
-  userId: string;
-}) => {
+const QuestionDetailContents = ({getQuestionData, userId}: {getQuestionData: Tables<'question'>[]; userId: string}) => {
   const router = useRouter();
   const questionId: number | null = Number(router.query.questionId);
   const findQuestion = getQuestionData?.find(question => question.id === questionId);

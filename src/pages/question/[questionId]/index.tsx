@@ -39,7 +39,7 @@ const QuestionDetail = () => {
   const clickOpenModal = useCallback(() => {
     setIsOpenModal(!isOpenModal);
   }, [isOpenModal]);
-
+  const getQuestionUserId = data?.getQuestionData?.find(question => question.id === questionId)?.user_id;
   const answerQuestionIdFilter = answer?.getAnswerData!?.filter(item => item.question_id === questionId);
 
   if (isLoading) {
@@ -65,7 +65,14 @@ const QuestionDetail = () => {
         ) : null}
         {/* 댓글 들어가는 곳 */}
         {answerQuestionIdFilter?.map(item => {
-          return <QuestionDetailComment key={item.id} userId={userId} getAnswer={item} />;
+          return (
+            <QuestionDetailComment
+              getQuestionUserId={getQuestionUserId!}
+              key={item.id}
+              userId={userId}
+              getAnswer={item}
+            />
+          );
         })}
       </div>
     </div>
