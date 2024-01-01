@@ -164,7 +164,15 @@ const QuestionDetailComment = ({
         </div>
       </div>
       <div className={styles['detail-answer-date']}>
-        <p>{getAnswer.write_date?.substring(0, 10)}</p>
+        <p>
+          {new Date(getAnswer.write_date!).toLocaleDateString('ko', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+          })}
+        </p>
       </div>
       {isEdit === true && user !== null ? (
         <div>

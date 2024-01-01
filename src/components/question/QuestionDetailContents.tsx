@@ -56,7 +56,15 @@ const QuestionDetailContents = ({getQuestionData, userId}: {getQuestionData: Tab
         </div>
       </div>
       <div className={styles['detail-date']}>
-        <p>{findQuestion?.write_date?.substring(0, 10)}</p>
+        <p>
+          {new Date(findQuestion?.write_date!).toLocaleDateString('ko', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+          })}
+        </p>
       </div>
       <div className={!!userId ? styles['detail-contents-login'] : styles['detail-contents-logout']}>
         <p>{findQuestion?.content}</p>
