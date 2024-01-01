@@ -1,7 +1,5 @@
 .detail-contents-container {
   width: 60%;
-  border-bottom: 1px solid #b0b0b0;
-  margin-bottom: 20px;
 }
 .detail-category {
   margin-bottom: 20px;
@@ -28,11 +26,18 @@
   color: #b0b0b0;
   font-size: 15px;
 }
-.detail-contents {
+.detail-contents-login {
   border: 1px solid #83e0a5;
   border-radius: 10px;
   height: 500px;
   padding: 10px;
+}
+.detail-contents-logout {
+  border: 1px solid #83e0a5;
+  border-radius: 10px;
+  height: 500px;
+  padding: 10px;
+  margin-bottom: 100px;
 }
 .detail-board-btn {
   display: flex;
@@ -40,7 +45,7 @@
   gap: 10px;
 }
 .detail-board-btn button {
-  margin: 10px 0px 100px 0px;
+  margin-top: 10px;
   border: none;
   background-color: transparent;
   font-size: 12px;

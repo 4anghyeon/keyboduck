@@ -6,7 +6,6 @@ import {useQuery} from '@tanstack/react-query';
 import {getQuestion} from '@/pages/api/question';
 import {getAnswer} from '@/pages/api/answer';
 import Loading from '@/components/layout/loading/Loading';
-import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/router';
 import {Modal} from '@/components/modal/Modal';
 import ModalContent from '@/components/modal/ModalContent';
@@ -52,7 +51,7 @@ const QuestionDetail = () => {
 
   return (
     <div className={styles['detail-container']}>
-      <QuestionDetailContents getQuestionData={data?.getQuestionData!} />
+      <QuestionDetailContents userId={userId} getQuestionData={data?.getQuestionData!} />
       <div className={styles['detail-answer-container']}>
         {isOpenModal && (
           <Modal onClickToggleHandler={clickOpenModal}>
@@ -64,7 +63,6 @@ const QuestionDetail = () => {
             <button onClick={clickOpenModal}>답변 등록하기</button>
           </div>
         ) : null}
-
         {/* 댓글 들어가는 곳 */}
         {answerQuestionIdFilter?.map(item => {
           return <QuestionDetailComment key={item.id} userId={userId} getAnswer={item} />;

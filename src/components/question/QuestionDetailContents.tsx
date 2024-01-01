@@ -5,7 +5,13 @@ import {useRouter} from 'next/router';
 
 import {QuestionType} from '@/pages/question/types/question';
 
-const QuestionDetailContents = ({getQuestionData}: {getQuestionData: QuestionType[] | null}) => {
+const QuestionDetailContents = ({
+  getQuestionData,
+  userId,
+}: {
+  getQuestionData: QuestionType[] | null;
+  userId: string;
+}) => {
   const router = useRouter();
   const questionId: number | null = Number(router.query.questionId);
   const findQuestion = getQuestionData?.find(question => question.id === questionId);
@@ -26,13 +32,15 @@ const QuestionDetailContents = ({getQuestionData}: {getQuestionData: QuestionTyp
       <div className={styles['detail-date']}>
         <p>{findQuestion?.write_date?.substring(0, 10)}</p>
       </div>
-      <div className={styles['detail-contents']}>
+      <div className={!!userId ? styles['detail-contents-login'] : styles['detail-contents-logout']}>
         <p>{findQuestion?.content}</p>
       </div>
-      <div className={styles['detail-board-btn']}>
-        <button>수정</button>
-        <button>삭제</button>
-      </div>
+      {!!userId && findQuestion?.user_id === userId ? (
+        <div className={styles['detail-board-btn']}>
+          <button>수정</button>
+          <button>삭제</button>
+        </div>
+      ) : null}
     </div>
   );
 };
