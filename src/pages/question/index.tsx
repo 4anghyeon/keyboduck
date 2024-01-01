@@ -6,6 +6,8 @@ import {getQuestion} from '../api/question';
 import {useQuery} from '@tanstack/react-query';
 import Loading from '@/components/layout/loading/Loading';
 import Pagination from '@/components/question/Pagination';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/redux/store';
 
 const Question = () => {
   const {
@@ -17,6 +19,8 @@ const Question = () => {
     queryFn: getQuestion,
     refetchOnWindowFocus: false,
   });
+  const userInfo = useSelector((state: RootState) => state.userSlice);
+  const [userData, setUserData] = useState('');
   const QUESTION = questionList?.getQuestionData;
   // 현재 페이지
   const [page, setPage] = useState(1);
@@ -33,6 +37,10 @@ const Question = () => {
     // 전체데이터가 변할 때마다 게시물 수 업데이트
     setTotal(QUESTION?.length || 0);
   }, [QUESTION]);
+
+  useEffect(() => {
+    if (userInfo.id !== '') setUserData(userInfo.id);
+  }, [userInfo]);
 
   if (isLoading) {
     return <Loading />;
@@ -63,9 +71,11 @@ const Question = () => {
         })}
       </div>
       <div className={styles['qna-registration-btn']}>
-        <Link href="/question/write">
-          <button>등록하기</button>
-        </Link>
+        {!!userData ? (
+          <Link href="/question/write">
+            <button>등록하기</button>
+          </Link>
+        ) : null}
       </div>
       <Pagination page={page} setPage={setPage} numPages={numPages} />
     </div>
