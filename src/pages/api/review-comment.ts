@@ -24,3 +24,8 @@ export const addReviewComment = async (userId: string, comment: string, reviewId
 export const deleteReviewComment = async (id: number) => {
   return await supabase.from('review_comment').delete().eq('id', id);
 };
+
+// 리뷰 댓글 수정하기
+export const updateReviewComment = async ({id, editingComment}: {id: number; editingComment: string}) => {
+  return await supabase.from('review_comment').update({content: editingComment}).eq('id', id).select();
+};
