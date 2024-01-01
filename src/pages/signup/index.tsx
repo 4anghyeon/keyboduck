@@ -3,6 +3,8 @@ import signup from './index.module.css';
 import {signUpNewUser} from '../api/auth';
 import {supabase} from '@/shared/supabase/supabase';
 import {useToast} from '@/hooks/useToast';
+import {Tables} from '@/shared/supabase/types/supabase';
+import {useRouter} from 'next/navigation';
 
 const Signup = () => {
   const [idValue, setIdValue] = useState<string>('');
@@ -10,13 +12,18 @@ const Signup = () => {
   const [pwConfirmValue, setPwConfirmValue] = useState<string>('');
   const [nickNameValue, setNicknameValue] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(false);
+  const [idVaild, setIdValid] = useState<boolean>(false);
+  const [nicknameValid, setNicknameValid] = useState<boolean>(false);
   const [profileImg, setProfileImg] = useState<string | ArrayBuffer | null>(
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
   );
   const fileInput = useRef<HTMLInputElement>(null);
+  const router = useRouter();
   const {successTopRight, errorTopRight} = useToast();
+
   const handleSignUp = () => {
     signUpNewUser(idValue, pwValue, profileImg, nickNameValue);
+    router.push('/');
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLFormElement>) => {
@@ -42,7 +49,12 @@ const Signup = () => {
   const handleIdInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const idValue = e.target.value;
     setIdValue(idValue);
-    idValue.includes('@') && pwValue.length >= 6 && pwValue === pwConfirmValue && nickNameValue.length >= 2
+    idValue.includes('@') &&
+    pwValue.length >= 6 &&
+    pwValue === pwConfirmValue &&
+    nickNameValue.length >= 2 &&
+    idVaild === true &&
+    nicknameValid === true
       ? setIsValid(true)
       : setIsValid(false);
   };
@@ -66,30 +78,51 @@ const Signup = () => {
   const handleNicknameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nickNameValue = e.target.value;
     setNicknameValue(nickNameValue);
-    idValue.includes('@') && pwValue.length >= 6 && pwValue === pwConfirmValue && nickNameValue.length >= 2
+    idValue.includes('@') &&
+    pwValue.length >= 6 &&
+    pwValue === pwConfirmValue &&
+    nickNameValue.length >= 2 &&
+    idVaild === true &&
+    nicknameValid === true
       ? setIsValid(true)
       : setIsValid(false);
   };
 
   const confirmId = async () => {
-    const {data, error} = await supabase.from('profiles').select('email').eq('email', idValue);
+    const {data, error} = await supabase
+      .from('profiles')
+      .select('email')
+      .eq('email', idValue)
+      .returns<Tables<'profiles'>[]>();
+    console.log(data);
+
+    // 이메일 사용가능
     if (data?.length === 0 && idValue.includes('@')) {
       successTopRight({message: '사용가능한 이메일이에요!', timeout: 2000});
+      setIdValid(true);
     }
-    if (data?.length >= 1 && !idValue.includes('@')) {
-      errorTopRight({message: '사용중인 이메일이에요!', timeout: 2000});
+
+    // 이메일 사용중
+    if (data!.length >= 1 || !idValue.includes('@')) {
+      errorTopRight({message: '이메일 형식오류 혹은 사용중인 이메일이에요!', timeout: 2000});
       setIdValue('');
     }
     if (error) alert('오류입니다');
   };
 
   const confirmUserName = async () => {
-    const {data, error} = await supabase.from('profiles').select('username').eq('username', nickNameValue);
+    const {data, error} = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('username', nickNameValue)
+      .returns<Tables<'profiles'>[]>();
     if (data?.length === 0 && nickNameValue.length >= 2) {
       successTopRight({message: '사용가능한 닉네임이에요!', timeout: 2000});
+      setNicknameValid(true);
     }
-    if (data?.length! >= 1 && nickNameValue.length <= 2) {
-      errorTopRight({message: '사용중인 닉네임이거나 닉네임을 2글자 이상 써주세요!', timeout: 2000});
+    console.log(data);
+    if (data!.length >= 1 || nickNameValue.length < 2) {
+      errorTopRight({message: '사용중인 닉네임 혹은 닉네임을 2글자 이상 써주세요!', timeout: 2000});
       setNicknameValue('');
     }
     if (error) alert('오류입니다');
@@ -113,6 +146,7 @@ const Signup = () => {
         <div className={signup.input}>
           <p className={signup.ptagposition}>비밀번호</p>
           <input
+            type="password"
             className={signup.inputsize}
             placeholder="최소 6자 이상 입력해주세요"
             value={pwValue}
@@ -122,6 +156,7 @@ const Signup = () => {
         <div className={signup.input}>
           <p className={signup.ptagposition}>비밀번호 확인</p>
           <input
+            type="password"
             className={signup.inputsize}
             placeholder="비밀번호와 동일하게 입력해주세요"
             value={pwConfirmValue}
