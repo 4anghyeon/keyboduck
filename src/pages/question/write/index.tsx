@@ -37,7 +37,10 @@ const QuestionWrite = () => {
       warnTopCenter({message: '카테고리를 선택해주세요!', timeout: 2000});
       return false;
     }
-    const {data, error} = await supabase.from('question').insert({category, title, content, user_id: userId}).select();
+    const {data, error} = await supabase
+      .from('question')
+      .insert({category, title, content, user_id: userId, accept: false})
+      .select();
     if (data) {
       setTitle('');
       setContent('');

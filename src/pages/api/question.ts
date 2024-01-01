@@ -30,5 +30,10 @@ export const editQuestion = async ({
   content: string;
   category: string;
 }) => {
-  await supabase.from('question').update({title, content, category}).eq('id', id).select();
+  await supabase.from('question').update({title, content, category, accept: false}).eq('id', id).select();
+};
+
+export const acceptUser = async (id: number) => {
+  const {data} = await supabase.from('question').update({accept: true}).eq('id', id).select();
+  console.log(data);
 };

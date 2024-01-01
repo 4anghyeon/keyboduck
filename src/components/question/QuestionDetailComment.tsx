@@ -1,23 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import styles from '@/components/question/QuestionDetailComment.module.css';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {completionAnswer, deleteAnswer} from '@/pages/api/answer';
+import {completionAnswer, deleteAnswer, isAcceptAnswer} from '@/pages/api/answer';
 import Swal from 'sweetalert2';
 import {useToast} from '@/hooks/useToast';
 import {Tables} from '@/shared/supabase/types/supabase';
 import {RootState} from '@/redux/store';
 import {useSelector} from 'react-redux';
 import {FaCheck} from 'react-icons/fa';
+import {acceptUser} from '@/pages/api/question';
+import {useRouter} from 'next/router';
 
 const QuestionDetailComment = ({
   getAnswer,
   userId,
   getQuestionUserId,
+  accept,
 }: {
   getAnswer: Tables<'answer'>;
   userId: string;
   getQuestionUserId: string;
+  accept: boolean | undefined;
 }) => {
+  const router = useRouter();
+  const questionId = Number(router.query.questionId);
   const [isEdit, setIsEdit] = useState(getAnswer.is_edit);
   const [user, setUser] = useState('');
   const [answerContent, setAnswerContent] = useState(getAnswer.content);
@@ -44,6 +50,20 @@ const QuestionDetailComment = ({
     mutationFn: completionAnswer,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['getAnswer']});
+    },
+  });
+
+  const isAcceptAnswerMutation = useMutation({
+    mutationFn: isAcceptAnswer,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['getAnswer']});
+      successTopCenter({message: '채택되었습니다!', timeout: 2000});
+    },
+  });
+  const acceptUserMutation = useMutation({
+    mutationFn: acceptUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['getQuestion']});
     },
   });
 
@@ -103,6 +123,11 @@ const QuestionDetailComment = ({
     successTopCenter({message: '수정되었습니다😀', timeout: 2000});
   };
 
+  const clickIsAccept = (id: number, accept: boolean) => {
+    acceptUserMutation.mutate(questionId);
+    isAcceptAnswerMutation.mutate({id, accept});
+  };
+
   return (
     <div
       key={getAnswer.id}
@@ -117,9 +142,11 @@ const QuestionDetailComment = ({
       <div className={styles['detail-answer-user']}>
         <p>{getAnswer.profiles.username}</p>
         <div className={styles['detail-answer-select']}>
-          {userId === getQuestionUserId ? <button>채택하기</button> : null}
+          {userId !== getQuestionUserId || getAnswer.is_accept || accept ? null : (
+            <button onClick={() => clickIsAccept(getAnswer.id, getAnswer.is_accept!)}>채택하기</button>
+          )}
 
-          {getAnswer.profiles.id === userId && user !== null ? (
+          {getAnswer.profiles.id === userId && user !== null && getAnswer.is_accept === false ? (
             <div className={styles['detail-answer-btn']}>
               {isEdit ? (
                 <>

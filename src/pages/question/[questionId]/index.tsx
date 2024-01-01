@@ -39,7 +39,9 @@ const QuestionDetail = () => {
   const clickOpenModal = useCallback(() => {
     setIsOpenModal(!isOpenModal);
   }, [isOpenModal]);
+
   const getQuestionUserId = data?.getQuestionData?.find(question => question.id === questionId)?.user_id;
+  const accept = data?.getQuestionData?.find(question => question.id === questionId)?.accept;
   const answerQuestionIdFilter = answer
     ?.getAnswerData!?.filter(item => item.question_id === questionId)
     ?.sort((a, b) => Number(b.is_accept) - Number(a.is_accept));
@@ -73,6 +75,7 @@ const QuestionDetail = () => {
               key={item.id}
               userId={userId}
               getAnswer={item}
+              accept={accept}
             />
           );
         })}
