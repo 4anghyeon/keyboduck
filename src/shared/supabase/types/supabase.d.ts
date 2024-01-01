@@ -15,7 +15,7 @@ export interface Database {
           message: string | null;
           read: boolean | null;
           target_id: number | null;
-          type: string | null;
+          type: TargetType;
           user_id: string;
         };
         Insert: {
