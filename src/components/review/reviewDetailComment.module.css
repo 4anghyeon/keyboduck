@@ -6,6 +6,10 @@
   margin-top: 70px;
 }
 
+.blank {
+  text-align: center;
+}
+
 .comment-wrap input {
   width: 500px;
   height: 45px;
@@ -23,9 +27,13 @@
   color: white;
 }
 
+.comment button:hover {
+  background-color: #b0b0b0;
+}
+
 .comment-box {
   width: 100%;
-  height: 120px;
+  height: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -35,17 +43,33 @@
 
 .comment-box p {
   font-size: 20px;
+  width: 750px;
 }
+
 .comment-user {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
+  margin: 10px auto;
 }
 
-.comment-user button {
+.comment-user input {
+  width: 750px;
+  height: 50px;
+  border: 1px solid #b0b0b0;
+  padding: 0 10px;
+}
+.comment-user > div {
+  margin: 0;
+}
+
+.comment-button button {
   border-style: none;
-  background-color: transparent;
+  background-color: white;
   color: #b0b0b0;
   word-spacing: 10px;
+}
+
+.comment-button button:hover {
+  color: #83e0a5;
 }

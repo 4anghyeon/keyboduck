@@ -13,26 +13,40 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action) => {
+      // email로 로그인한 경우
       if (action.payload?.app_metadata.provider === 'email') {
-        const userinfo = {
+        state = {
           id: action.payload?.id,
           username: action.payload?.user_metadata.username,
           avatar: action.payload?.user_metadata.avatar_url,
         };
-        state = userinfo;
-        console.log(state);
+        return state;
       }
+      // google로 로그인한 경우
       if (action.payload?.app_metadata.provider === 'google') {
-        state = action.payload?.identities?.[0].identity_data;
-        console.log(state);
+        state = {
+          id: action.payload.id,
+          username: action.payload.identities[0].identity_data.name,
+          avatar: action.payload.identities[0].identity_data.avatar_url,
+        };
+        return state;
       }
+      // github로 로그인한 경우
       if (action.payload?.app_metadata.provider === 'github') {
-        state = action.payload?.identities?.[0].identity_data;
-        console.log(state);
+        state = {
+          id: action.payload.id,
+          username: action.payload.identities[0].identity_data.name,
+          avatar: action.payload.identities[0].identity_data.avatar_url,
+        };
+        return state;
       }
+    },
+    logoutUser: () => {
+      // 로그아웃시 state값을 그냥 초기화 시켜준다.
+      return initialState;
     },
   },
 });
 
 export default userSlice.reducer;
-export const {setUserInfo} = userSlice.actions;
+export const {setUserInfo, logoutUser} = userSlice.actions;

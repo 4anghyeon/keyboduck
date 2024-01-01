@@ -7,26 +7,23 @@ import {AiFillCalendar, AiFillShopping} from 'react-icons/ai';
 import {GiMoneyStack} from 'react-icons/gi';
 import {VscDebugDisconnect} from 'react-icons/vsc';
 import {useKeyboardLike} from '@/hooks/useKeyboardLike';
-import {supabase} from '@/shared/supabase/supabase';
 import {RiKeyboardFill} from 'react-icons/ri';
 import {IoLogoApple, IoLogoWindows} from 'react-icons/io5';
 import {useToast} from '@/hooks/useToast';
 import Loading from '@/components/layout/loading/Loading';
-
-interface UserInfo {
-  userId: string;
-}
+import {useSelector} from 'react-redux';
+import {RootState} from '@/redux/store';
 
 const Detail = ({item}: {item: Tables<'keyboard'>}) => {
   const {likes, isLikePending, addLike, removeLike} = useKeyboardLike(item.id);
   const [isLiked, setIsLiked] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const {errorTopRight} = useToast();
+  const userInfo = useSelector((state: RootState) => state.userSlice);
 
   // 좋아요 버튼 클릭
   const onClickLike = async () => {
     // 로그인한 유저만 가능
-    if (userInfo?.userId !== '') {
+    if (userInfo.id !== '') {
       if (!isLiked) {
         addLike();
       } else {
@@ -40,24 +37,13 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
   useEffect(() => {
     if (userInfo && likes) {
       // 유저 정보가 있고, likes 목록에 현재 유저의 아이디가 들어가 있으면 좋아요가 눌렸다고 판단.
-      if (likes.map(l => l.user_id).includes(userInfo.userId)) {
+      if (likes.map(l => l.user_id).includes(userInfo.id)) {
         setIsLiked(true);
       } else {
         setIsLiked(false);
       }
     }
   }, [likes, userInfo]);
-
-  // TODO: 로그인 정보를 전역으로 관리되는 유저 정보에서 가져오도록 해야함
-  useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      if (info) {
-        setUserInfo({
-          userId: info.data?.identities[0].user_id ?? '',
-        });
-      }
-    });
-  }, []);
 
   if (!item) return <Loading />;
 

@@ -1,34 +1,48 @@
 import React, {useState} from 'react';
 import styles from '@/components/modal/modalContent.module.css';
-import {useRouter} from 'next/router';
 import {useToast} from '@/hooks/useToast';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
 import Swal from 'sweetalert2';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {addAnswer} from '@/pages/api/answer';
+import {QuestionType} from '@/pages/question/types/question';
+import {useAlertMessage} from '@/hooks/useAlertMessage';
 
 const ModalContent = ({
   isOpenModal,
   setIsOpenModal,
-  author,
+  userId,
+  getQuestionData,
+  questionId,
 }: {
   isOpenModal: boolean;
   setIsOpenModal: (value: React.SetStateAction<boolean>) => void;
-  author: string;
+  userId: string;
+  getQuestionData: QuestionType[] | null;
+  questionId: number;
 }) => {
   const [comment, setComment] = useState<string>('');
+  const {addAlertMessage} = useAlertMessage();
+  const findQuestion = getQuestionData?.find(question => question.id === questionId);
 
   const onChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value);
 
-  const router = useRouter();
   const queryClient = useQueryClient();
   const addAnswerMutation = useMutation({
-    mutationFn: async () => await addAnswer(author, comment, questionId!),
-    onSuccess: () => {
+    mutationFn: async () => await addAnswer(userId, comment, questionId!),
+    onSuccess: result => {
       queryClient.invalidateQueries({queryKey: ['getAnswer']});
+
+      if (userId !== findQuestion?.user_id) {
+        addAlertMessage({
+          type: 'answer',
+          targetId: findQuestion?.id ?? 0,
+          userId: findQuestion?.user_id ?? '',
+          message: `작성하신 질문 ${findQuestion?.title}에 답변이 등록되었습니다.`,
+        });
+      }
     },
   });
-  const questionId: number | null = Number(router.query.questionId);
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
 
   const clickOpenModal = () => {

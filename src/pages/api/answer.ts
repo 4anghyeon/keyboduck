@@ -3,17 +3,21 @@ import {Tables} from '@/shared/supabase/types/supabase';
 
 //답변 가져오기
 export const getAnswer = async () => {
-  const getAnswerQuery = await supabase.from('answer').select('*').returns<Tables<'answer'>[]>();
+  const getAnswerQuery = await supabase
+    .from('answer')
+    .select('*,  profiles(*)')
+    .order('id', {ascending: false})
+    .returns<Tables<'answer'>[]>();
 
   const {data: getAnswerData, error} = getAnswerQuery;
   return {getAnswerData, error};
 };
 
 // 답변 추가하기
-export const addAnswer = async (author: string, comment: string, questionId: number) => {
-  await supabase
+export const addAnswer = async (userId: string, comment: string, questionId: number) => {
+  return await supabase
     .from('answer')
-    .insert({author, content: comment, question_id: questionId, is_accept: false, is_edit: false})
+    .insert({user_id: userId, content: comment, question_id: questionId, is_accept: false, is_edit: false})
     .select();
 };
 
@@ -22,15 +26,15 @@ export const deleteAnswer = async (id: number) => {
   return await supabase.from('answer').delete().eq('id', id);
 };
 
-// 답변 수정상태로 변경하기
-export const isEditAnswer = async (id: number) => {
-  await supabase.from('answer').update({is_edit: true}).eq('id', id).select();
+// 답변 채택하기
+export const isAcceptAnswer = async ({id, accept}: {id: number; accept: boolean}) => {
+  await supabase.from('answer').update({is_accept: true}).eq('id', id).select();
 };
 
-// 답변 완료상태로 변경하기
-export const isCompletionAnswer = async (id: number) => {
-  await supabase.from('answer').update({is_edit: false}).eq('id', id).select();
-};
+// // 답변 완료상태로 변경하기
+// export const isCompletionAnswer = async (id: number) => {
+//   await supabase.from('answer').update({is_edit: false}).eq('id', id).select();
+// };
 
 // 답변 완료상태로 변경하기
 export const completionAnswer = async ({id, revisedAnswer}: {id: number; revisedAnswer: string}) => {

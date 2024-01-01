@@ -1,28 +1,42 @@
 import React, {useEffect, useState} from 'react';
 import styles from '@/components/question/QuestionDetailComment.module.css';
-import {AnswerType} from '@/pages/question/types/question';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {completionAnswer, deleteAnswer, isEditAnswer} from '@/pages/api/answer';
+import {completionAnswer, deleteAnswer, isAcceptAnswer} from '@/pages/api/answer';
 import Swal from 'sweetalert2';
 import {useToast} from '@/hooks/useToast';
-import {supabase} from '@/shared/supabase/supabase';
+import {Tables} from '@/shared/supabase/types/supabase';
+import {RootState} from '@/redux/store';
+import {useSelector} from 'react-redux';
+import {FaCheck} from 'react-icons/fa';
+import {acceptUser} from '@/pages/api/question';
+import {useRouter} from 'next/router';
 
-const QuestionDetailComment = ({getAnswer, author}: {getAnswer: AnswerType; author: string}) => {
+const QuestionDetailComment = ({
+  getAnswer,
+  userId,
+  getQuestionUserId,
+  accept,
+}: {
+  getAnswer: Tables<'answer'>;
+  userId: string;
+  getQuestionUserId: string;
+  accept: boolean | undefined;
+}) => {
+  const router = useRouter();
+  const questionId = Number(router.query.questionId);
   const [isEdit, setIsEdit] = useState(getAnswer.is_edit);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState('');
   const [answerContent, setAnswerContent] = useState(getAnswer.content);
   const [revisedAnswer, setRevisedAnswer] = useState<string>(getAnswer.content!);
+  const userInfo = useSelector((state: RootState) => state.userSlice);
 
   const {successTopCenter, warnTopCenter} = useToast();
 
   const onChangeRevisedAnswer = (e: React.ChangeEvent<HTMLTextAreaElement>) => setRevisedAnswer(e.target.value);
 
   useEffect(() => {
-    supabase.auth.getUserIdentities().then(info => {
-      const author = info.data?.identities[0].identity_data?.name;
-      if (author) setUser(author);
-    });
-  }, []);
+    if (userInfo.username !== '') setUser(userInfo.username);
+  }, [userInfo]);
 
   const queryClient = useQueryClient();
   const deleteAnswerMutation = useMutation({
@@ -36,6 +50,20 @@ const QuestionDetailComment = ({getAnswer, author}: {getAnswer: AnswerType; auth
     mutationFn: completionAnswer,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['getAnswer']});
+    },
+  });
+
+  const isAcceptAnswerMutation = useMutation({
+    mutationFn: isAcceptAnswer,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['getAnswer']});
+      successTopCenter({message: '채택되었습니다!', timeout: 2000});
+    },
+  });
+  const acceptUserMutation = useMutation({
+    mutationFn: acceptUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['getQuestion']});
     },
   });
 
@@ -95,13 +123,30 @@ const QuestionDetailComment = ({getAnswer, author}: {getAnswer: AnswerType; auth
     successTopCenter({message: '수정되었습니다😀', timeout: 2000});
   };
 
+  const clickIsAccept = (id: number, accept: boolean) => {
+    acceptUserMutation.mutate(questionId);
+    isAcceptAnswerMutation.mutate({id, accept});
+  };
+
   return (
-    <div key={getAnswer.id} className={styles['detail-answer']}>
+    <div
+      key={getAnswer.id}
+      className={getAnswer.is_accept ? styles['detail-answer-true'] : styles['detail-answer-false']}
+    >
+      {getAnswer.is_accept ? (
+        <div className={styles['select-answer']}>
+          <FaCheck />
+          <p>채택된 답변</p>
+        </div>
+      ) : null}
       <div className={styles['detail-answer-user']}>
-        <p>{getAnswer.author}</p>
+        <p>{getAnswer.profiles.username}</p>
         <div className={styles['detail-answer-select']}>
-          <button>채택하기</button>
-          {getAnswer.author === author && user !== null ? (
+          {userId !== getQuestionUserId || getAnswer.is_accept || accept ? null : (
+            <button onClick={() => clickIsAccept(getAnswer.id, getAnswer.is_accept!)}>채택하기</button>
+          )}
+
+          {getAnswer.profiles.id === userId && user !== null && getAnswer.is_accept === false ? (
             <div className={styles['detail-answer-btn']}>
               {isEdit ? (
                 <>
@@ -119,7 +164,15 @@ const QuestionDetailComment = ({getAnswer, author}: {getAnswer: AnswerType; auth
         </div>
       </div>
       <div className={styles['detail-answer-date']}>
-        <p>{getAnswer.write_date?.substring(0, 10)}</p>
+        <p>
+          {new Date(getAnswer.write_date!).toLocaleDateString('ko', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+          })}
+        </p>
       </div>
       {isEdit === true && user !== null ? (
         <div>

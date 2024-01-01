@@ -1,6 +1,6 @@
 import React, {MouseEventHandler} from 'react';
 import Link from 'next/link';
-import styles from '@/components/layout/navbar/NavBar.module.css';
+import styles from '@/components/layout/navbar/menu-item.module.css';
 import {useRouter} from 'next/router';
 
 interface MenuItemProps {
