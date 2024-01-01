@@ -8,3 +8,8 @@ export const fetchReview = async () => {
   const {data: fetchReviewData, error} = fetchReviewQuery;
   return {data: fetchReviewData, error};
 };
+
+// 리뷰 삭제하기
+export const deleteReview = async (id: number) => {
+  return await supabase.from('review').delete().eq('id', id);
+};

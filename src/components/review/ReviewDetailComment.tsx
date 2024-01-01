@@ -56,6 +56,7 @@ const ReviewDetailComment = () => {
     },
   });
 
+  // 각 게시물 마다의 댓글 보여주기
   const reviewCommentFilter = reviewCommentData?.data?.filter(review => {
     return review.review_id === reviewId;
   });
@@ -66,6 +67,7 @@ const ReviewDetailComment = () => {
 
   const commentChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setComment(event.target.value);
 
+  // 댓글 등록하기
   const commentSubmitHandler = () => {
     if (!comment) {
       warnTopCenter({message: '댓글을 입력해주세요', timeout: 2000});
@@ -84,6 +86,7 @@ const ReviewDetailComment = () => {
     }
   };
 
+  // 수정하려다가 취소버튼 클릭
   const isEditButtonHandler = () => {
     if (isEdit) {
       Swal.fire({
@@ -109,6 +112,7 @@ const ReviewDetailComment = () => {
     }
   };
 
+  // 수정완료버튼 클릭
   const completeButtonHandler = async (id: number) => {
     if (editingComment === currentComment) {
       warnTopCenter({message: '변경된 내용이 없습니다', timeout: 2000});
@@ -125,12 +129,14 @@ const ReviewDetailComment = () => {
     }
   };
 
+  // 수정버튼 클릭
   const startEditing = (currentContent: string) => {
     setIsEdit(true);
     setEditingComment(currentContent);
     setCurrentComment(currentContent);
   };
 
+  // 삭제버튼 클릭
   const deleteButtonHandler = (id: number) => {
     Swal.fire({
       title: '정말로 삭제하시겠습니까?',
@@ -146,7 +152,6 @@ const ReviewDetailComment = () => {
           title: '삭제되었습니다',
           icon: 'success',
         });
-
         deleteCommentMutate.mutate(id);
       } else {
         return;

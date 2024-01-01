@@ -39,6 +39,7 @@
   flex-direction: column;
   border-bottom: 1px solid black;
   padding: 0 30px;
+  margin: 30px 0;
 }
 
 .comment-box p {

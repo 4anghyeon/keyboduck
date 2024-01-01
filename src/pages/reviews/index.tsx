@@ -16,10 +16,12 @@ import {useRouter} from 'next/router';
 
 const ReviewPage = () => {
   const [userId, setUserId] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState(1);
+  // const [sortedReview, setSortedReview] = useState([]);
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const {warnTopCenter} = useToast();
   const router = useRouter();
-
+  const currentPageReview = 6;
   const {
     isLoading,
     isError,
@@ -31,10 +33,19 @@ const ReviewPage = () => {
     staleTime: 3000,
   });
 
+  // 최신순으로 정렬하기
+  // useEffect(() => {
+  //   if (fetchReviewData?.data) {
+  //     const sortedData = [...fetchReviewData.data].sort((a, b) => b.write_date! - a.write_date!);
+  //     setSortedReview(sortedData);
+  //   }
+  // }, [fetchReviewData]);
+
   useEffect(() => {
     if (userInfo.id !== '') setUserId(userInfo.id);
   }, [userInfo]);
 
+  // 로그인 안하고 작성하기 클릭 시
   const writeButtonHandler = () => {
     if (userId === '') {
       warnTopCenter({message: '로그인 후 리뷰 작성이 가능합니다', timeout: 2000});
@@ -42,16 +53,26 @@ const ReviewPage = () => {
     }
     router.push('/reviews/write');
   };
+
+  const indexOfLastReview = currentPage * currentPageReview;
+  const indexOfFirstReview = indexOfLastReview - currentPageReview;
+  const currentReview = fetchReviewData?.data?.slice(indexOfFirstReview, indexOfLastReview);
+
+  // 페이지 이동
+  const pagination = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const pageNumber = [];
+  if (fetchReviewData?.data)
+    for (let i = 1; i <= Math.ceil(fetchReviewData?.data?.length / currentPageReview); i++) {
+      pageNumber.push(i);
+    }
+
   if (isLoading) {
     return <Loading />;
   }
 
   if (isError) {
     return <h2>🙇🏻‍♀️ 리스트를 불러오지 못했습니다 🙇🏻‍♀️</h2>;
-  }
-
-  if (fetchReviewData?.data?.length === 0) {
-    <h1>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</h1>;
   }
 
   return (
@@ -65,10 +86,10 @@ const ReviewPage = () => {
           </button>
         </div>
         <div className={styles['grid-container']}>
-          {fetchReviewData?.data?.length === 0 ? (
+          {currentReview?.length === 0 ? (
             <h1>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</h1>
           ) : (
-            fetchReviewData?.data?.map(review => {
+            currentReview?.map(review => {
               return (
                 <div className={styles['content-container']} key={review.id}>
                   <Link href={`/reviews/${review.id}`} className={styles['content-link']}>
@@ -97,6 +118,17 @@ const ReviewPage = () => {
           <button onClick={writeButtonHandler} className={styles['write-btn']}>
             작성하기
           </button>
+        </div>
+        <div className={styles['pagination-button-wrap']}>
+          {pageNumber.map(number => (
+            <button
+              key={number}
+              onClick={() => pagination(number)}
+              className={number === currentPage ? styles['select-button'] : styles['button']}
+            >
+              {number}
+            </button>
+          ))}
         </div>
       </div>
     </div>
