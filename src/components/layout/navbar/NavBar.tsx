@@ -115,14 +115,14 @@ const NavBar = () => {
                 onClick={() => setShowMessageList(true)}
               >
                 <BiSolidBell size={25} />
-                {/*<span className={styles['message-count']}>{messageList?.map(d => d?.filter(d => !d.read).length)}</span>*/}
+                <span className={styles['message-count']}>{messageList?.filter(m => !m?.read).length}</span>
               </button>
               <button
                 className={[styles['ring-bell'], ringBell ? '' : styles.hide].join(' ')}
                 onClick={() => setShowMessageList(true)}
               >
                 <BiSolidBellRing size={25} />
-                {/*<span className={styles['message-count']}>{messageList?.map(d => d?.filter(d => !d.read).length)}</span>*/}
+                <span className={styles['message-count']}>{messageList?.filter(m => !m?.read).length}</span>
               </button>
               <MenuItem href="/mypage" name="마이페이지" />
               <MenuItem name="로그아웃" onClick={logout} />
