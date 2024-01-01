@@ -1,10 +1,21 @@
 .row {
+    display: flex;
+    flex-direction: column;
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #B0B0B0;
     cursor: pointer;
     color: #b5b5b5;
     text-decoration: none;
+}
+
+.row span:nth-child(1) {
+    padding-bottom: 10px;
+}
+
+.row span:nth-child(2) {
+    font-style: italic;
+    font-size: .8rem;
 }
 
 .row:hover {

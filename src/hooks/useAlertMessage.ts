@@ -18,6 +18,7 @@ export const useAlertMessage = (userId?: string) => {
   const {
     data: messageList,
     hasNextPage,
+    isFetching: isMessageFeting,
     fetchNextPage: fetchNextMessageList,
   } = useInfiniteQuery({
     queryKey: [ALERT_MESSAGE_QUERY_KEY, {userId}],
@@ -46,5 +47,5 @@ export const useAlertMessage = (userId?: string) => {
     },
   });
 
-  return {addAlertMessage, messageList, hasNextPage, fetchNextMessageList, updateAlertMessage};
+  return {addAlertMessage, messageList, hasNextPage, fetchNextMessageList, updateAlertMessage, isMessageFeting};
 };

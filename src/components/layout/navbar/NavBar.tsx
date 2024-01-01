@@ -25,7 +25,7 @@ const NavBar = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.userSlice);
-  const {messageList, hasNextPage, fetchNextMessageList} = useAlertMessage(userInfo.id);
+  const {messageList, hasNextPage, fetchNextMessageList, isMessageFeting} = useAlertMessage(userInfo.id);
 
   const logout = async () => {
     const {error} = await supabase.auth.signOut();
@@ -112,14 +112,14 @@ const NavBar = () => {
             <>
               <button
                 className={[styles.bell, ringBell ? styles.hide : ''].join(' ')}
-                onClick={() => setShowMessageList(prev => !prev)}
+                onClick={() => setShowMessageList(true)}
               >
                 <BiSolidBell size={25} />
                 {/*<span className={styles['message-count']}>{messageList?.map(d => d?.filter(d => !d.read).length)}</span>*/}
               </button>
               <button
                 className={[styles['ring-bell'], ringBell ? '' : styles.hide].join(' ')}
-                onClick={() => setShowMessageList(prev => !prev)}
+                onClick={() => setShowMessageList(true)}
               >
                 <BiSolidBellRing size={25} />
                 {/*<span className={styles['message-count']}>{messageList?.map(d => d?.filter(d => !d.read).length)}</span>*/}
@@ -132,6 +132,7 @@ const NavBar = () => {
                   setShowMessageList={setShowMessageList}
                   hasNextPage={hasNextPage}
                   fetchNextMessageList={fetchNextMessageList}
+                  isMessageFeting={isMessageFeting}
                 />
               )}
             </>

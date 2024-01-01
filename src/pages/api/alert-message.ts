@@ -21,7 +21,7 @@ export const findAllMessageByUserId = async ({userId, pageParam = 0}: {userId: s
   const findAllMessageQuery = await supabase
     .from('alert_message')
     .select('*')
-    .order('created_at')
+    .order('created_at', {ascending: false})
     .range(pageParam === 0 ? pageParam : pageParam + 1, pageParam === 0 ? 2 : pageParam + ALERT_MESSAGE_PAGE_SIZE)
     .eq('user_id', userId)
     .returns<Tables<'alert_message'>[]>();

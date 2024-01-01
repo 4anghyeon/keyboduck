@@ -3,6 +3,7 @@ import {Tables} from '@/shared/supabase/types/supabase';
 import styles from './message-row.module.css';
 import {useRouter} from 'next/router';
 import {useAlertMessage} from '@/hooks/useAlertMessage';
+import moment from 'moment';
 
 const MessageRow = ({item}: {item: Tables<'alert_message'>}) => {
   const router = useRouter();
@@ -20,7 +21,8 @@ const MessageRow = ({item}: {item: Tables<'alert_message'>}) => {
 
   return (
     <div className={[styles.row, !item.read ? styles.read : ''].join(' ')} onClick={onClickMessage}>
-      {item.message}
+      <span>{item.message}</span>
+      <span>{moment(item.created_at).format('yyyy-MM-DD HH:mm')}</span>
     </div>
   );
 };
