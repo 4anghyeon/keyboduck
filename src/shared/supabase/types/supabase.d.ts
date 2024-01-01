@@ -15,7 +15,7 @@ export interface Database {
           message: string | null;
           read: boolean | null;
           target_id: number | null;
-          type: string | null;
+          type: TargetType;
           user_id: string;
         };
         Insert: {
@@ -204,6 +204,7 @@ export interface Database {
           user_id: string;
           write_date: string | null;
           profiles: Tables<'profiles'>;
+          accept: boolean;
         };
         Insert: {
           category: string;
@@ -212,6 +213,7 @@ export interface Database {
           title?: string | null;
           user_id?: string | null;
           write_date?: string | null;
+          accept: boolean;
         };
         Update: {
           category?: string;
@@ -220,6 +222,7 @@ export interface Database {
           title?: string | null;
           user_id?: string | null;
           write_date?: string | null;
+          accept: boolean;
         };
         Relationships: [
           {

@@ -40,7 +40,11 @@ const QuestionDetail = () => {
     setIsOpenModal(!isOpenModal);
   }, [isOpenModal]);
 
-  const answerQuestionIdFilter = answer?.getAnswerData!?.filter(item => item.question_id === questionId);
+  const getQuestionUserId = data?.getQuestionData?.find(question => question.id === questionId)?.user_id;
+  const accept = data?.getQuestionData?.find(question => question.id === questionId)?.accept;
+  const answerQuestionIdFilter = answer
+    ?.getAnswerData!?.filter(item => item.question_id === questionId)
+    ?.sort((a, b) => Number(b.is_accept) - Number(a.is_accept));
 
   if (isLoading) {
     return <Loading />;
@@ -53,7 +57,7 @@ const QuestionDetail = () => {
 
   return (
     <div className={styles['detail-container']}>
-      <QuestionDetailContents getQuestionData={data?.getQuestionData!} />
+      <QuestionDetailContents userId={userId} getQuestionData={data?.getQuestionData!} />
       <div className={styles['detail-answer-container']}>
         {isOpenModal && (
           <Modal onClickToggleHandler={clickOpenModal}>
@@ -71,10 +75,17 @@ const QuestionDetail = () => {
             <button onClick={clickOpenModal}>답변 등록하기</button>
           </div>
         ) : null}
-
         {/* 댓글 들어가는 곳 */}
         {answerQuestionIdFilter?.map(item => {
-          return <QuestionDetailComment key={item.id} userId={userId} getAnswer={item} />;
+          return (
+            <QuestionDetailComment
+              getQuestionUserId={getQuestionUserId!}
+              key={item.id}
+              userId={userId}
+              getAnswer={item}
+              accept={accept}
+            />
+          );
         })}
       </div>
     </div>

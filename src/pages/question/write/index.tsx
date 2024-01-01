@@ -6,7 +6,7 @@ import {useToast} from '@/hooks/useToast';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
 
-const OPTION = ['카테고리 선택', '가격', '성능', '고장', '기타'];
+export const OPTION = ['카테고리 선택', '가격', '성능', '고장', '기타'];
 
 const QuestionWrite = () => {
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
@@ -37,7 +37,10 @@ const QuestionWrite = () => {
       warnTopCenter({message: '카테고리를 선택해주세요!', timeout: 2000});
       return false;
     }
-    const {data, error} = await supabase.from('question').insert({category, title, content, user_id: userId}).select();
+    const {data, error} = await supabase
+      .from('question')
+      .insert({category, title, content, user_id: userId, accept: false})
+      .select();
     if (data) {
       setTitle('');
       setContent('');

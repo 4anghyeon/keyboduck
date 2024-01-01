@@ -24,3 +24,28 @@ export const getQuestionById = async (id: number) => {
   const {data: question, error} = getQuestionByIdQuery;
   return {question, error};
 };
+
+//질문 삭제하기
+export const deleteQuestion = async (id: number) => {
+  return await supabase.from('question').delete().eq('id', id);
+};
+
+//질문 수정하기
+export const editQuestion = async ({
+  id,
+  title,
+  content,
+  category,
+}: {
+  id: number;
+  title: string;
+  content: string;
+  category: string;
+}) => {
+  await supabase.from('question').update({title, content, category, accept: false}).eq('id', id).select();
+};
+
+export const acceptUser = async (id: number) => {
+  const {data} = await supabase.from('question').update({accept: true}).eq('id', id).select();
+  console.log(data);
+};
