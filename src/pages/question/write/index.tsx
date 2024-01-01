@@ -6,7 +6,7 @@ import {useToast} from '@/hooks/useToast';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
 
-const OPTION = ['카테고리 선택', '가격', '성능', '고장', '기타'];
+export const OPTION = ['카테고리 선택', '가격', '성능', '고장', '기타'];
 
 const QuestionWrite = () => {
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();

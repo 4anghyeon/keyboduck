@@ -17,3 +17,18 @@ export const getQuestion = async () => {
 export const deleteQuestion = async (id: number) => {
   return await supabase.from('question').delete().eq('id', id);
 };
+
+//질문 수정하기
+export const editQuestion = async ({
+  id,
+  title,
+  content,
+  category,
+}: {
+  id: number;
+  title: string;
+  content: string;
+  category: string;
+}) => {
+  await supabase.from('question').update({title, content, category}).eq('id', id).select();
+};
