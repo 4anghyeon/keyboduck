@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from '@/components/question/QuestionList.module.css';
 import Link from 'next/link';
-import {QuestionType} from '@/pages/question/types/question';
 import {Tables} from '@/shared/supabase/types/supabase';
 
 const QuestionList = ({question}: {question: Tables<'question'>}) => {
