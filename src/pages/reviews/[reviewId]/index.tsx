@@ -39,13 +39,13 @@ const ReviewDetail: React.FC = () => {
 
   const prevImageButtonHandler = () => {
     if (detailReviewId?.photo && detailReviewId.photo.length > 0) {
-      setCurrentImage(prevIndex => (prevIndex > 0 ? prevIndex - 1 : detailReviewId.photo.length - 1));
+      setCurrentImage(prevIndex => (prevIndex > 0 ? prevIndex - 1 : detailReviewId.photo!.length - 1));
     }
   };
 
   const nextImageButtonHandler = () => {
     if (detailReviewId?.photo && detailReviewId.photo.length > 0) {
-      setCurrentImage(prevIndex => (prevIndex + 1) % detailReviewId.photo.length);
+      setCurrentImage(prevIndex => (prevIndex + 1) % detailReviewId.photo!.length);
     }
   };
 
@@ -108,7 +108,6 @@ const ReviewDetail: React.FC = () => {
             <p>{detailReviewId?.content}</p>
           </div>
         </div>
-
         <ReviewDetailComment />
       </div>
     </div>

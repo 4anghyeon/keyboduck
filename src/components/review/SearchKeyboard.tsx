@@ -61,7 +61,6 @@ const SearchKeyboard: React.FC<SearchKeyboardProps> = ({onSelectedKeyboard}) => 
                   onClick={handleInputClick}
                   onChange={nameInputChangehandler}
                 />
-                {/* <button className={styles['modal-button']}>🔎</button> */}
               </div>
               <ul className={styles.keyboard}>
                 {filteredKeyboardList?.map(keyboard => {
