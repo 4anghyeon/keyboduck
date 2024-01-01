@@ -40,7 +40,9 @@ const QuestionDetail = () => {
     setIsOpenModal(!isOpenModal);
   }, [isOpenModal]);
   const getQuestionUserId = data?.getQuestionData?.find(question => question.id === questionId)?.user_id;
-  const answerQuestionIdFilter = answer?.getAnswerData!?.filter(item => item.question_id === questionId);
+  const answerQuestionIdFilter = answer
+    ?.getAnswerData!?.filter(item => item.question_id === questionId)
+    ?.sort((a, b) => Number(b.is_accept) - Number(a.is_accept));
 
   if (isLoading) {
     return <Loading />;

@@ -4,10 +4,10 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {completionAnswer, deleteAnswer} from '@/pages/api/answer';
 import Swal from 'sweetalert2';
 import {useToast} from '@/hooks/useToast';
-import {supabase} from '@/shared/supabase/supabase';
 import {Tables} from '@/shared/supabase/types/supabase';
 import {RootState} from '@/redux/store';
 import {useSelector} from 'react-redux';
+import {FaCheck} from 'react-icons/fa';
 
 const QuestionDetailComment = ({
   getAnswer,
@@ -104,7 +104,16 @@ const QuestionDetailComment = ({
   };
 
   return (
-    <div key={getAnswer.id} className={styles['detail-answer']}>
+    <div
+      key={getAnswer.id}
+      className={getAnswer.is_accept ? styles['detail-answer-true'] : styles['detail-answer-false']}
+    >
+      {getAnswer.is_accept ? (
+        <div className={styles['select-answer']}>
+          <FaCheck />
+          <p>채택된 답변</p>
+        </div>
+      ) : null}
       <div className={styles['detail-answer-user']}>
         <p>{getAnswer.profiles.username}</p>
         <div className={styles['detail-answer-select']}>

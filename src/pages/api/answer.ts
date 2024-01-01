@@ -3,7 +3,11 @@ import {Tables} from '@/shared/supabase/types/supabase';
 
 //답변 가져오기
 export const getAnswer = async () => {
-  const getAnswerQuery = await supabase.from('answer').select('*,  profiles(*)').returns<Tables<'answer'>[]>();
+  const getAnswerQuery = await supabase
+    .from('answer')
+    .select('*,  profiles(*)')
+    .order('id', {ascending: false})
+    .returns<Tables<'answer'>[]>();
 
   const {data: getAnswerData, error} = getAnswerQuery;
   return {getAnswerData, error};

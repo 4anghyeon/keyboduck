@@ -1,9 +1,24 @@
-.detail-answer {
+.detail-answer-false {
   border: 1px solid black;
   border-radius: 10px;
   padding: 10px 15px;
 
   margin-bottom: 20px;
+}
+.detail-answer-true {
+  border: 1px solid #83e0a5;
+  border-radius: 10px;
+  padding: 10px 15px;
+
+  margin-bottom: 20px;
+}
+.select-answer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #83e0a5;
+
+  margin-bottom: 10px;
 }
 .detail-answer-user {
   display: flex;
