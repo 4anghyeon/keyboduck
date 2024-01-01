@@ -53,13 +53,21 @@ const QuestionDetail = () => {
     return <div>🙇정보를 불러오지 못했습니다.🙇</div>;
   }
 
+  console.log(data?.getQuestionData);
+
   return (
     <div className={styles['detail-container']}>
       <QuestionDetailContents userId={userId} getQuestionData={data?.getQuestionData!} />
       <div className={styles['detail-answer-container']}>
         {isOpenModal && (
           <Modal onClickToggleHandler={clickOpenModal}>
-            <ModalContent userId={userId} isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
+            <ModalContent
+              userId={userId}
+              isOpenModal={isOpenModal}
+              setIsOpenModal={setIsOpenModal}
+              getQuestionData={data?.getQuestionData!}
+              questionId={questionId}
+            />
           </Modal>
         )}
         {!!userId ? (

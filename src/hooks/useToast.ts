@@ -30,7 +30,7 @@ interface ToastArgs {
 /**
  * 사용방법
  * 1. react-toastify를 사용하기 원하는 컴포넌트에서 useToast() 호출
- *    e.g) const {successTopCenter = useToast()}
+ *    e.g) const {successTopCenter} = useToast()
  * 2. message (필수), timeout(선택)을 인자로 주고 호출
  *    e.g) successTopCenter({message: '성공'});
  *    e.g) successTopCenter({message: '성공', timeout: 2000});
@@ -71,5 +71,19 @@ export const useToast = () => {
     toast.success(message, topCenter);
   };
 
-  return {successTopCenter, errorTopCenter, warnTopCenter, successTopRight, errorTopRight, warnTopRight, duckTopRight};
+  const alertTopRight = ({message, timeout}: ToastArgs) => {
+    const topCenter: ToastOptions = new ToastOption({position: 'top-right', timeout: timeout ?? 1000, icon: '🔔'});
+    toast.info(message, topCenter);
+  };
+
+  return {
+    successTopCenter,
+    errorTopCenter,
+    warnTopCenter,
+    successTopRight,
+    errorTopRight,
+    warnTopRight,
+    duckTopRight,
+    alertTopRight,
+  };
 };

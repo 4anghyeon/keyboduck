@@ -15,7 +15,7 @@ export const getAnswer = async () => {
 
 // 답변 추가하기
 export const addAnswer = async (userId: string, comment: string, questionId: number) => {
-  await supabase
+  return await supabase
     .from('answer')
     .insert({user_id: userId, content: comment, question_id: questionId, is_accept: false, is_edit: false})
     .select();
