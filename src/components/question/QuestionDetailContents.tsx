@@ -51,12 +51,20 @@ const QuestionDetailContents = ({getQuestionData, userId}: {getQuestionData: Tab
       <div className={styles['detail-title']}>
         <h2>{findQuestion?.title}</h2>
         <div className={styles['detail-user']}>
-          <FaRegUserCircle size="25" color="#83e0a5" />
+          <img className={styles['detail-user-profile']} src={findQuestion?.profiles.avatar_url!} />
           <p>{findQuestion?.profiles.username}</p>
         </div>
       </div>
       <div className={styles['detail-date']}>
-        <p>{findQuestion?.write_date?.substring(0, 10)}</p>
+        <p>
+          {new Date(findQuestion?.write_date!).toLocaleDateString('ko', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+          })}
+        </p>
       </div>
       <div className={!!userId ? styles['detail-contents-login'] : styles['detail-contents-logout']}>
         <p>{findQuestion?.content}</p>
