@@ -12,3 +12,8 @@ export const getQuestion = async () => {
   const {data: getQuestionData, error} = getQuestionQuery;
   return {getQuestionData, error};
 };
+
+//질문 삭제하기
+export const deleteQuestion = async (id: number) => {
+  return await supabase.from('question').delete().eq('id', id);
+};
