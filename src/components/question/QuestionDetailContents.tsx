@@ -20,6 +20,7 @@ const QuestionDetailContents = ({getQuestionData, userId}: {getQuestionData: Tab
       queryClient.invalidateQueries({queryKey: ['getQuestion']});
     },
   });
+  const offset = 540 * 60 * 1000;
 
   const clickQuestionDelete = (id: number) => {
     Swal.fire({
@@ -57,7 +58,7 @@ const QuestionDetailContents = ({getQuestionData, userId}: {getQuestionData: Tab
       </div>
       <div className={styles['detail-date']}>
         <p>
-          {new Date(findQuestion?.write_date!).toLocaleDateString('ko', {
+          {new Date(new Date(findQuestion?.write_date!).getTime() - offset).toLocaleDateString('ko', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
