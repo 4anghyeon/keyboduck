@@ -1,3 +1,17 @@
+@font-face {
+  font-family: "Pretendard";
+  src: url('../assets/fonts/Pretendard-Light.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url('../assets/fonts/Pretendard-Bold.otf');
+  font-weight: bold;
+  font-style: normal;
+}
+
 /* box-sizing 규칙을 명시합니다. */
 *,
 *::before,
@@ -29,15 +43,17 @@ dd {
 }
 
 /* list를 role값으로 갖는 ul, ol 요소의 기본 목록 스타일을 제거합니다. */
-ul[role='list'],
+ul,
 ol[role='list'] {
   list-style: none;
+  padding-left: 0;
 }
 
 /* 핵심 body의 기본값을 설정합니다. */
 body {
   min-height: 100vh;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 /* 제목 요소와 상호작용하는 요소에 대해 line-height를 더 짧게 설정합니다. */
@@ -88,4 +104,17 @@ textarea:not([rows]) {
 /* 고정된 모든 항목에는 여분의 스크롤 여백이 있어야 합니다. */
 :target {
   scroll-margin-block: 5ex;
+}
+
+* {
+  font-family: 'Pretendard', sans-serif;
+}
+
+main {
+  margin-top: 100px;
+  padding-top: 1px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 60px;
+  }
 }

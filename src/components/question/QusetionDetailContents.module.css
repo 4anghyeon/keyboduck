@@ -1,0 +1,64 @@
+.detail-contents-container {
+  width: 60%;
+}
+.detail-category {
+  margin-bottom: 20px;
+}
+.detail-category p {
+  width: 20%;
+  text-align: center;
+  padding: 5px 0px;
+  border-radius: 10px;
+  background-color: #83e0a5;
+  color: white;
+}
+.detail-title {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.detail-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.detail-user-profile {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+.detail-date {
+  color: #b0b0b0;
+  font-size: 15px;
+}
+.detail-contents-login {
+  border: 1px solid #83e0a5;
+  border-radius: 10px;
+  height: 500px;
+  padding: 10px;
+}
+.detail-contents-logout {
+  border: 1px solid #83e0a5;
+  border-radius: 10px;
+  height: 500px;
+  padding: 10px;
+  margin-bottom: 100px;
+}
+.detail-board-btn {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.detail-board-btn button {
+  margin-top: 10px;
+  border: none;
+  background-color: transparent;
+  font-size: 12px;
+  color: #b0b0b0;
+
+  cursor: pointer;
+}
+.detail-board-btn button:hover {
+  color: #83e0a5;
+}

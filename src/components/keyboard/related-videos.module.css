@@ -1,0 +1,33 @@
+.container {
+    margin: 0 130px 0 130px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid #B0B0B0;
+
+    @media screen and (max-width: 768px) {
+        margin: 0  50px 50px 50px;
+    }
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+    }
+}
+
+.row div {
+    @media screen and (max-width: 768px) {
+        margin-bottom: 25px;
+    }
+}
+
+.no-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    height: 60px;
+}

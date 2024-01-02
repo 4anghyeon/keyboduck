@@ -1,0 +1,76 @@
+/* keycolor :  #83E0A5 , #B0B0B0*/
+.qna-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: 70px;
+}
+.qna-title {
+  width: 60%;
+  display: flex;
+  justify-content: flex-start;
+
+  font-size: 25px;
+}
+.qna-sreach-bar {
+  width: 60%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+.qna-sreach-bar input {
+  width: 50%;
+  padding: 5px 15px;
+  border-radius: 20px;
+  border: 1px solid #b0b0b0;
+  outline: none;
+}
+.qna-sreach-bar button {
+  width: 7%;
+  padding-bottom: 5px;
+  border: none;
+  border-radius: 15px;
+  font-size: 30px;
+  color: white;
+  background-color: #83e0a5;
+
+  cursor: pointer;
+}
+.qna-list {
+  width: 60%;
+}
+.qna-list-title {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 50px;
+  border-top: 2px solid black;
+  border-bottom: 1px solid black;
+  font-weight: 700;
+  justify-items: center;
+}
+.qna-list-title p {
+  margin: 20px 30px 20px 0px;
+}
+.qna-registration-btn {
+  width: 60%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 15px 0px 30px 0px;
+}
+.qna-registration-btn a,
+.qna-registration-btn button {
+  padding: 5px 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #83e0a5;
+  color: white;
+
+  cursor: pointer;
+}
+.qna-registration-btn a {
+  text-decoration: none;
+}

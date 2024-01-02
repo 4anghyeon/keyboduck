@@ -1,0 +1,41 @@
+.container {
+    margin: 30px 130px 50px 130px;
+
+    @media screen and (max-width: 768px) {
+        margin: 0  50px 50px 50px;
+    }
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+    }
+}
+
+.no-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 1rem;
+    height: 60px;
+}
+
+.no-data p {
+    margin-bottom: 10px;
+}
+
+.no-data a {
+    margin-top: 10px;
+    background: #12b886;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
+}

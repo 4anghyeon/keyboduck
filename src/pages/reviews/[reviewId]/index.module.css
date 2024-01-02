@@ -1,0 +1,136 @@
+.container {
+  width: 100vw;
+  height: 100%;
+  padding: 150px 300px;
+}
+
+.title-wrap {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 50px;
+}
+
+.title {
+  font-size: 50px;
+  font-family: Pretendard-Medium;
+}
+
+.keyboard-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.keyboard-wrap p {
+  font-size: 20px;
+  font-family: Pretendard-Medium;
+  color: #83e0a5;
+}
+
+.user-profile {
+  height: 100px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.user-profile p {
+  font-size: 20px;
+  font-family: Pretendard-Light;
+  color: black;
+}
+
+.user-profile img {
+  width: 60px;
+  height: 60px;
+}
+
+.wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.wrap span {
+  font-size: 18px;
+  font-family: Pretendard-Light;
+  color: #b0b0b0;
+}
+
+.wrap button {
+  border-style: none;
+  background-color: transparent;
+  color: #b0b0b0;
+  word-spacing: 10px;
+}
+
+.wrap button:hover {
+  color: #83e0a5;
+}
+
+.image-slide {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.image-slide button {
+  border-style: none;
+  background-color: transparent;
+  color: #b0b0b0;
+}
+
+.image-slide > button:hover {
+  transform: scale(1.5);
+  color: black;
+}
+
+.image-container {
+  width: 100%;
+  height: 600px;
+  border: 1px solid #b0b0b0;
+  border-radius: 20px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.image-container img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.progressBar {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid #b0b0b0;
+  margin: 0 5px;
+}
+
+.active {
+  background-color: black;
+  border: 1px solid black;
+}
+
+.contents {
+  width: 100%;
+  height: 100%;
+  border-bottom: 1px solid #b0b0b0;
+  padding: 80px 50px;
+}
+
+.contents p {
+  font-size: 18px;
+  font-family: Pretendard-Light;
+}

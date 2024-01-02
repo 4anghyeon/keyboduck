@@ -1,0 +1,58 @@
+.container {
+    padding-bottom: 50px;
+    margin: 50px 100px 50px 100px;
+    text-align: center;
+
+    @media screen and (max-width: 768px) {
+        margin: 0px;
+    }
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
+    grid-column-gap: 100px;
+    grid-row-gap: 50px;
+    padding-top: 25px;
+    place-items: center;
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 10px;
+
+    }
+}
+
+.grid div {
+    margin: 0;
+
+    @media screen and (max-width: 768px) {
+        min-width: 200px;
+        width: 200px;
+    }
+}
+
+.grid div img {
+    @media screen and (max-width: 768px) {
+        min-width: 200px;
+        width: 200px;
+    }
+}
+
+
+.brand-button {
+    margin: 20px 20px 0 0;
+    border-radius: 15px;
+    width: 90px;
+    background: white;
+    color: #495057;
+    border: 1px #495057 solid;
+    cursor: pointer;
+}
+
+.selected, .brand-button:hover {
+    background: #83E0A5;
+    color: white;
+    border: 0;
+}

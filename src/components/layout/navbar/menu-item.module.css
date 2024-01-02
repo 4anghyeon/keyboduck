@@ -1,0 +1,27 @@
+.anim-link {
+    display: inline-block;
+    text-decoration: none;
+    text-wrap: nowrap;
+}
+.anim-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 3px;
+    background: #83E0A5;
+    transition: width .2s;
+}
+.anim-link:hover::after {
+    width: 100%;
+}
+
+.active {
+    border-bottom: 3px #83E0A5 solid;
+}
+
+.category {
+    font-size: 20px;
+    text-decoration: none;
+    color: black;
+    margin: 0 15px 0 15px;
+}
