@@ -11,6 +11,7 @@ export const signInWithGithub = async () => {
         access_type: 'offline',
         prompt: 'consent',
       },
+      redirectTo: process.env.NEXT_PUBLIC_SUPACE_REDIRECT_TO,
     },
   });
   if (data) successTopRight({message: '로그인 되었습니다!', timeout: 4000});
@@ -28,9 +29,9 @@ export const googleLogin = async () => {
         access_type: 'offline',
         prompt: 'consent',
       },
+      redirectTo: process.env.NEXT_PUBLIC_SUPACE_REDIRECT_TO,
     },
   });
-  console.log(data);
   if (data) successTopRight({message: '로그인 되었습니다!', timeout: 4000});
   if (error) errorTopRight({message: '로그인 후 이용해 주세요!', timeout: 4000});
 };
