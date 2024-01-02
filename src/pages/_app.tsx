@@ -27,7 +27,7 @@ export default function App({Component, pageProps}: AppProps) {
       <QueryClientProvider client={queryClient}>
         <Head>
           <title>{makeTitle('')}</title>
-          <desc>{DESCRIPTION}</desc>
+          <meta property="description" content={DESCRIPTION} />
           <meta property={'og:url'} content={URL} />
           <meta property={'og:type'} content={'website'} />
           <meta property={'og:title'} content={TITLE} />
