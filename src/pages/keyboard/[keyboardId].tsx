@@ -14,6 +14,8 @@ const KeyboardDetailPage = ({keyboard}: {keyboard: Tables<'keyboard'>}) => {
   const router = useRouter();
   if (router.isFallback) return <Loading />;
 
+  if (!keyboard) router.push('/404');
+
   return (
     <article>
       <Head>
@@ -33,7 +35,7 @@ export const getStaticProps = async (props: {params: {keyboardId: string}}) => {
 
   return {
     props: {
-      keyboard: keyboard?.[0],
+      keyboard: keyboard && keyboard[0],
     },
     revalidate: 60,
   };
