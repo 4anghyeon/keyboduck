@@ -68,7 +68,7 @@ const ReviewDetailComment = () => {
   const commentChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setComment(event.target.value);
 
   // 댓글 등록하기
-  const commentSubmitHandler = () => {
+  const commentSubmitHandler = async () => {
     if (!comment) {
       warnTopCenter({message: '댓글을 입력해주세요', timeout: 2000});
       return;
@@ -78,7 +78,7 @@ const ReviewDetailComment = () => {
       return;
     }
     try {
-      addCommentMutate.mutate();
+      await addCommentMutate.mutate();
       successTopCenter({message: '댓글을 등록하였습니다', timeout: 2000});
     } catch (error) {
       console.log('reviewCommentError', error);
@@ -188,10 +188,10 @@ const ReviewDetailComment = () => {
                     <p>{comment.content}</p>
                   </div>
                 )}
-                <span>{comment.profiles.username}</span>
+                <span className={styles['user-name']}>{comment.profiles.username}</span>
               </div>
               <div className={styles['comment-user']}>
-                <span>{comment.write_date?.substring(0, 10)}</span>
+                <span className={styles['comment-date']}>{comment.write_date?.substring(0, 10)}</span>
                 {userId === comment.user_id && (
                   <div className={styles['comment-button']}>
                     {isEdit ? (

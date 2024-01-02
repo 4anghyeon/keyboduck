@@ -17,6 +17,8 @@ import {useRouter} from 'next/router';
 const ReviewPage = () => {
   const [userId, setUserId] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchReview, setSearchReview] = useState('');
+  const [filteredReview, setFilteredReview] = useState([]);
   // const [sortedReview, setSortedReview] = useState([]);
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const {warnTopCenter} = useToast();
@@ -33,13 +35,15 @@ const ReviewPage = () => {
     staleTime: 3000,
   });
 
-  // 최신순으로 정렬하기
-  // useEffect(() => {
-  //   if (fetchReviewData?.data) {
-  //     const sortedData = [...fetchReviewData.data].sort((a, b) => b.write_date! - a.write_date!);
-  //     setSortedReview(sortedData);
-  //   }
-  // }, [fetchReviewData]);
+  // 리뷰데이터 변경될때마다 업데이트
+  useEffect(() => {
+    // 최신순으로 정렬하기
+    // if (fetchReviewData?.data) {
+    //   const sortedData = [...fetchReviewData.data].sort((a, b) => b.write_date! - a.write_date!);
+    //   setSortedReview(sortedData);
+    // }
+    setFilteredReview(fetchReviewData?.data);
+  }, [fetchReviewData]);
 
   useEffect(() => {
     if (userInfo.id !== '') setUserId(userInfo.id);
@@ -54,6 +58,17 @@ const ReviewPage = () => {
     router.push('/reviews/write');
   };
 
+  // 검색 버튼
+  const searchButtonHandler = () => {
+    if (!fetchReviewData?.data) return;
+
+    const filteredData = fetchReviewData.data.filter(review =>
+      review.title?.toLowerCase().includes(searchReview.toLocaleLowerCase()),
+    );
+    setFilteredReview(filteredData);
+    setCurrentPage(1);
+  };
+  // 한 페이지에 들어갈 목록 개수
   const indexOfLastReview = currentPage * currentPageReview;
   const indexOfFirstReview = indexOfLastReview - currentPageReview;
   const currentReview = fetchReviewData?.data?.slice(indexOfFirstReview, indexOfLastReview);
@@ -80,8 +95,14 @@ const ReviewPage = () => {
       <div className={styles.container}>
         <h1 className={styles.title}>REVIEW</h1>
         <div className={styles['search-wrap']}>
-          <input type="text" placeholder="검색어를 입력해주세요" maxLength={20} />
-          <button>
+          <input
+            type="text"
+            value={searchReview}
+            placeholder="검색어를 입력해주세요"
+            maxLength={20}
+            onChange={e => setSearchReview(e.target.value)}
+          />
+          <button onClick={searchButtonHandler}>
             <FaSearch />
           </button>
         </div>
