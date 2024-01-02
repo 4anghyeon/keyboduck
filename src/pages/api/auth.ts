@@ -31,7 +31,6 @@ export const googleLogin = async () => {
       redirectTo: process.env.NEXT_PUBLIC_SUPACE_REDIRECT_TO,
     },
   });
-  console.log(data);
   if (error) errorTopRight({message: '로그인 후 이용해 주세요!', timeout: 4000});
 };
 
@@ -53,5 +52,4 @@ export const signUpNewUser = async (
       },
     },
   });
-  console.log(data);
 };

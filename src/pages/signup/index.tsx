@@ -78,7 +78,6 @@ const Signup = () => {
       .select('email')
       .eq('email', idValue)
       .returns<Tables<'profiles'>[]>();
-    console.log(data);
 
     // 이메일 사용가능
     if (data?.length === 0 && idValue.includes('@')) {

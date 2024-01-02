@@ -39,7 +39,8 @@ export const findKeyboardByIdWithReview = async (id: number) => {
     .order('write_date', {referencedTable: 'review', ascending: false})
     .range(0, 2, {foreignTable: 'review'})
     .eq('id', id)
-    .returns<Tables<'keyboard'>[]>();
+    .returns<Tables<'keyboard'>>()
+    .single();
 
   const {data: keyboard, error} = findKeyboardByIdQuery;
 

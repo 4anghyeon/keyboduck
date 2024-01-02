@@ -11,7 +11,6 @@ const LoginPage = () => {
       const {
         data: {user},
       } = await supabase.auth.getUser();
-      console.log(user);
     };
     hello();
   }, []);
@@ -42,7 +41,6 @@ const LoginPage = () => {
       email: idValue,
       password: pwValue,
     });
-    console.log(data);
     if (data.user !== null) {
       router.push('/');
     }

@@ -16,7 +16,6 @@ const MyPage = () => {
     return state.userSlice;
   });
   const dispatch = useDispatch();
-  console.log(auth);
   const {successTopRight, errorTopRight} = useToast();
   const [isValid, setIsValid] = useState<boolean>(false);
   const [defaultuserName, setDefaultUserName] = useState<string>(auth.username);
@@ -36,12 +35,10 @@ const MyPage = () => {
   });
 
   const {likelist} = useKeyboardLike();
-  console.log(likelist);
 
   const filteredReviewData = fetchReviewData?.data?.filter(item => {
     return item.user_id === auth.id;
   });
-  console.log(filteredReviewData);
 
   useEffect(() => {
     setDefaultUserName(auth.username);
@@ -80,7 +77,6 @@ const MyPage = () => {
         .select();
       dispatch(setUserInfo([{id: auth.id, avatar_url: profileImg?.toString(), username: userName}]));
     }
-    console.log(data);
 
     if (data!.length >= 1 || userName.length < 2) {
       errorTopRight({message: '사용중인 닉네임 혹은 닉네임을 2글자 이상 써주세요!', timeout: 2000});
