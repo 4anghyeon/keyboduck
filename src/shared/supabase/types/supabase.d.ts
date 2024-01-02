@@ -138,6 +138,7 @@ export interface Database {
           id: number;
           target_id: number;
           user_id: string | null;
+          keyboard: Tables<'keyboard'>;
         };
         Insert: {
           id?: number;

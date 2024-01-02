@@ -1,28 +1,25 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {
   addLikeByKeyboardIdAndUserId,
+  findKeyboardLikeByUserId,
   findLikeByKeyboardId,
   removeLikeByKeyboardIdAndUserId,
 } from '@/pages/api/keyboard-like';
 import {supabase} from '@/shared/supabase/supabase';
 import {queryClient} from '@/pages/_app';
 import {Tables} from '@/shared/supabase/types/supabase';
+import {useState} from 'react';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/redux/store';
 
 const QUERY_KEY = 'keyboardLike';
 
-export const useKeyboardLike = (keyboardId: number) => {
-  let userId = '';
-
-  supabase.auth.getUserIdentities().then(info => {
-    const {data} = info;
-    if (data) {
-      userId = data.identities[0].user_id;
-    }
-  });
+export const useKeyboardLike = (keyboardId?: number) => {
+  const {id: userId} = useSelector((state: RootState) => state.userSlice);
 
   const {data: likes, isPending: isLikePending} = useQuery({
     queryKey: [QUERY_KEY, keyboardId],
-    queryFn: () => findLikeByKeyboardId(keyboardId),
+    queryFn: () => findLikeByKeyboardId(keyboardId ?? 0),
   });
 
   const {mutate: addLike} = useMutation({
@@ -44,7 +41,7 @@ export const useKeyboardLike = (keyboardId: number) => {
 
       if (userId === '' || keyboardId === 0) return;
 
-      return await addLikeByKeyboardIdAndUserId(keyboardId, userId);
+      return await addLikeByKeyboardIdAndUserId(keyboardId ?? 0, userId);
     },
   });
 
@@ -57,9 +54,14 @@ export const useKeyboardLike = (keyboardId: number) => {
       }
 
       if (userId === '' || keyboardId === 0) return;
-      return await removeLikeByKeyboardIdAndUserId(keyboardId, userId);
+      return await removeLikeByKeyboardIdAndUserId(keyboardId ?? 0, userId);
     },
   });
 
-  return {addLike, removeLike, likes, isLikePending};
+  const {data: likelist, isPending: isLikelistPending} = useQuery({
+    queryKey: [QUERY_KEY, userId],
+    queryFn: () => findKeyboardLikeByUserId(userId),
+  });
+
+  return {addLike, removeLike, likes, isLikePending, likelist};
 };

@@ -51,7 +51,7 @@ ol[role='list'] {
 
 /* 핵심 body의 기본값을 설정합니다. */
 body {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   line-height: 1.5;
   overflow-x: hidden;
 }
@@ -60,7 +60,7 @@ body {
 h1,
 h2,
 h3,
-h4,
+h4
 button,
 input,
 label {

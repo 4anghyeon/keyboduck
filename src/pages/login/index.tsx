@@ -11,7 +11,6 @@ const LoginPage = () => {
       const {
         data: {user},
       } = await supabase.auth.getUser();
-      console.log(user);
     };
     hello();
   }, []);
@@ -42,10 +41,8 @@ const LoginPage = () => {
       email: idValue,
       password: pwValue,
     });
-    console.log(data);
     if (data.user !== null) {
       router.push('/');
-      successTopRight({message: '로그인 되었어요!', timeout: 2000});
     }
     if (error) errorTopRight({message: '아이디 혹은 비밀번호를 확인해주세요!', timeout: 2000});
   };

@@ -51,8 +51,6 @@ const ReviewPage = () => {
     staleTime: 3000,
   });
 
-  console.log('전체', fetchReviewData);
-
   // 리뷰데이터 변경될때마다 업데이트
   useEffect(() => {
     setFilteredReview(fetchReviewData?.data || null);
@@ -75,8 +73,8 @@ const ReviewPage = () => {
   const searchButtonHandler = () => {
     if (!fetchReviewData?.data) return;
 
-    const filteredData = fetchReviewData.data.filter(review =>
-      review.title?.toLowerCase().includes(searchReview.toLowerCase()),
+    const filteredData = fetchReviewData.data.filter(
+      review => review.title?.toLowerCase().includes(searchReview.toLowerCase()),
     );
     setFilteredReview(filteredData);
     setCurrentPage(1);
