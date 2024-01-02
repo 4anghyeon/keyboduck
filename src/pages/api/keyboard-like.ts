@@ -1,11 +1,16 @@
 import {supabase} from '@/shared/supabase/supabase';
+import {Tables} from '@/shared/supabase/types/supabase';
 
 /**
  * 해당 키보드의 좋아요 갯수를 가져온다.
  * @param keyboardId
  */
 export const findLikeByKeyboardId = async (keyboardId: number) => {
-  let {data: keyboardLike} = await supabase.from('keyboard_like').select('*').eq('target_id', keyboardId);
+  let {data: keyboardLike} = await supabase
+    .from('keyboard_like')
+    .select('*')
+    .eq('target_id', keyboardId)
+    .returns<Tables<'keyboard_like'>[]>();
 
   return keyboardLike;
 };
