@@ -5,8 +5,8 @@ import {AiOutlineCloseCircle} from 'react-icons/ai';
 import Swal from 'sweetalert2';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {addAnswer} from '@/pages/api/answer';
-import {QuestionType} from '@/pages/question/types/question';
 import {useAlertMessage} from '@/hooks/useAlertMessage';
+import {Tables} from '@/shared/supabase/types/supabase';
 
 const ModalContent = ({
   isOpenModal,
@@ -18,7 +18,7 @@ const ModalContent = ({
   isOpenModal: boolean;
   setIsOpenModal: (value: React.SetStateAction<boolean>) => void;
   userId: string;
-  getQuestionData: QuestionType[] | null;
+  getQuestionData: Tables<'question'>[] | null;
   questionId: number;
 }) => {
   const [comment, setComment] = useState<string>('');
