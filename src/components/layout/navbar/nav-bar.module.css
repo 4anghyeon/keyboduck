@@ -28,13 +28,13 @@
   color: #83e0a5;
   text-decoration: none;
   margin-right: 3vw;
-  min-width: 200px;
-  font-family: YClover-Bold;
+  min-width: 220px;
+  font-family: YClover-Bold, serif;
 }
 
 .logo span {
   font-size: 30px;
-  font-family: YClover-Bold;
+  font-family: YClover-Bold, serif;
 }
 
 .logo img {

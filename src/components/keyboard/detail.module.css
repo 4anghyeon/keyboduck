@@ -60,6 +60,9 @@
 }
 
 .like-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 50px;
     width: 100px;
     background: transparent;
@@ -74,8 +77,16 @@
     color: white;
 }
 
+.like-button svg{
+    color: #ffd43b;
+}
+
 .liked {
     background: #83E0A5;
+    color: white;
+}
+
+.liked svg {
     color: white;
 }
 
