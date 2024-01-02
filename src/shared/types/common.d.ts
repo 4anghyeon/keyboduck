@@ -3,4 +3,4 @@ interface Brand {
   enName: string;
 }
 
-type TargetType = 'answer' | 'comment' | 'apply';
+type TargetType = 'answer' | 'comment' | 'accept';

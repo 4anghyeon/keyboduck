@@ -61,7 +61,7 @@ const QuestionDetailComment = ({
       queryClient.invalidateQueries({queryKey: ['getAnswer']});
       successTopCenter({message: '채택되었습니다!', timeout: 2000});
       addAlertMessage({
-        type: 'apply',
+        type: 'accept',
         message: `작성하신 답변이 채택되었습니다.`,
         userId: getAnswer.user_id!,
         targetId: getAnswer.id,

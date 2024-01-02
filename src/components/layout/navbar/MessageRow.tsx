@@ -13,6 +13,8 @@ const MessageRow = ({item}: {item: Tables<'alert_message'>}) => {
     link = `/question/${item.target_id}`;
   } else if (item.type === 'comment') {
     link = `/reviews/${item.target_id}`;
+  } else if (item.type === 'accept') {
+    link = `/questions/${item.target_id}`;
   }
 
   const onClickMessage = () => {
