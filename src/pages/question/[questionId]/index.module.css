@@ -16,6 +16,7 @@
   margin: 50px 0px 30px 0px;
 }
 .detail-answer-register-btn button {
+  width: 200px;
   padding: 10px 15px;
   border: none;
   border-radius: 10px;
