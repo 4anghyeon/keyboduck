@@ -11,6 +11,7 @@ import {FaCheck} from 'react-icons/fa';
 import {acceptUser} from '@/pages/api/question';
 import {useRouter} from 'next/router';
 import {useAlertMessage} from '@/hooks/useAlertMessage';
+import moment from 'moment';
 
 const QuestionDetailComment = ({
   getAnswer,
@@ -178,15 +179,7 @@ const QuestionDetailComment = ({
         </div>
       </div>
       <div className={styles['detail-answer-date']}>
-        <p>
-          {new Date(getAnswer.write_date!).toLocaleDateString('ko', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-          })}
-        </p>
+        <p>{moment(getAnswer?.write_date).locale('KO').format('yyyy년 MM월 DD일 A hh:mm')}</p>
       </div>
       {isEdit === true && user !== null ? (
         <div>

@@ -1,13 +1,13 @@
 import React from 'react';
 import styles from '@/components/question/QusetionDetailContents.module.css';
-import {FaRegUserCircle} from 'react-icons/fa';
 import {useRouter} from 'next/router';
-
+import 'moment/locale/ko';
 import Link from 'next/link';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {deleteQuestion} from '@/pages/api/question';
 import Swal from 'sweetalert2';
 import {Tables} from '@/shared/supabase/types/supabase';
+import moment from 'moment';
 
 const QuestionDetailContents = ({getQuestionData, userId}: {getQuestionData: Tables<'question'>[]; userId: string}) => {
   const router = useRouter();
@@ -20,7 +20,6 @@ const QuestionDetailContents = ({getQuestionData, userId}: {getQuestionData: Tab
       queryClient.invalidateQueries({queryKey: ['getQuestion']});
     },
   });
-  const offset = 540 * 60 * 1000;
 
   const clickQuestionDelete = (id: number) => {
     Swal.fire({
@@ -57,15 +56,7 @@ const QuestionDetailContents = ({getQuestionData, userId}: {getQuestionData: Tab
         </div>
       </div>
       <div className={styles['detail-date']}>
-        <p>
-          {new Date(new Date(findQuestion?.write_date!).getTime() - offset).toLocaleDateString('ko', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-          })}
-        </p>
+        <p>{moment(findQuestion?.write_date).locale('KO').add(-9, 'h').format('yyyy년 MM월 DD일 A hh:mm')}</p>
       </div>
       <div className={!!userId ? styles['detail-contents-login'] : styles['detail-contents-logout']}>
         <p>{findQuestion?.content}</p>
