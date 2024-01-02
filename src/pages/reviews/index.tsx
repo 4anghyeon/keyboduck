@@ -58,8 +58,8 @@ const ReviewPage = () => {
   const searchButtonHandler = () => {
     if (!fetchReviewData?.data) return;
 
-    const filteredData = fetchReviewData.data.filter(review =>
-      review.title?.toLowerCase().includes(searchReview.toLowerCase()),
+    const filteredData = fetchReviewData.data.filter(
+      review => review.title?.toLowerCase().includes(searchReview.toLowerCase()),
     );
     setFilteredReview(filteredData);
     setCurrentPage(1);
