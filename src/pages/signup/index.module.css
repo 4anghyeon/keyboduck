@@ -1,7 +1,6 @@
 .wrapper {
   display: flex;
   justify-content: center;
-  height: 130vh;
   flex-direction: column;
   width: 100%;
   align-items: center;
@@ -72,7 +71,7 @@
 
 
 .lastbutton {
-  margin-top: 50px;
+  margin-bottom: 50px;
   border-radius: 20px;
   border: none;
   outline: none;

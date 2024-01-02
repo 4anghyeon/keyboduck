@@ -1,4 +1,5 @@
 import {supabase} from '@/shared/supabase/supabase';
+import {Tables} from '@/shared/supabase/types/supabase';
 
 /**
  * 해당 키보드의 좋아요 갯수를 가져온다.
@@ -29,4 +30,14 @@ export const addLikeByKeyboardIdAndUserId = async (keyboardId: number, userId: s
  */
 export const removeLikeByKeyboardIdAndUserId = async (keyboardId: number, userId: string) => {
   await supabase.from('keyboard_like').delete().eq('user_id', userId).eq('target_id', keyboardId);
+};
+
+export const findKeyboardLikeByUserId = async (userId: string) => {
+  let {data} = await supabase
+    .from('keyboard_like')
+    .select('*, keyboard(*)')
+    .eq('user_id', userId)
+    .returns<Tables<'keyboard_like'>[]>();
+
+  return data;
 };
