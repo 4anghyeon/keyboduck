@@ -3,7 +3,6 @@ import styles from './index.module.css';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {MdOutlineArrowBackIos, MdOutlineArrowForwardIos} from 'react-icons/md';
-import defaultImg from '../../../assets/defaultImg.png';
 import ReviewDetailComment from '@/components/review/ReviewDetailComment';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import Loading from '@/components/layout/loading/Loading';
@@ -124,7 +123,7 @@ const ReviewDetail: React.FC = () => {
             <div className={styles['keyboard-wrap']}>
               <p>{selectKeyboardName?.name}</p>
               <div className={styles['user-profile']}>
-                <Image src={defaultImg} alt="profile-image" width={60} height={60} />
+                <img src={detailReviewId?.profiles.avatar_url!} alt="profile-image" width={60} height={60} />
                 <p>{detailReviewId?.profiles.username}</p>
               </div>
             </div>

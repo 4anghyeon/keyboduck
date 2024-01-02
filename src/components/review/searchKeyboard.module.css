@@ -26,20 +26,27 @@
   gap: 25px;
   margin-top: 40px;
 }
+
+.modal-comment-container button {
+  width: 50px;
+  height: 50px;
+  background-color: #83e0a5;
+  color: white;
+  border-style: none;
+  border-radius: 10px;
+}
+
+.modal-comment-container button:hover {
+  transform: scale(1.1);
+  transition: all 0.3s;
+}
+
 .modal-comment {
   width: 400px;
   height: 50px;
   border-radius: 10px;
   border: 1px solid #b0b0b0;
   padding: 0 10px;
-}
-.modal-button {
-  width: 50px;
-  height: 50px;
-  border: none;
-  border-radius: 10px;
-  background-color: #83e0a5;
-  cursor: pointer;
 }
 
 .search-wrap {
@@ -75,7 +82,7 @@
   margin: 50px 0;
 }
 
-.keyboard > li {
+.select-button {
   width: 400px;
   background-color: #e7e7e7;
   margin: 10px;
@@ -85,6 +92,7 @@
   cursor: pointer;
 }
 
-.keyboard > li a :hover {
-  background-color: #b5b5b5;
+.select-button:hover {
+  background-color: #83e0a5;
+  color: white;
 }

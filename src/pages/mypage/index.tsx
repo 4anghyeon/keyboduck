@@ -171,7 +171,7 @@ const MyPage = () => {
             setCategory(true);
           }}
         >
-          내가 쓴 리뷰{' '}
+          내가 쓴 리뷰
         </p>
         <p
           className={!category ? mypage['onactive'] : mypage['reviewboxptag']}

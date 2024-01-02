@@ -62,15 +62,13 @@
 }
 
 .delete-button {
-  position: relative;
-  top: 32px;
-  left: 2px;
   border-style: none;
   background-color: transparent;
   color: #505050;
   font-size: 20px;
   padding: 0;
 }
+
 .images {
   object-fit: cover;
   border: 1px solid #b0b0b0;

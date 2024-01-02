@@ -3,7 +3,6 @@ import React from 'react';
 import {FaSearch} from 'react-icons/fa';
 import styles from './index.module.css';
 import Link from 'next/link';
-import defaultImg from '../../assets/defaultImg.png';
 import {useQuery} from '@tanstack/react-query';
 import {fetchReview} from '../api/review';
 import Loading from '@/components/layout/loading/Loading';
@@ -15,28 +14,13 @@ import {useToast} from '@/hooks/useToast';
 import {useRouter} from 'next/router';
 import moment from 'moment';
 import 'moment/locale/ko';
-
-interface Review {
-  content: string | null;
-  id: number;
-  keyboard_id: number;
-  photo: string[] | null;
-  title: string | null;
-  user_id: string | null;
-  write_date: string | null;
-  profiles: {
-    avatar_url: string | null;
-    email: string | null;
-    id: string;
-    username: string | null;
-  };
-}
+import {Tables} from '@/shared/supabase/types/supabase';
 
 const ReviewPage = () => {
   const [userId, setUserId] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
   const [searchReview, setSearchReview] = useState('');
-  const [filteredReview, setFilteredReview] = useState<Review[] | null>(null);
+  const [filteredReview, setFilteredReview] = useState<Tables<'review'>[] | null>(null);
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const {warnTopCenter} = useToast();
   const router = useRouter();
@@ -51,8 +35,6 @@ const ReviewPage = () => {
     refetchOnWindowFocus: false,
     staleTime: 3000,
   });
-
-  console.log('전체', fetchReviewData);
 
   // 리뷰데이터 변경될때마다 업데이트
   useEffect(() => {
@@ -136,13 +118,18 @@ const ReviewPage = () => {
                       <div>
                         <div className={styles['user-wrap']}>
                           <div className={styles['user']}>
-                            <Image src={defaultImg} alt="유저프로필" className={styles['user-profile']} />
+                            <img
+                              src={review.profiles.avatar_url!}
+                              alt="유저프로필"
+                              className={styles['user-profile']}
+                            />
                             <p>{review.profiles.username}</p>
                           </div>
                           <p>{moment(review.write_date).locale('ko').add(-9, 'h').format('yyyy년 MM월 DD일')}</p>
                         </div>
                         <div className={styles['title-comment']}>
                           <p>{review.title}</p>
+                          <span>[{review.review_comment[0].count}]</span>
                         </div>
                       </div>
                     </div>
