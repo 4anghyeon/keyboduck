@@ -15,32 +15,39 @@
 
   font-size: 25px;
 }
-.qna-sreach-bar {
+.qna-search-bar {
   width: 60%;
   display: flex;
   justify-content: flex-end;
   gap: 20px;
 }
-.qna-sreach-bar input {
-  width: 50%;
+.qna-search-bar input {
+  width: 100%;
   padding: 5px 15px;
-  border-radius: 20px;
+  border-radius: 10px;
   border: 1px solid #b0b0b0;
   outline: none;
 }
-.qna-sreach-bar button {
-  width: 7%;
+.qna-search-bar button {
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 5px;
   border: none;
-  border-radius: 15px;
-  font-size: 30px;
+  border-radius: 10px;
   color: white;
   background-color: #83e0a5;
 
   cursor: pointer;
+}
+.qna-search-form {
+  width: 50%;
+  display: flex;
+  gap: 20px;
+}
+.qna-search-select {
+  width: 15%;
 }
 .qna-list {
   width: 60%;
@@ -76,6 +83,9 @@
 }
 .qna-registration-btn a {
   text-decoration: none;
+}
+.qna-registration-btn button {
+  width: 200px;
 }
 .nothing {
   width: 100%;

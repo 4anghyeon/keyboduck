@@ -11,6 +11,9 @@ import {RootState} from '@/redux/store';
 import {useRouter} from 'next/router';
 import {GrPowerReset} from 'react-icons/gr';
 import {Tables} from '@/shared/supabase/types/supabase';
+import {FaSearch} from 'react-icons/fa';
+
+const OPTION = ['전체', '가격', '성능', '고장', '기타'];
 
 const Question = () => {
   const {
@@ -26,26 +29,38 @@ const Question = () => {
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const [userData, setUserData] = useState('');
   const [search, setSearch] = useState<string>('');
+  const [category, setCategory] = useState<string>('전체');
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuestions, setSearchQuestions] = useState<Tables<'question'>[]>([]);
+
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
+  const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCategory(e.target.value);
+  };
 
   const clickSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Reset category state when searching
+    setCategory('전체');
+
     const searchString = search.toLocaleLowerCase();
-    const filteredList = questionList?.getQuestionData?.filter(question => {
-      return question.title?.toLowerCase().includes(searchString);
-    });
-    setSearchQuestions(filteredList!);
+    const filteredList = categoryFiltering()?.filter(question =>
+      question.title?.toLocaleLowerCase().includes(searchString),
+    );
+    setSearchQuestions(filteredList || []);
     setIsSearching(true);
+    setPage(1);
 
     router.push(`/question?keyword=${search}`, undefined, {shallow: true});
   };
 
   const resetSearch = () => {
     setSearch('');
+    setCategory('전체');
     setSearchQuestions([]);
     setIsSearching(false);
+    setPage(1);
     router.push('/question');
   };
 
@@ -54,11 +69,30 @@ const Question = () => {
     resetSearch();
   };
 
-  const QUESTION = isSearching ? searchQuestions : questionList?.getQuestionData;
+  const categoryFiltering = () => {
+    if (category === '전체') {
+      return questionList?.getQuestionData;
+    } else {
+      return questionList?.getQuestionData?.filter(item => category === item.category);
+    }
+  };
+
+  const isSearchingcategoryfilter = () => {
+    if (category === '전체') {
+      return searchQuestions;
+    } else {
+      return searchQuestions?.filter(item => category === item.category);
+    }
+  };
+
+  const filteredQuestions = categoryFiltering();
+  // 검색 중일 때 카테고리 필터 돌린 값
+  const isSearchingfilteredQuestions = isSearchingcategoryfilter();
+
   // 현재 페이지
   const [page, setPage] = useState(1);
   // 게시물 총 개수
-  const total = isSearching ? searchQuestions.length : QUESTION?.length || 0;
+  const total = filteredQuestions?.length || 0;
   // 한 페이지에 보여질 게시물 개수
   const limit = 10;
   // 페이지의 총 개수
@@ -68,10 +102,8 @@ const Question = () => {
 
   useEffect(() => {
     // 전체데이터가 변할 때마다 게시물 수 업데이트
-    if (!isSearching) {
-      setPage(1);
-    }
-  }, [QUESTION, isSearching]);
+    setPage(1);
+  }, [filteredQuestions, search]);
 
   useEffect(() => {
     if (userInfo.id !== '') setUserData(userInfo.id);
@@ -90,15 +122,28 @@ const Question = () => {
       <div className={styles['qna-title']}>
         <h2>QnA</h2>
       </div>
-      <form onSubmit={clickSearch} className={styles['qna-sreach-bar']}>
-        <input value={search} onChange={onChangeSearch} type="text" placeholder="검색어를 입력해주세요" />
-        <button type="submit">⌕</button>
-        {isSearching ? (
-          <button type="button" onClick={clickSearchReset}>
-            <GrPowerReset size={20} />
+      <div className={styles['qna-search-bar']}>
+        <select className={styles['qna-search-select']} onChange={onChangeCategory}>
+          {OPTION.map(item => {
+            return (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            );
+          })}
+        </select>
+        <form className={styles['qna-search-form']} onSubmit={clickSearch}>
+          <input value={search} onChange={onChangeSearch} type="text" placeholder="검색어를 입력해주세요" />
+          <button type="submit">
+            <FaSearch />
           </button>
-        ) : null}
-      </form>
+          {isSearching ? (
+            <button type="button" onClick={clickSearchReset}>
+              <GrPowerReset size={20} />
+            </button>
+          ) : null}
+        </form>
+      </div>
       <div className={styles['qna-list']}>
         <div className={styles['qna-list-title']}>
           <p>날짜</p>
@@ -111,10 +156,14 @@ const Question = () => {
           <div className={styles['nothing']}>
             <p>{isSearching ? '검색 결과가 없습니다😭' : '게시물이 없습니다😭'}</p>
           </div>
+        ) : isSearching ? (
+          isSearchingfilteredQuestions
+            .slice(offset, offset + limit)
+            .map(question => <QuestionList key={question.id} question={question} />)
         ) : (
-          QUESTION?.slice(offset, offset + limit).map(question => (
-            <QuestionList key={question.id} question={question} />
-          ))
+          filteredQuestions
+            ?.slice(offset, offset + limit)
+            .map(question => <QuestionList key={question.id} question={question} />)
         )}
       </div>
       <div className={styles['qna-registration-btn']}>

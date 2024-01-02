@@ -1,6 +1,5 @@
 import React, {PropsWithChildren} from 'react';
 import styles from '@/components/review/reviewModal.module.css';
-import {ModalDefaultType} from '../modal/types/modal';
 
 export const ReviewModal = ({onClickToggleHandler, children}: PropsWithChildren<ModalDefaultType>) => {
   const onRequestClose = (e: React.MouseEvent) => {
