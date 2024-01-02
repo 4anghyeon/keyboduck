@@ -9,6 +9,7 @@ const QuestionList = ({question}: {question: Tables<'question'>}) => {
       <Link href={`/question/${question.id}`}>
         <div className={styles['qna-list-item']}>
           <p>{question.write_date?.substring(0, 10)}</p>
+          <p>{question.category}</p>
           <p>{question.title}</p>
           <p>{question.profiles.username}</p>
         </div>

@@ -30,6 +30,9 @@
 }
 .qna-sreach-bar button {
   width: 7%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding-bottom: 5px;
   border: none;
   border-radius: 15px;
@@ -45,7 +48,7 @@
 .qna-list-title {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   margin-top: 50px;
   border-top: 2px solid black;
   border-bottom: 1px solid black;
@@ -73,4 +76,12 @@
 }
 .qna-registration-btn a {
   text-decoration: none;
+}
+.nothing {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+
+  margin-top: 30px;
 }

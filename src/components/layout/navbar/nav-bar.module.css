@@ -6,7 +6,7 @@
   padding: 30px 50px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #83E0A5;
   z-index: 5;
   background: white;
 
@@ -23,12 +23,27 @@
 }
 
 .logo {
-  font-size: 35px;
+  display: flex;
+  align-items: center;
   color: #83e0a5;
   text-decoration: none;
-  margin: 2vw;
+  margin-right: 3vw;
+  min-width: 200px;
   font-family: YClover-Bold;
+}
 
+.logo span {
+  font-size: 30px;
+}
+
+.logo img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.logo span::after {
+  height: 3px;
 }
 
 .wrap {

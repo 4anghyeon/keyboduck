@@ -11,6 +11,7 @@ export const signInWithGithub = async () => {
         access_type: 'offline',
         prompt: 'consent',
       },
+      redirectTo: process.env.NEXT_PUBLIC_SUPACE_REDIRECT_TO,
     },
   });
 
@@ -27,6 +28,7 @@ export const googleLogin = async () => {
         access_type: 'offline',
         prompt: 'consent',
       },
+      redirectTo: process.env.NEXT_PUBLIC_SUPACE_REDIRECT_TO,
     },
   });
   console.log(data);
