@@ -17,18 +17,33 @@ const Signup = () => {
   const [profileImg, setProfileImg] = useState<string | ArrayBuffer | null>(
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
   );
+  const [imageFile, setImageFile] = useState<File>();
   const fileInput = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const {successTopRight, errorTopRight} = useToast();
 
-  const handleSignUp = () => {
-    signUpNewUser(idValue, pwValue, profileImg, nickNameValue);
+  const handleSignUp = async () => {
+    // storage 업로드
+    let uploadUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+    if (imageFile) {
+      console.log(profileImg);
+      let {data: uploadData, error: uploadError} = await supabase.storage
+        .from('avatars')
+        .upload(`profiles/${Date.now()}_${Math.floor(Math.random() * 1000)}.png`, imageFile, {
+          contentType: 'image/png',
+        });
+      const bucketName = 'avatars';
+      const supabaseUrl = 'https://eaxjoqjnwoyrpkpvzosu.supabase.co';
+      uploadUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${uploadData?.path}`;
+    }
+
+    await signUpNewUser(idValue, pwValue, uploadUrl, nickNameValue);
     router.push('/');
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLFormElement>) => {
     if (e.target.files[0]) {
-      setProfileImg(e.target!.files[0]);
+      setImageFile(e.target!.files[0]);
     } else {
       setProfileImg('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png');
       return;
