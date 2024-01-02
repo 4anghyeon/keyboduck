@@ -3,7 +3,6 @@ import React from 'react';
 import {FaSearch} from 'react-icons/fa';
 import styles from './index.module.css';
 import Link from 'next/link';
-import defaultImg from '../../assets/defaultImg.png';
 import {useQuery} from '@tanstack/react-query';
 import {fetchReview} from '../api/review';
 import Loading from '@/components/layout/loading/Loading';
@@ -13,29 +12,15 @@ import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
 import {useToast} from '@/hooks/useToast';
 import {useRouter} from 'next/router';
-
-interface Review {
-  content: string | null;
-  id: number;
-  keyboard_id: number;
-  photo: string[] | null;
-  title: string | null;
-  user_id: string | null;
-  write_date: string | null;
-  profiles: {
-    avatar_url: string | null;
-    email: string | null;
-    id: string;
-    username: string | null;
-  };
-}
+import moment from 'moment';
+import 'moment/locale/ko';
+import {Tables} from '@/shared/supabase/types/supabase';
 
 const ReviewPage = () => {
   const [userId, setUserId] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
   const [searchReview, setSearchReview] = useState('');
-  const [filteredReview, setFilteredReview] = useState<Review[] | null>(null);
-  // const [sortedReview, setSortedReview] = useState([]);
+  const [filteredReview, setFilteredReview] = useState<Tables<'review'>[] | null>(null);
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const {warnTopCenter} = useToast();
   const router = useRouter();
@@ -73,8 +58,8 @@ const ReviewPage = () => {
   const searchButtonHandler = () => {
     if (!fetchReviewData?.data) return;
 
-    const filteredData = fetchReviewData.data.filter(
-      review => review.title?.toLowerCase().includes(searchReview.toLowerCase()),
+    const filteredData = fetchReviewData.data.filter(review =>
+      review.title?.toLowerCase().includes(searchReview.toLowerCase()),
     );
     setFilteredReview(filteredData);
     setCurrentPage(1);
@@ -120,7 +105,7 @@ const ReviewPage = () => {
         </div>
         <div className={styles['grid-container']}>
           {currentReview?.length === 0 ? (
-            <h1>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</h1>
+            <p>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</p>
           ) : (
             currentReview?.map(review => {
               return (
@@ -133,12 +118,19 @@ const ReviewPage = () => {
                       <div>
                         <div className={styles['user-wrap']}>
                           <div className={styles['user']}>
-                            <Image src={defaultImg} alt="유저프로필" className={styles['user-profile']} />
+                            <img
+                              src={review.profiles.avatar_url!}
+                              alt="유저프로필"
+                              className={styles['user-profile']}
+                            />
                             <p>{review.profiles.username}</p>
                           </div>
-                          <p>{review.write_date?.substring(0, 10)}</p>
+                          <p>{moment(review.write_date).locale('ko').add(-9, 'h').format('yyyy년 MM월 DD일')}</p>
                         </div>
-                        <span>{review.title}</span>
+                        <div className={styles['title-comment']}>
+                          <p>{review.title}</p>
+                          <span>[{review.review_comment[0].count}]</span>
+                        </div>
                       </div>
                     </div>
                   </Link>

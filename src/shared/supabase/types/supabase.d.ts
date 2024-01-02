@@ -246,6 +246,7 @@ export interface Database {
           user_id: string | null;
           write_date: string | null;
           profiles: Tables<'profiles'>;
+          review_comment: {count: number}[];
         };
         Insert: {
           content?: string | null;

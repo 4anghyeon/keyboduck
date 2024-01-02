@@ -12,7 +12,6 @@
   width: 60%;
   display: flex;
   justify-content: flex-start;
-
   font-size: 25px;
 }
 .qna-search-bar {
@@ -29,7 +28,7 @@
   outline: none;
 }
 .qna-search-bar button {
-  width: 50px;
+  width: 60px;
   height: 50px;
   display: flex;
   align-items: center;
@@ -73,7 +72,8 @@
 }
 .qna-registration-btn a,
 .qna-registration-btn button {
-  padding: 5px 15px;
+  width: 200px;
+  height: 50px;
   border: none;
   border-radius: 10px;
   background-color: #83e0a5;
@@ -83,9 +83,6 @@
 }
 .qna-registration-btn a {
   text-decoration: none;
-}
-.qna-registration-btn button {
-  width: 200px;
 }
 .nothing {
   width: 100%;

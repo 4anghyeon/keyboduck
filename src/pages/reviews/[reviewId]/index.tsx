@@ -3,7 +3,6 @@ import styles from './index.module.css';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {MdOutlineArrowBackIos, MdOutlineArrowForwardIos} from 'react-icons/md';
-import defaultImg from '../../../assets/defaultImg.png';
 import ReviewDetailComment from '@/components/review/ReviewDetailComment';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import Loading from '@/components/layout/loading/Loading';
@@ -15,10 +14,14 @@ import {queryClient} from '@/pages/_app';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
 import {useEffect} from 'react';
+import Link from 'next/link';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 const ReviewDetail: React.FC = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [userId, setUserId] = useState<string>('');
+  const [commentCount, setCommentCount] = useState(0);
   const {data: keyboardData} = useKeyboard();
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
@@ -51,6 +54,9 @@ const ReviewDetail: React.FC = () => {
     if (userInfo.id !== '') setUserId(userInfo.id);
   }, [userInfo]);
 
+  const commentCountUpdate = (count: number) => {
+    setCommentCount(count);
+  };
   // 리뷰 작성 시 선택한 키보드 이름 가져오기
   const selectKeyboardName = keyboardData?.keyboardList?.find(keyboard => {
     return keyboard.id === detailReviewId?.keyboard_id;
@@ -110,19 +116,24 @@ const ReviewDetail: React.FC = () => {
       <div className={styles.container}>
         <div>
           <div className={styles['title-wrap']}>
-            <h1 className={styles.title}>{detailReviewId?.title}</h1>
+            <h1 className={styles.title}>
+              {detailReviewId?.title}
+              <span>[{commentCount}]</span>
+            </h1>
             <div className={styles['keyboard-wrap']}>
               <p>{selectKeyboardName?.name}</p>
               <div className={styles['user-profile']}>
-                <Image src={defaultImg} alt="profile-image" width={60} height={60} />
+                <img src={detailReviewId?.profiles.avatar_url!} alt="profile-image" width={60} height={60} />
                 <p>{detailReviewId?.profiles.username}</p>
               </div>
             </div>
             <div className={styles.wrap}>
-              <span>{detailReviewId?.write_date!.replace('T', ' ').substring(0, 16)}</span>
+              <span> {moment(detailReviewId?.write_date).locale('ko').format('yyyy년 MM월 DD일 A hh:mm')}</span>
               {userId === detailReviewId?.user_id && (
                 <div>
-                  <button>수정 |</button>
+                  <Link href={`/reviews/edit/${reviewId}`}>
+                    <button>수정 |</button>
+                  </Link>
                   <button onClick={() => deleteButtonHandler(detailReviewId?.id!)}>삭제</button>
                 </div>
               )}
@@ -156,7 +167,11 @@ const ReviewDetail: React.FC = () => {
             <p>{detailReviewId?.content}</p>
           </div>
         </div>
-        <ReviewDetailComment title={detailReviewId?.title ?? ''} authorId={detailReviewId?.user_id ?? ''} />
+        <ReviewDetailComment
+          title={detailReviewId?.title ?? ''}
+          authorId={detailReviewId?.user_id ?? ''}
+          commentCountUpdate={commentCountUpdate}
+        />
       </div>
     </div>
   );
