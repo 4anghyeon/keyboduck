@@ -26,7 +26,6 @@ const Signup = () => {
     // storage 업로드
     let uploadUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
     if (imageFile) {
-      console.log(profileImg);
       let {data: uploadData, error: uploadError} = await supabase.storage
         .from('avatars')
         .upload(`profiles/${Date.now()}_${Math.floor(Math.random() * 1000)}.png`, imageFile, {
@@ -118,7 +117,6 @@ const Signup = () => {
       successTopRight({message: '사용가능한 닉네임이에요!', timeout: 2000});
       setNicknameValid(true);
     }
-    console.log(data);
     if (data!.length >= 1 || nickNameValue.length < 2) {
       errorTopRight({message: '사용중인 닉네임 혹은 닉네임을 2글자 이상 써주세요!', timeout: 2000});
       setNicknameValue('');

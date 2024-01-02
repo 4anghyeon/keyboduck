@@ -13,8 +13,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action) => {
-      console.log(state);
-      console.log('@@@@@@@@@@@@@@', action.payload);
       // email로 로그인한 경우
       const user = {
         id: action.payload?.[0].id,

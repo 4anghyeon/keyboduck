@@ -90,7 +90,6 @@ const MyPage = () => {
   const updateImg = async () => {
     let uploadUrl = auth.avatar;
     if (imageFile) {
-      console.log(profileImg);
       let {data: uploadData, error: uploadError} = await supabase.storage
         .from('avatars')
         .upload(`profiles/${Date.now()}_${Math.floor(Math.random() * 1000)}.png`, imageFile, {

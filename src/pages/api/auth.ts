@@ -53,7 +53,4 @@ export const signUpNewUser = async (
       },
     },
   });
-  console.log(data);
-  console.log(error);
-  // data uid 이용
 };
