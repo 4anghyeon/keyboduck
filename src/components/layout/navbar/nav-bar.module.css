@@ -164,6 +164,7 @@
 
 .message-list-container p {
   font-size: 1.3rem;
+  padding: 20px 0 20px 0;
 }
 
 .message-list-container button {

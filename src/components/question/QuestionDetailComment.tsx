@@ -10,6 +10,7 @@ import {useSelector} from 'react-redux';
 import {FaCheck} from 'react-icons/fa';
 import {acceptUser} from '@/pages/api/question';
 import {useRouter} from 'next/router';
+import {useAlertMessage} from '@/hooks/useAlertMessage';
 
 const QuestionDetailComment = ({
   getAnswer,
@@ -30,6 +31,7 @@ const QuestionDetailComment = ({
   const [revisedAnswer, setRevisedAnswer] = useState<string>(getAnswer.content!);
   const userInfo = useSelector((state: RootState) => state.userSlice);
 
+  const {addAlertMessage} = useAlertMessage();
   const {successTopCenter, warnTopCenter} = useToast();
 
   const onChangeRevisedAnswer = (e: React.ChangeEvent<HTMLTextAreaElement>) => setRevisedAnswer(e.target.value);
@@ -58,6 +60,12 @@ const QuestionDetailComment = ({
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['getAnswer']});
       successTopCenter({message: '채택되었습니다!', timeout: 2000});
+      addAlertMessage({
+        type: 'accept',
+        message: `작성하신 답변이 채택되었습니다.`,
+        userId: getAnswer.user_id!,
+        targetId: getAnswer.id,
+      });
     },
   });
   const acceptUserMutation = useMutation({

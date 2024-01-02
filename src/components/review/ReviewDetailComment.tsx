@@ -15,8 +15,9 @@ import {useToast} from '@/hooks/useToast';
 import {queryClient} from '@/pages/_app';
 import {useRouter} from 'next/router';
 import Swal from 'sweetalert2';
+import {useAlertMessage} from '@/hooks/useAlertMessage';
 
-const ReviewDetailComment = () => {
+const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string}) => {
   const [comment, setComment] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
   const [currentComment, setCurrentComment] = useState<string>('');
@@ -25,6 +26,7 @@ const ReviewDetailComment = () => {
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
 
+  const {addAlertMessage} = useAlertMessage();
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
 
@@ -39,6 +41,12 @@ const ReviewDetailComment = () => {
     mutationFn: async () => await addReviewComment(userId, comment, reviewId),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['fetchReviewCommentList']});
+      addAlertMessage({
+        type: 'comment',
+        message: `작성하신 리뷰 ${title} 에 댓글이 달렸습니다.`,
+        userId: authorId,
+        targetId: reviewId,
+      });
     },
   });
 
@@ -56,6 +64,7 @@ const ReviewDetailComment = () => {
     },
   });
 
+  // 각 게시물 마다의 댓글 보여주기
   const reviewCommentFilter = reviewCommentData?.data?.filter(review => {
     return review.review_id === reviewId;
   });
@@ -66,7 +75,8 @@ const ReviewDetailComment = () => {
 
   const commentChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setComment(event.target.value);
 
-  const commentSubmitHandler = () => {
+  // 댓글 등록하기
+  const commentSubmitHandler = async () => {
     if (!comment) {
       warnTopCenter({message: '댓글을 입력해주세요', timeout: 2000});
       return;
@@ -76,7 +86,7 @@ const ReviewDetailComment = () => {
       return;
     }
     try {
-      addCommentMutate.mutate();
+      await addCommentMutate.mutate();
       successTopCenter({message: '댓글을 등록하였습니다', timeout: 2000});
     } catch (error) {
       console.log('reviewCommentError', error);
@@ -84,6 +94,7 @@ const ReviewDetailComment = () => {
     }
   };
 
+  // 수정하려다가 취소버튼 클릭
   const isEditButtonHandler = () => {
     if (isEdit) {
       Swal.fire({
@@ -109,6 +120,7 @@ const ReviewDetailComment = () => {
     }
   };
 
+  // 수정완료버튼 클릭
   const completeButtonHandler = async (id: number) => {
     if (editingComment === currentComment) {
       warnTopCenter({message: '변경된 내용이 없습니다', timeout: 2000});
@@ -125,12 +137,14 @@ const ReviewDetailComment = () => {
     }
   };
 
+  // 수정버튼 클릭
   const startEditing = (currentContent: string) => {
     setIsEdit(true);
     setEditingComment(currentContent);
     setCurrentComment(currentContent);
   };
 
+  // 삭제버튼 클릭
   const deleteButtonHandler = (id: number) => {
     Swal.fire({
       title: '정말로 삭제하시겠습니까?',
@@ -146,7 +160,6 @@ const ReviewDetailComment = () => {
           title: '삭제되었습니다',
           icon: 'success',
         });
-
         deleteCommentMutate.mutate(id);
       } else {
         return;
@@ -183,10 +196,10 @@ const ReviewDetailComment = () => {
                     <p>{comment.content}</p>
                   </div>
                 )}
-                <span>{comment.profiles.username}</span>
+                <span className={styles['user-name']}>{comment.profiles.username}</span>
               </div>
               <div className={styles['comment-user']}>
-                <span>{comment.write_date?.substring(0, 10)}</span>
+                <span className={styles['comment-date']}>{comment.write_date?.substring(0, 10)}</span>
                 {userId === comment.user_id && (
                   <div className={styles['comment-button']}>
                     {isEdit ? (

@@ -39,28 +39,36 @@
   flex-direction: column;
   border-bottom: 1px solid black;
   padding: 0 30px;
+  margin: 30px 0;
 }
 
 .comment-box p {
   font-size: 20px;
-  width: 750px;
+  width: 100%;
+}
+
+.user-name {
+  width: 100px;
+  text-align: right;
+}
+
+.comment-date {
+  width: 100px;
+  text-align: left;
 }
 
 .comment-user {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 10px auto;
+  margin: 10px 0;
 }
 
 .comment-user input {
-  width: 750px;
+  width: 700px;
   height: 50px;
   border: 1px solid #b0b0b0;
   padding: 0 10px;
-}
-.comment-user > div {
-  margin: 0;
 }
 
 .comment-button button {
