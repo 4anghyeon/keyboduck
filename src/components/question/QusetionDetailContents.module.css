@@ -36,13 +36,13 @@
 .detail-contents-login {
   border: 1px solid #83e0a5;
   border-radius: 10px;
-  height: 500px;
+  height: 300px;
   padding: 10px;
 }
 .detail-contents-logout {
   border: 1px solid #83e0a5;
   border-radius: 10px;
-  height: 500px;
+  height: 300px;
   padding: 10px;
   margin-bottom: 100px;
 }
