@@ -15,8 +15,9 @@ import {useToast} from '@/hooks/useToast';
 import {queryClient} from '@/pages/_app';
 import {useRouter} from 'next/router';
 import Swal from 'sweetalert2';
+import {useAlertMessage} from '@/hooks/useAlertMessage';
 
-const ReviewDetailComment = () => {
+const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string}) => {
   const [comment, setComment] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
   const [currentComment, setCurrentComment] = useState<string>('');
@@ -25,6 +26,7 @@ const ReviewDetailComment = () => {
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
 
+  const {addAlertMessage} = useAlertMessage();
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
 
@@ -39,6 +41,12 @@ const ReviewDetailComment = () => {
     mutationFn: async () => await addReviewComment(userId, comment, reviewId),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['fetchReviewCommentList']});
+      addAlertMessage({
+        type: 'comment',
+        message: `작성하신 리뷰 ${title} 에 댓글이 달렸습니다.`,
+        userId: authorId,
+        targetId: reviewId,
+      });
     },
   });
 

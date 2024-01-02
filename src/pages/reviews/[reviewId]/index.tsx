@@ -108,7 +108,7 @@ const ReviewDetail: React.FC = () => {
             <p>{detailReviewId?.content}</p>
           </div>
         </div>
-        <ReviewDetailComment />
+        <ReviewDetailComment title={detailReviewId?.title ?? ''} authorId={detailReviewId?.user_id ?? ''} />
       </div>
     </div>
   );
