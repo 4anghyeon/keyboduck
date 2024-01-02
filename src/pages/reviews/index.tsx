@@ -105,7 +105,7 @@ const ReviewPage = () => {
         </div>
         <div className={styles['grid-container']}>
           {currentReview?.length === 0 ? (
-            <h1>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</h1>
+            <p>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</p>
           ) : (
             currentReview?.map(review => {
               return (
