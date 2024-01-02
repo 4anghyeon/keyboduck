@@ -11,6 +11,7 @@ import {RootState} from '@/redux/store';
 import {useRouter} from 'next/router';
 import {GrPowerReset} from 'react-icons/gr';
 import {Tables} from '@/shared/supabase/types/supabase';
+import {FaSearch} from 'react-icons/fa';
 
 const Question = () => {
   const {
@@ -92,7 +93,9 @@ const Question = () => {
       </div>
       <form onSubmit={clickSearch} className={styles['qna-search-bar']}>
         <input value={search} onChange={onChangeSearch} type="text" placeholder="검색어를 입력해주세요" />
-        <button type="submit">⌕</button>
+        <button type="submit">
+          <FaSearch />
+        </button>
         {isSearching ? (
           <button type="button" onClick={clickSearchReset}>
             <GrPowerReset size={20} />
