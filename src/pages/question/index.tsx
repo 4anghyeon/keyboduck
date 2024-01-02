@@ -8,8 +8,9 @@ import Loading from '@/components/layout/loading/Loading';
 import Pagination from '@/components/question/Pagination';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
-import {Tables} from '@/shared/supabase/types/supabase';
 import {useRouter} from 'next/router';
+import {GrPowerReset} from 'react-icons/gr';
+import {Tables} from '@/shared/supabase/types/supabase';
 
 const Question = () => {
   const {
@@ -49,9 +50,8 @@ const Question = () => {
     router.push('/question');
   };
 
-  // 뒤로 가기 이벤트 핸들러
-  const handlePopState = () => {
-    // 뒤로 가기 시 검색 상태 초기화
+  // 검색 초기화
+  const clickSearchReset = () => {
     resetSearch();
   };
 
@@ -66,16 +66,6 @@ const Question = () => {
   const numPages = Math.ceil(total / limit);
   // 첫 게시물의 인덱스
   const offset = (page - 1) * limit;
-
-  useEffect(() => {
-    // popstate 이벤트 리스너 등록
-    window.addEventListener('popstate', handlePopState);
-
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 해제
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
 
   useEffect(() => {
     // 전체데이터가 변할 때마다 게시물 수 업데이트
@@ -104,16 +94,24 @@ const Question = () => {
       <form onSubmit={clickSearch} className={styles['qna-sreach-bar']}>
         <input value={search} onChange={onChangeSearch} type="text" placeholder="검색어를 입력해주세요" />
         <button type="submit">⌕</button>
+        {isSearching ? (
+          <button type="button" onClick={clickSearchReset}>
+            <GrPowerReset size={20} />
+          </button>
+        ) : null}
       </form>
       <div className={styles['qna-list']}>
         <div className={styles['qna-list-title']}>
           <p>날짜</p>
+          <p>카테고리</p>
           <p>제목</p>
           <p>작성자</p>
         </div>
         {/* 데이터 들어갈 자리 */}
         {total === 0 ? (
-          <p>{isSearching ? '검색 결과가 없습니다' : '게시물이 없습니다'}</p>
+          <div className={styles['nothing']}>
+            <p>{isSearching ? '검색 결과가 없습니다😭' : '게시물이 없습니다😭'}</p>
+          </div>
         ) : (
           QUESTION?.slice(offset, offset + limit).map(question => (
             <QuestionList key={question.id} question={question} />
@@ -121,7 +119,7 @@ const Question = () => {
         )}
       </div>
       <div className={styles['qna-registration-btn']}>
-        {!!userData ? (
+        {!!userData && !isSearching ? (
           <Link href="/question/write">
             <button>등록하기</button>
           </Link>
