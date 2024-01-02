@@ -53,23 +53,33 @@
   justify-content: space-between;
 }
 
-.container span {
+.wrap span {
   font-size: 18px;
   font-family: Pretendard-Light;
   color: #b0b0b0;
 }
 
-.container button {
+.wrap button {
   border-style: none;
   background-color: transparent;
   color: #b0b0b0;
   word-spacing: 10px;
 }
 
+.wrap button:hover {
+  color: #83e0a5;
+}
+
 .image-slide {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+}
+
+.image-slide button {
+  border-style: none;
+  background-color: transparent;
+  color: #b0b0b0;
 }
 
 .image-slide > button:hover {
