@@ -60,12 +60,15 @@ const QuestionDetailComment = ({
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['getAnswer']});
       successTopCenter({message: '채택되었습니다!', timeout: 2000});
-      addAlertMessage({
-        type: 'accept',
-        message: `작성하신 답변이 채택되었습니다.`,
-        userId: getAnswer.user_id!,
-        targetId: getAnswer.id,
-      });
+
+      if (getAnswer.user_id !== userId) {
+        addAlertMessage({
+          type: 'accept',
+          message: `작성하신 답변이 채택되었습니다.`,
+          userId: getAnswer.user_id!,
+          targetId: questionId,
+        });
+      }
     },
   });
   const acceptUserMutation = useMutation({

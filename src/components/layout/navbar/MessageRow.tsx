@@ -9,14 +9,16 @@ const MessageRow = ({item}: {item: Tables<'alert_message'>}) => {
   const router = useRouter();
   const {updateAlertMessage} = useAlertMessage();
   let link = '/';
+
   if (item.type === 'answer') {
     link = `/question/${item.target_id}`;
   } else if (item.type === 'comment') {
     link = `/reviews/${item.target_id}`;
   } else if (item.type === 'accept') {
-    link = `/questions/${item.target_id}`;
+    link = `/question/${item.target_id}`;
   }
 
+  // 알림 메시지 클릭
   const onClickMessage = () => {
     router.push(link).then(() => {
       updateAlertMessage(item.id);

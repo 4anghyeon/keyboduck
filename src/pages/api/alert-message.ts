@@ -31,6 +31,14 @@ export const findAllMessageByUserId = async ({userId, pageParam = 0}: {userId: s
   return {data, error};
 };
 
+/**
+ * alert_message 테이블에 데이터를 넣는다.
+ * userId인 사람에게 메시지를 보낸다.
+ * @param type -- 리뷰댓글, 답변, 채택 등
+ * @param message -- 메시지 내용
+ * @param userId -- 메시지를 받는 유저 아이디
+ * @param targetId -- 글 아이디 (리뷰글 아이디, 질문글 아이디)
+ */
 export const addAlertMessageByIdAndTarget = async ({type, message, userId, targetId}: AlertMessageArgs) => {
   await supabase
     .from('alert_message')
@@ -38,6 +46,10 @@ export const addAlertMessageByIdAndTarget = async ({type, message, userId, targe
     .select();
 };
 
+/**
+ * 메시지 클릭시 해당 메시지를 읽음 상태로 만든다.
+ * @param id -- 메시지 아이디
+ */
 export const updateAlertMessageRead = async (id: string) => {
   await supabase.from('alert_message').update({read: true}).eq('id', id);
   await queryClient.invalidateQueries({
