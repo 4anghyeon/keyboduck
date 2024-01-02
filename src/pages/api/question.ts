@@ -46,6 +46,5 @@ export const editQuestion = async ({
 };
 
 export const acceptUser = async (id: number) => {
-  const {data} = await supabase.from('question').update({accept: true}).eq('id', id).select();
-  console.log(data);
+  await supabase.from('question').update({accept: true}).eq('id', id).select();
 };

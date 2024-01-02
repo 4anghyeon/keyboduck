@@ -153,7 +153,10 @@ const QuestionDetailComment = ({
       <div className={styles['detail-answer-user']}>
         <p>{getAnswer.profiles.username}</p>
         <div className={styles['detail-answer-select']}>
-          {userId !== getQuestionUserId || getAnswer.is_accept || accept ? null : (
+          {userId !== getQuestionUserId ||
+          getAnswer.user_id === getQuestionUserId ||
+          getAnswer.is_accept ||
+          accept ? null : (
             <button onClick={() => clickIsAccept(getAnswer.id, getAnswer.is_accept!)}>채택하기</button>
           )}
 
