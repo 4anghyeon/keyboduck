@@ -9,6 +9,7 @@ import {logoutUser, setUserInfo} from '@/redux/modules/userSlice';
 import MenuItem from '@/components/layout/navbar/MenuItem';
 import {IoMdMenu} from 'react-icons/io';
 import duckImg from '@/assets/images/duck.png';
+import logoImg from '@/assets/images/logo.png';
 import Image from 'next/image';
 import {RootState} from '@/redux/store';
 import {RealtimeChannel} from '@supabase/realtime-js';
@@ -100,7 +101,8 @@ const NavBar = () => {
         onClick={onClickDuck}
       />
       <Link href="/" className={styles.logo}>
-        Keyboduck
+        <Image src={logoImg} alt={'logo image'} width={300} height={300} />
+        <span>Keyboduck</span>
       </Link>
       <div className={styles.wrap}>
         <div>
