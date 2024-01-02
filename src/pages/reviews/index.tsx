@@ -14,12 +14,28 @@ import {RootState} from '@/redux/store';
 import {useToast} from '@/hooks/useToast';
 import {useRouter} from 'next/router';
 
+interface Review {
+  content: string | null;
+  id: number;
+  keyboard_id: number;
+  photo: string[] | null;
+  title: string | null;
+  user_id: string | null;
+  write_date: string | null;
+  profiles: {
+    avatar_url: string | null;
+    email: string | null;
+    id: string;
+    username: string | null;
+  };
+}
+
 const ReviewPage = () => {
   const [userId, setUserId] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
   const [searchReview, setSearchReview] = useState('');
-  const [filteredReview, setFilteredReview] = useState([]);
-  // const [sortedReview, setSortedReview] = useState([]);
+  const [filteredReview, setFilteredReview] = useState<Review[] | null>(null);
+  const [sortedReview, setSortedReview] = useState([]);
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const {warnTopCenter} = useToast();
   const router = useRouter();
@@ -38,11 +54,11 @@ const ReviewPage = () => {
   // 리뷰데이터 변경될때마다 업데이트
   useEffect(() => {
     // 최신순으로 정렬하기
-    // if (fetchReviewData?.data) {
-    //   const sortedData = [...fetchReviewData.data].sort((a, b) => b.write_date! - a.write_date!);
-    //   setSortedReview(sortedData);
-    // }
-    setFilteredReview(fetchReviewData?.data);
+    if (fetchReviewData?.data) {
+      const sortedData = [...fetchReviewData.data].sort((a, b) => b.write_date! - a.write_date!);
+      setSortedReview(sortedData);
+    }
+    setFilteredReview(fetchReviewData?.data || null);
   }, [fetchReviewData]);
 
   useEffect(() => {
@@ -63,22 +79,23 @@ const ReviewPage = () => {
     if (!fetchReviewData?.data) return;
 
     const filteredData = fetchReviewData.data.filter(review =>
-      review.title?.toLowerCase().includes(searchReview.toLocaleLowerCase()),
+      review.title?.toLowerCase().includes(searchReview.toLowerCase()),
     );
     setFilteredReview(filteredData);
     setCurrentPage(1);
   };
+
   // 한 페이지에 들어갈 목록 개수
   const indexOfLastReview = currentPage * currentPageReview;
   const indexOfFirstReview = indexOfLastReview - currentPageReview;
-  const currentReview = fetchReviewData?.data?.slice(indexOfFirstReview, indexOfLastReview);
+  const currentReview = filteredReview?.slice(indexOfFirstReview, indexOfLastReview);
 
   // 페이지 이동
   const pagination = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const pageNumber = [];
-  if (fetchReviewData?.data)
-    for (let i = 1; i <= Math.ceil(fetchReviewData?.data?.length / currentPageReview); i++) {
+  if (filteredReview)
+    for (let i = 1; i <= Math.ceil(filteredReview.length / currentPageReview); i++) {
       pageNumber.push(i);
     }
 
