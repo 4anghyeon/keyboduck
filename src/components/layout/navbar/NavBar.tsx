@@ -16,6 +16,7 @@ import {BiSolidBell, BiSolidBellRing} from 'react-icons/bi';
 import {ALERT_MESSAGE_QUERY_KEY, useAlertMessage} from '@/hooks/useAlertMessage';
 import MessageListContainer from '@/components/layout/navbar/MessageListContainer';
 import {queryClient} from '@/pages/_app';
+import {findUser} from '@/pages/api/profiles';
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -43,10 +44,15 @@ const NavBar = () => {
     // auth 정보 구독
     supabase.auth.onAuthStateChange((event, session) => {
       switch (event) {
-        case 'INITIAL_SESSION':
         case 'SIGNED_IN':
+          successTopRight({message: '로그인 되었습니다!', timeout: 4000});
+        case 'INITIAL_SESSION':
         case 'USER_UPDATED':
-          dispatch(setUserInfo(session?.user));
+          // profile에서 가져온 데이터를 넣어야함
+          findUser(session?.user.id!).then(user => {
+            console.log('user', user);
+            dispatch(setUserInfo(user));
+          });
 
           if (session?.user) {
             // 로그인이 된 경우만 alert_message 테이블 구독
