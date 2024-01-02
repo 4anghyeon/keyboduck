@@ -14,32 +14,13 @@ const userSlice = createSlice({
   reducers: {
     setUserInfo: (state, action) => {
       // email로 로그인한 경우
-      if (action.payload?.app_metadata.provider === 'email') {
-        state = {
-          id: action.payload?.id,
-          username: action.payload?.user_metadata.username,
-          avatar: action.payload?.user_metadata.avatar_url,
-        };
-        return state;
-      }
-      // google로 로그인한 경우
-      if (action.payload?.app_metadata.provider === 'google') {
-        state = {
-          id: action.payload.id,
-          username: action.payload.identities[0].identity_data.name,
-          avatar: action.payload.identities[0].identity_data.avatar_url,
-        };
-        return state;
-      }
-      // github로 로그인한 경우
-      if (action.payload?.app_metadata.provider === 'github') {
-        state = {
-          id: action.payload.id,
-          username: action.payload.identities[0].identity_data.name,
-          avatar: action.payload.identities[0].identity_data.avatar_url,
-        };
-        return state;
-      }
+      const user = {
+        id: action.payload?.[0].id,
+        username: action.payload?.[0].username,
+        avatar: action.payload?.[0].avatar_url,
+      };
+
+      return (state = user);
     },
     logoutUser: () => {
       // 로그아웃시 state값을 그냥 초기화 시켜준다.

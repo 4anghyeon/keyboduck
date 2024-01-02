@@ -3,7 +3,7 @@ import {useToast} from '@/hooks/useToast';
 
 // github 회원가입,로그인
 export const signInWithGithub = async () => {
-  const {successTopRight, errorTopRight} = useToast();
+  const {errorTopRight} = useToast();
   const {data, error} = await supabase.auth.signInWithOAuth({
     provider: 'github',
     options: {
@@ -14,14 +14,13 @@ export const signInWithGithub = async () => {
       redirectTo: process.env.NEXT_PUBLIC_SUPACE_REDIRECT_TO,
     },
   });
-  if (data) successTopRight({message: '로그인 되었습니다!', timeout: 4000});
 
   if (error) errorTopRight({message: '로그인 후 이용해 주세요!', timeout: 4000});
 };
 
 // google 회원가입, 로그인
 export const googleLogin = async () => {
-  const {successTopRight, errorTopRight} = useToast();
+  const {errorTopRight} = useToast();
   const {data, error} = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
@@ -32,7 +31,7 @@ export const googleLogin = async () => {
       redirectTo: process.env.NEXT_PUBLIC_SUPACE_REDIRECT_TO,
     },
   });
-  if (data) successTopRight({message: '로그인 되었습니다!', timeout: 4000});
+  console.log(data);
   if (error) errorTopRight({message: '로그인 후 이용해 주세요!', timeout: 4000});
 };
 
