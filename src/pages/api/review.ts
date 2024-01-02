@@ -10,8 +10,6 @@ export const fetchReview = async () => {
     .returns<Tables<'review'>[]>();
 
   const {data: fetchReviewData, error} = fetchReviewQuery;
-  console.log('🚀 ~ file: review.ts:13 ~ fetchReview ~ fetchReviewData:', fetchReviewData);
-
   return {data: fetchReviewData, error};
 };
 

@@ -5,6 +5,7 @@ import {useCallback} from 'react';
 import {useKeyboard} from '@/hooks/useKeyboard';
 import {ReviewModal} from './ReviewModal';
 import {FaSearch} from 'react-icons/fa';
+import {AiOutlineCloseCircle} from 'react-icons/ai';
 
 interface SearchKeyboardProps {
   onSelectedKeyboard: (keyboardId: number) => void;
@@ -46,16 +47,8 @@ const SearchKeyboard: React.FC<SearchKeyboardProps> = ({onSelectedKeyboard}) => 
     setKeyboardName(search);
   };
 
-  const closeModal = useCallback(() => {
+  const closeModalButtonHandler = () => {
     setIsOpenModal(false);
-  }, []);
-
-  const handleModalContainerClick = (): void => {
-    closeModal();
-  };
-
-  const handleModalContentClick = (e: React.MouseEvent<HTMLInputElement>): void => {
-    e.stopPropagation();
   };
 
   return (
@@ -63,9 +56,12 @@ const SearchKeyboard: React.FC<SearchKeyboardProps> = ({onSelectedKeyboard}) => 
       <div className={styles.wrap}>
         <p>제품명 {selectedKeyboard && `: ${selectedKeyboard}`}</p>
         {isOpenModal && (
-          <div onClick={handleModalContainerClick}>
+          <div>
             <ReviewModal onClickToggleHandler={clickOpenModal}>
-              <div onClick={handleModalContentClick} className={styles['modal-comment-container']}>
+              <button className={styles['close-button']} onClick={closeModalButtonHandler}>
+                <AiOutlineCloseCircle size={30} />
+              </button>
+              <div className={styles['modal-comment-container']}>
                 <input
                   type="text"
                   value={keyboardName}

@@ -25,6 +25,7 @@
   border-radius: 10px;
   background-color: #83e0a5;
   color: white;
+  cursor: pointer;
 }
 
 .comment button:hover {
@@ -79,6 +80,7 @@
   background-color: white;
   color: #b0b0b0;
   word-spacing: 10px;
+  cursor: pointer;
 }
 
 .comment-button button:hover {
