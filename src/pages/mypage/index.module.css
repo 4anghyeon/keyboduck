@@ -21,8 +21,8 @@
 }
 
 .unvalidimgbox {
-  width: 300px;
-  height: 300px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   transition: 0.2s;
 }
@@ -31,6 +31,7 @@
   margin: 30px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .nicknameinput {
@@ -73,7 +74,7 @@
 
 .ptagposition {
   text-align: center;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 800;
   height: 80px;
   display: flex;
@@ -82,20 +83,22 @@
 }
 
 .grid-container {
-  width: 80%;
+  width: 60%;
   height: 100%;
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   place-items: center;
   gap: 50px;
-  margin: 50px auto;
-  margin-top: 100px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .content-container {
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
   margin-top: 50px;
 }
 
@@ -170,7 +173,7 @@
 }
 
 .noreview-h1 {
-  width: 100%;
+  width: 60%;
   height: 10vh;
   display: flex;
   justify-content: center;
@@ -180,18 +183,17 @@
 
 .reviewbox {
   /* background-color: red; */
-  width: 80%;
-  height: 100px;
+  width: 60%;
+  height: 65px;
   border-top: 1px solid #b0b0b0;
   display: flex;
-  margin-top: 200px;
-  margin-bottom: 40px;
+  margin-top: 150px;
 }
 
 .reviewboxptag {
-  font-size: 40px;
+  font-size: 20px;
   margin-right: 40px;
-  padding: 20px;
+  padding-top: 20px;
   transition: 0.2s;
   color: #b0b0b0;
   cursor: pointer;
@@ -202,9 +204,9 @@
   cursor: pointer;
   color: black;
   font-weight: 700;
-  font-size: 40px;
+  font-size: 25px;
   margin-right: 40px;
-  padding: 20px;
+  padding-top: 20px;
   transition: 0.2s;
 }
 
@@ -213,8 +215,8 @@
   cursor: pointer;
   color: black;
   font-weight: 700;
-  font-size: 40px;
+  font-size: 20px;
   margin-right: 40px;
-  padding: 20px;
+  padding-top: 20px;
   transition: 0.2s;
 }
