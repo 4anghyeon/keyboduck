@@ -7,8 +7,22 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   border-bottom: 1px solid #b0b0b0;
 }
-.qna-list-item p {
+.qna-p-tag {
   text-align: center;
   text-decoration: none;
   margin: 10px 25px 10px 0px;
+}
+.qna-comments-count {
+  color: #b0b0b0;
+  font-size: 13px;
+}
+.qna-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.qna-title-wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
 }

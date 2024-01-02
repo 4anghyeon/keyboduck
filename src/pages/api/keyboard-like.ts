@@ -6,7 +6,11 @@ import {Tables} from '@/shared/supabase/types/supabase';
  * @param keyboardId
  */
 export const findLikeByKeyboardId = async (keyboardId: number) => {
-  let {data: keyboardLike} = await supabase.from('keyboard_like').select('*').eq('target_id', keyboardId);
+  let {data: keyboardLike} = await supabase
+    .from('keyboard_like')
+    .select('*')
+    .eq('target_id', keyboardId)
+    .returns<Tables<'keyboard_like'>[]>();
 
   return keyboardLike;
 };

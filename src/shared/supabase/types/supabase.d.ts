@@ -205,6 +205,7 @@ export interface Database {
           user_id: string;
           write_date: string | null;
           profiles: Tables<'profiles'>;
+          answer: {count: number}[];
           accept: boolean;
         };
         Insert: {
@@ -245,6 +246,7 @@ export interface Database {
           user_id: string | null;
           write_date: string | null;
           profiles: Tables<'profiles'>;
+          review_comment: {count: number}[];
         };
         Insert: {
           content?: string | null;

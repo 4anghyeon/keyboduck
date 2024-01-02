@@ -6,6 +6,7 @@ export const fetchReviewComment = async () => {
   const fetchReviewCommentQuery = await supabase
     .from('review_comment')
     .select('*, profiles(*)')
+    .order('id', {ascending: false})
     .returns<Tables<'review_comment'>[]>();
 
   const {data: fetchReviewCommentData, error} = fetchReviewCommentQuery;
@@ -22,10 +23,10 @@ export const addReviewComment = async (userId: string, comment: string, reviewId
 
 // 리뷰 댓글 삭제하기
 export const deleteReviewComment = async (id: number) => {
-  return await supabase.from('review_comment').delete().eq('id', id);
+  await supabase.from('review_comment').delete().eq('id', id);
 };
 
 // 리뷰 댓글 수정하기
 export const updateReviewComment = async ({id, editingComment}: {id: number; editingComment: string}) => {
-  return await supabase.from('review_comment').update({content: editingComment}).eq('id', id).select();
+  await supabase.from('review_comment').update({content: editingComment}).eq('id', id).select();
 };

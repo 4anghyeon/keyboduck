@@ -35,7 +35,7 @@ export const getStaticProps = async (props: {params: {keyboardId: string}}) => {
 
   return {
     props: {
-      keyboard: keyboard && keyboard[0],
+      keyboard,
     },
     revalidate: 60,
   };

@@ -25,10 +25,12 @@
   border-radius: 10px;
   background-color: #83e0a5;
   color: white;
+  cursor: pointer;
 }
 
 .comment button:hover {
-  background-color: #b0b0b0;
+  transform: scale(1.1);
+  transition: all 0.3s;
 }
 
 .comment-box {
@@ -50,11 +52,13 @@
 .user-name {
   width: 100px;
   text-align: right;
+  color: #83e0a5;
 }
 
 .comment-date {
-  width: 100px;
+  width: 200px;
   text-align: left;
+  color: #b0b0b0;
 }
 
 .comment-user {
@@ -76,6 +80,7 @@
   background-color: white;
   color: #b0b0b0;
   word-spacing: 10px;
+  cursor: pointer;
 }
 
 .comment-button button:hover {
