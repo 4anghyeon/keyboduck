@@ -18,6 +18,7 @@ const MessageRow = ({item}: {item: Tables<'alert_message'>}) => {
     link = `/question/${item.target_id}`;
   }
 
+  // 알림 메시지 클릭
   const onClickMessage = () => {
     router.push(link).then(() => {
       updateAlertMessage(item.id);
