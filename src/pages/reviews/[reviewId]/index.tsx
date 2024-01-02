@@ -122,7 +122,7 @@ const ReviewDetail: React.FC = () => {
               <span>{detailReviewId?.write_date!.replace('T', ' ').substring(0, 16)}</span>
               {userId === detailReviewId?.user_id && (
                 <div>
-                  <button>수정 |</button>
+                  <button onClick={() => router.push(`reviews/edit/${reviewId}`)}>수정 |</button>
                   <button onClick={() => deleteButtonHandler(detailReviewId?.id!)}>삭제</button>
                 </div>
               )}
