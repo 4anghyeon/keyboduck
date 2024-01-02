@@ -28,6 +28,11 @@
   color: #83e0a5;
   text-decoration: none;
   margin-right: 3vw;
+<<<<<<< HEAD
+=======
+  min-width: 200px;
+  font-family: YClover-Bold;
+>>>>>>> 1d57954679096b7792c7febf676142e45f7da032
 }
 
 .logo span {

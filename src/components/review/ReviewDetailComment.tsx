@@ -52,12 +52,15 @@ const ReviewDetailComment = ({
     mutationFn: async () => await addReviewComment(userId, comment, reviewId),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['fetchReviewCommentList']});
-      addAlertMessage({
-        type: 'comment',
-        message: `작성하신 리뷰 ${title} 에 댓글이 달렸습니다.`,
-        userId: authorId,
-        targetId: reviewId,
-      });
+
+      if (authorId !== userInfo.id) {
+        addAlertMessage({
+          type: 'comment',
+          message: `작성하신 리뷰 ${title} 에 댓글이 달렸습니다.`,
+          userId: authorId,
+          targetId: reviewId,
+        });
+      }
     },
   });
 
