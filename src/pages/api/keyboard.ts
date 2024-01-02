@@ -25,7 +25,7 @@ export const findKeyboardByIdWithReview = async (id: number) => {
   // 리뷰 데이터는 작성순으로 3개 가지만 가져온다.
   const findKeyboardByIdQuery = await supabase
     .from('keyboard')
-    .select('*, review(*)')
+    .select('*, review(*, profiles(*))')
     .order('write_date', {referencedTable: 'review', ascending: false})
     .range(0, 2, {foreignTable: 'review'})
     .eq('id', id)

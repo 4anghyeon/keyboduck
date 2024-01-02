@@ -12,11 +12,17 @@ const ReviewCard = ({review}: {review: Tables<'review'>}) => {
 
   return (
     <div className={styles.container} onClick={() => router.push(`/reviews/${review.id}`)}>
-      <Image src={defaultImg} alt={review.title ?? ''} width={300} height={300} />
+      <Image src={review.photo?.[0] ?? defaultImg} alt={review.title ?? ''} width={300} height={300} />
       <div className={styles['review-info']}>
         <div>
-          <Image src={defaultProfileImg} alt={review.author ?? ''} width={300} className={styles.profile} />
-          <span>{review.author}</span>
+          <Image
+            src={review.profiles?.avatar_url ?? defaultProfileImg}
+            alt={review.profiles?.username ?? ''}
+            width={300}
+            height={300}
+            className={styles.profile}
+          />
+          <span>{review.profiles?.username}</span>
         </div>
         <span className={styles.date}>{moment(review.write_date).format('yyyy-MM-DD')}</span>
       </div>
