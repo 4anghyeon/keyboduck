@@ -35,7 +35,7 @@ const ReviewPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchReview, setSearchReview] = useState('');
   const [filteredReview, setFilteredReview] = useState<Review[] | null>(null);
-  const [sortedReview, setSortedReview] = useState([]);
+  // const [sortedReview, setSortedReview] = useState([]);
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const {warnTopCenter} = useToast();
   const router = useRouter();
@@ -51,13 +51,10 @@ const ReviewPage = () => {
     staleTime: 3000,
   });
 
+  console.log('전체', fetchReviewData);
+
   // 리뷰데이터 변경될때마다 업데이트
   useEffect(() => {
-    // 최신순으로 정렬하기
-    if (fetchReviewData?.data) {
-      const sortedData = [...fetchReviewData.data].sort((a, b) => b.write_date! - a.write_date!);
-      setSortedReview(sortedData);
-    }
     setFilteredReview(fetchReviewData?.data || null);
   }, [fetchReviewData]);
 
