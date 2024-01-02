@@ -15,27 +15,27 @@
 
   font-size: 25px;
 }
-.qna-sreach-bar {
+.qna-search-bar {
   width: 60%;
   display: flex;
   justify-content: flex-end;
   gap: 20px;
 }
-.qna-sreach-bar input {
+.qna-search-bar input {
   width: 50%;
   padding: 5px 15px;
-  border-radius: 20px;
+  border-radius: 10px;
   border: 1px solid #b0b0b0;
   outline: none;
 }
-.qna-sreach-bar button {
+.qna-search-bar button {
   width: 7%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding-bottom: 5px;
   border: none;
-  border-radius: 15px;
+  border-radius: 10px;
   font-size: 30px;
   color: white;
   background-color: #83e0a5;

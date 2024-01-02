@@ -90,7 +90,7 @@ const Question = () => {
       <div className={styles['qna-title']}>
         <h2>QnA</h2>
       </div>
-      <form onSubmit={clickSearch} className={styles['qna-sreach-bar']}>
+      <form onSubmit={clickSearch} className={styles['qna-search-bar']}>
         <input value={search} onChange={onChangeSearch} type="text" placeholder="검색어를 입력해주세요" />
         <button type="submit">⌕</button>
         {isSearching ? (
