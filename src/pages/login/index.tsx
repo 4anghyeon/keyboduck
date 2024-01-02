@@ -43,11 +43,11 @@ const LoginPage = () => {
       password: pwValue,
     });
     console.log(data);
-    if (data !== null) {
+    if (data.user !== null) {
       router.push('/');
       successTopRight({message: '로그인 되었어요!', timeout: 2000});
     }
-    if (error) errorTopRight({message: '로그인 후 이용해 주세요!', timeout: 2000});
+    if (error) errorTopRight({message: '아이디 혹은 비밀번호를 확인해주세요!', timeout: 2000});
   };
 
   return (
