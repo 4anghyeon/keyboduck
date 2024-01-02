@@ -11,14 +11,25 @@ import {supabase} from '@/shared/supabase/supabase';
 import router from 'next/router';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
+import {useQuery} from '@tanstack/react-query';
+import {fetchReview} from '@/pages/api/review';
 
 const ReviewWrite = () => {
-  const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('');
+  const [edittitle, setEditTitle] = useState<string>('');
+  const [editcontent, setEditContent] = useState<string>('');
   const [imageFile, setImageFile] = useState<string[]>([]);
   const [userId, setUserId] = useState<string>('');
   const [selectedKeyboardId, setSelectedKeyboardId] = useState<number | null>(null);
   const userInfo = useSelector((state: RootState) => state.userSlice);
+
+  const {data: fetchReviewData} = useQuery({
+    queryKey: ['fetchReviewList'],
+    queryFn: fetchReview,
+    refetchOnWindowFocus: false,
+    staleTime: 3000,
+  });
+
+  const;
 
   const fileInput = useRef<HTMLInputElement>(null);
   const {warnTopCenter, errorTopCenter} = useToast();
@@ -27,8 +38,9 @@ const ReviewWrite = () => {
     if (userInfo.id !== '') setUserId(userInfo.id);
   }, [userInfo]);
 
-  const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
-  const contentChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void => setContent(event.target.value);
+  const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setEditTitle(event.target.value);
+  const contentChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void =>
+    setEditContent(event.target.value);
 
   const selectKeyboardHandler = (keyboardId: number) => {
     setSelectedKeyboardId(keyboardId);
@@ -94,7 +106,7 @@ const ReviewWrite = () => {
       warnTopCenter({message: '키보드를 선택해주세요', timeout: 2000});
       return;
     }
-    if (!title) {
+    if (!edittitle) {
       warnTopCenter({message: '제목을 입력해주세요', timeout: 2000});
       return;
     }
@@ -102,7 +114,7 @@ const ReviewWrite = () => {
       warnTopCenter({message: '이미지를 업로드해주세요', timeout: 2000});
       return;
     }
-    if (!content) {
+    if (!editcontent) {
       warnTopCenter({message: '내용을 입력해주세요', timeout: 2000});
       return;
     }
@@ -135,14 +147,9 @@ const ReviewWrite = () => {
       const supabaseUrl = 'https://eaxjoqjnwoyrpkpvzosu.supabase.co';
       const publicUrls = uploadPaths.map(path => `${supabaseUrl}/storage/v1/object/public/${bucketName}/${path}`);
 
-      const {data: addReviewData, error} = await supabase
-        .from('review')
-        .insert({title, keyboard_id: selectedKeyboardId, content, user_id: userId, photo: publicUrls})
-        .select();
-
-      if (addReviewData) {
-        router.push('/reviews');
-      }
+      //   if (addReviewData) {
+      //     router.push('/reviews');
+      //   }
 
       Swal.fire({
         title: '등록되었습니다',
@@ -163,7 +170,7 @@ const ReviewWrite = () => {
           <div className={styles.title}>
             <input
               type="text"
-              value={title}
+              value={edittitle}
               onChange={titleChangeHandler}
               placeholder="제목을 입력해주세요(최대 15자)"
               maxLength={15}
@@ -204,7 +211,7 @@ const ReviewWrite = () => {
             </div>
             <div className={styles.contents}>
               <textarea
-                value={content}
+                value={editcontent}
                 onChange={contentChangeHandler}
                 placeholder="내용을 입력해주세요(최대 300자)"
                 maxLength={300}
@@ -213,7 +220,8 @@ const ReviewWrite = () => {
           </div>
         </div>
         <div className={styles['submit-btn']}>
-          <button onClick={onSubmitButtonHandler}>등록하기</button>
+          <button>취소하기</button>
+          <button onClick={onSubmitButtonHandler}>수정하기</button>
         </div>
       </div>
     </div>

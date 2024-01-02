@@ -15,6 +15,7 @@ import {queryClient} from '@/pages/_app';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
 import {useEffect} from 'react';
+import Link from 'next/link';
 
 const ReviewDetail: React.FC = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -122,7 +123,9 @@ const ReviewDetail: React.FC = () => {
               <span>{detailReviewId?.write_date!.replace('T', ' ').substring(0, 16)}</span>
               {userId === detailReviewId?.user_id && (
                 <div>
-                  <button onClick={() => router.push(`reviews/edit/${reviewId}`)}>수정 |</button>
+                  <Link href={`/reviews/edit/${reviewId}`}>
+                    <button>수정 |</button>
+                  </Link>
                   <button onClick={() => deleteButtonHandler(detailReviewId?.id!)}>삭제</button>
                 </div>
               )}

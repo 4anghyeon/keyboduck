@@ -1,13 +1,20 @@
 @font-face {
-  font-family: "Pretendard";
+  font-family: 'Pretendard';
   src: url('../assets/fonts/Pretendard-Light.otf');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Pretendard";
+  font-family: 'Pretendard';
   src: url('../assets/fonts/Pretendard-Bold.otf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'YClover-Bold';
+  src: url('../assets/fonts/YClover-Bold.otf');
   font-weight: bold;
   font-style: normal;
 }

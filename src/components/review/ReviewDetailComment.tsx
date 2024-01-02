@@ -23,6 +23,7 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
   const [currentComment, setCurrentComment] = useState<string>('');
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editingComment, setEditingComment] = useState<string>('');
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
 
@@ -87,6 +88,7 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
     }
     try {
       await addCommentMutate.mutate();
+      setComment('');
       successTopCenter({message: '댓글을 등록하였습니다', timeout: 2000});
     } catch (error) {
       console.log('reviewCommentError', error);
@@ -95,8 +97,8 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
   };
 
   // 수정하려다가 취소버튼 클릭
-  const isEditButtonHandler = () => {
-    if (isEdit) {
+  const isEditButtonHandler = (commentId: number) => {
+    if (editingCommentId === commentId) {
       Swal.fire({
         title: '취소하시겠습니까?',
         text: '⚠️ 수정된 내용은 저장되지 않습니다',
@@ -112,7 +114,7 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
             title: '취소되었습니다',
             icon: 'success',
           });
-          setIsEdit(!isEdit);
+          setEditingCommentId(null);
         }
       });
     } else {
@@ -129,7 +131,7 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
     try {
       await updateCommentMutate.mutate({id, editingComment});
       setEditingComment(editingComment);
-      setIsEdit(!isEdit);
+      setEditingCommentId(null);
       successTopCenter({message: '수정이 완료되었습니다', timeout: 2000});
     } catch (error) {
       console.log('updateCommentError', error);
@@ -138,7 +140,8 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
   };
 
   // 수정버튼 클릭
-  const startEditing = (currentContent: string) => {
+  const startEditing = (id: number, currentContent: string) => {
+    setEditingCommentId(id);
     setIsEdit(true);
     setEditingComment(currentContent);
     setCurrentComment(currentContent);
@@ -187,14 +190,10 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
           return (
             <div className={styles['comment-box']} key={comment.id}>
               <div className={styles['comment-user']}>
-                {isEdit ? (
-                  <div>
-                    <input onChange={e => setEditingComment(e.target.value)} value={editingComment} maxLength={50} />
-                  </div>
+                {editingCommentId === comment.id ? (
+                  <input onChange={e => setEditingComment(e.target.value)} value={editingComment} maxLength={50} />
                 ) : (
-                  <div>
-                    <p>{comment.content}</p>
-                  </div>
+                  <p>{comment.content}</p>
                 )}
                 <span className={styles['user-name']}>{comment.profiles.username}</span>
               </div>
@@ -202,14 +201,14 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
                 <span className={styles['comment-date']}>{comment.write_date?.substring(0, 10)}</span>
                 {userId === comment.user_id && (
                   <div className={styles['comment-button']}>
-                    {isEdit ? (
+                    {editingCommentId === comment.id ? (
                       <div>
-                        <button onClick={isEditButtonHandler}>취소 |</button>
+                        <button onClick={() => isEditButtonHandler(comment.id)}>취소 |</button>
                         <button onClick={() => completeButtonHandler(comment.id)}>완료</button>
                       </div>
                     ) : (
                       <div>
-                        <button onClick={() => startEditing(comment.content!)}>수정 |</button>
+                        <button onClick={() => startEditing(comment.id, comment.content!)}>수정 |</button>
                         <button onClick={() => deleteButtonHandler(comment.id)}>삭제</button>
                       </div>
                     )}
