@@ -5,7 +5,7 @@ import {Tables} from '@/shared/supabase/types/supabase';
 export const getQuestion = async () => {
   const getQuestionQuery = await supabase
     .from('question')
-    .select('*, profiles(*)')
+    .select('*, profiles(*), answer(count)')
     .order('id', {ascending: false})
     .returns<Tables<'question'>[]>();
 
