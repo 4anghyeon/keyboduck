@@ -6,7 +6,7 @@
   padding: 30px 50px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #83E0A5;
+  border-bottom: 1px solid #83e0a5;
   z-index: 5;
   background: white;
 
@@ -28,11 +28,13 @@
   color: #83e0a5;
   text-decoration: none;
   margin-right: 3vw;
-  font-family: YClover-Bold;
+  min-width: 220px;
+  font-family: YClover-Bold, serif;
 }
 
 .logo span {
   font-size: 30px;
+  font-family: YClover-Bold, serif;
 }
 
 .logo img {
@@ -50,7 +52,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 }
 
 .wrap div {
@@ -81,14 +82,14 @@
 .h-menu button:first-child {
   display: flex;
   align-items: center;
-  color: #83E0A5;
+  color: #83e0a5;
 }
 
 .context-menu-container {
   position: fixed;
   flex-direction: column;
   width: 150px;
-  border: 1px solid #B0B0B0;
+  border: 1px solid #b0b0b0;
   border-top: 0;
   background: white;
   top: 60px;
@@ -96,11 +97,12 @@
   z-index: 10;
   border-radius: 0 0 5px 5px;
   overflow: hidden;
-  animation: increment-height .2s;
+  animation: increment-height 0.2s;
   transform-origin: top;
 }
 
-.context-menu-container a, .context-menu-container button {
+.context-menu-container a,
+.context-menu-container button {
   text-align: left;
   padding: 0;
   margin: 10px;
@@ -151,11 +153,11 @@
 
 .message-count {
   position: absolute;
-  background: #83E0A5;
+  background: #83e0a5;
   border-radius: 50%;
   color: white;
   width: 18px;
-  font-size: .7rem;
+  font-size: 0.7rem;
   font-weight: bold;
   top: -5px;
   right: 0;
@@ -184,13 +186,13 @@
 .message-list-container button {
   margin: 10px;
   padding: 10px;
-  background: #83E0A5;
+  background: #83e0a5;
   color: white;
   border-radius: 5px;
 }
 
 .disabled {
-  background: #B0B0B0 !important;
+  background: #b0b0b0 !important;
 }
 
 @keyframes move {
@@ -244,8 +246,8 @@
     bottom: -2px;
   }
   80% {
-       bottom: 2px;
-     }
+    bottom: 2px;
+  }
   85% {
     bottom: -2px;
   }
@@ -260,7 +262,6 @@
     left: 100vw;
   }
 }
-
 
 @keyframes shake {
   45% {

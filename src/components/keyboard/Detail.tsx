@@ -4,7 +4,7 @@ import Image from 'next/image';
 import {Tables} from '@/shared/supabase/types/supabase';
 import {FaBluetooth, FaKeyboard} from 'react-icons/fa';
 import {AiFillCalendar, AiFillShopping} from 'react-icons/ai';
-import {GiMoneyStack} from 'react-icons/gi';
+import {GiMoneyStack, GiPlasticDuck} from 'react-icons/gi';
 import {VscDebugDisconnect} from 'react-icons/vsc';
 import {useKeyboardLike} from '@/hooks/useKeyboardLike';
 import {RiKeyboardFill} from 'react-icons/ri';
@@ -55,7 +55,7 @@ const Detail = ({item}: {item: Tables<'keyboard'>}) => {
       <div className={styles.header}>
         <h1>{item.name}</h1>
         <button className={[styles['like-button'], isLiked ? styles['liked'] : ''].join(' ')} onClick={onClickLike}>
-          ❤️ {isLikePending ? '...' : likes?.length}
+          <GiPlasticDuck size={20} />️ {isLikePending ? '...' : likes?.length}
         </button>
       </div>
       <div>

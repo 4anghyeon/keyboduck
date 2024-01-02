@@ -8,9 +8,13 @@ const QuestionList = ({question}: {question: Tables<'question'>}) => {
     <div className={styles['qna-a-tag']}>
       <Link href={`/question/${question.id}`}>
         <div className={styles['qna-list-item']}>
-          <p>{question.write_date?.substring(0, 10)}</p>
-          <p>{question.title}</p>
-          <p>{question.profiles.username}</p>
+          <p className={styles['qna-p-tag']}>{question.write_date?.substring(0, 10)}</p>
+          <p className={styles['qna-p-tag']}>{question.category}</p>
+          <div className={styles['qna-title-wrapper']}>
+            <p className={`${styles['qna-title']} ${styles['qna-p-tag']}`}>{question.title}</p>
+            <span className={styles['qna-comments-count']}>{`[${question.answer[0].count}]`}</span>
+          </div>
+          <p className={styles['qna-p-tag']}>{question.profiles.username}</p>
         </div>
       </Link>
     </div>

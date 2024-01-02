@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from './nav-bar.module.css';
 import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/navigation';
@@ -17,11 +17,13 @@ import {BiSolidBell, BiSolidBellRing} from 'react-icons/bi';
 import {ALERT_MESSAGE_QUERY_KEY, useAlertMessage} from '@/hooks/useAlertMessage';
 import MessageListContainer from '@/components/layout/navbar/MessageListContainer';
 import {queryClient} from '@/pages/_app';
+import {findUser} from '@/pages/api/profiles';
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showMessageList, setShowMessageList] = useState(false);
   const [ringBell, setRingBell] = useState(false);
+  const isLoggedIn = useRef(false); // 로그인 알람 판단 ref
   const {successTopRight, errorTopRight, duckTopRight, alertBottomRight} = useToast();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -44,13 +46,23 @@ const NavBar = () => {
     // auth 정보 구독
     supabase.auth.onAuthStateChange((event, session) => {
       switch (event) {
+        case 'SIGNED_IN': {
+          if (!isLoggedIn.current) {
+            isLoggedIn.current = true;
+            successTopRight({message: '로그인 되었습니다!', timeout: 4000});
+          }
+        }
         case 'INITIAL_SESSION':
-        case 'SIGNED_IN':
         case 'USER_UPDATED':
-          dispatch(setUserInfo(session?.user));
+          // profile에서 가져온 데이터를 넣어야함
+          findUser(session?.user.id!).then(user => {
+            dispatch(setUserInfo(user));
+          });
 
           if (session?.user) {
             // 로그인이 된 경우만 alert_message 테이블 구독
+            isLoggedIn.current = true;
+            alertMessageChannel?.unsubscribe();
             alertMessageChannel = supabase
               .channel('alert-message-insert-channel')
               .on(
@@ -78,6 +90,7 @@ const NavBar = () => {
           break;
         case 'SIGNED_OUT':
           // 로그아웃을 할 경우 현재 로그인 정보를 날리고, 모든 구독을 취소한다.
+          isLoggedIn.current = false;
           dispatch(logoutUser());
           alertMessageChannel?.unsubscribe();
       }
@@ -85,6 +98,7 @@ const NavBar = () => {
 
     return () => {
       // navbar에서 이 cleanup 함수가 일어난다는 것은 페이지를 아예 나간다는 뜻
+      isLoggedIn.current = false;
       alertMessageChannel?.unsubscribe();
     };
   }, []);
@@ -170,4 +184,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default React.memo(NavBar);

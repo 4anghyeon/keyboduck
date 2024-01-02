@@ -58,3 +58,14 @@
   transition: background-color .5s;
   cursor: pointer;
 }
+
+.description span:nth-child(2) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.description span:nth-child(2) svg {
+  color: #fab005;
+  margin-right: 10px;
+}

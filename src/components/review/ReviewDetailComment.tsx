@@ -16,13 +16,24 @@ import {queryClient} from '@/pages/_app';
 import {useRouter} from 'next/router';
 import Swal from 'sweetalert2';
 import {useAlertMessage} from '@/hooks/useAlertMessage';
+import moment from 'moment';
+import 'moment/locale/ko';
 
-const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string}) => {
+const ReviewDetailComment = ({
+  title,
+  authorId,
+  commentCountUpdate,
+}: {
+  title: string;
+  authorId: string;
+  commentCountUpdate: (count: number) => void;
+}) => {
   const [comment, setComment] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
   const [currentComment, setCurrentComment] = useState<string>('');
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editingComment, setEditingComment] = useState<string>('');
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
 
@@ -41,12 +52,15 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
     mutationFn: async () => await addReviewComment(userId, comment, reviewId),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['fetchReviewCommentList']});
-      addAlertMessage({
-        type: 'comment',
-        message: `작성하신 리뷰 ${title} 에 댓글이 달렸습니다.`,
-        userId: authorId,
-        targetId: reviewId,
-      });
+
+      if (authorId !== userInfo.id) {
+        addAlertMessage({
+          type: 'comment',
+          message: `작성하신 리뷰 ${title} 에 댓글이 달렸습니다.`,
+          userId: authorId,
+          targetId: reviewId,
+        });
+      }
     },
   });
 
@@ -73,6 +87,10 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
     if (userInfo.id !== '') setUserId(userInfo.id);
   }, [userInfo]);
 
+  useEffect(() => {
+    commentCountUpdate(reviewCommentFilter?.length ?? 0);
+  }, [reviewCommentFilter, commentCountUpdate]);
+
   const commentChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setComment(event.target.value);
 
   // 댓글 등록하기
@@ -87,6 +105,7 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
     }
     try {
       await addCommentMutate.mutate();
+      setComment('');
       successTopCenter({message: '댓글을 등록하였습니다', timeout: 2000});
     } catch (error) {
       console.log('reviewCommentError', error);
@@ -95,8 +114,8 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
   };
 
   // 수정하려다가 취소버튼 클릭
-  const isEditButtonHandler = () => {
-    if (isEdit) {
+  const isEditButtonHandler = (commentId: number) => {
+    if (editingCommentId === commentId) {
       Swal.fire({
         title: '취소하시겠습니까?',
         text: '⚠️ 수정된 내용은 저장되지 않습니다',
@@ -112,7 +131,7 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
             title: '취소되었습니다',
             icon: 'success',
           });
-          setIsEdit(!isEdit);
+          setEditingCommentId(null);
         }
       });
     } else {
@@ -129,7 +148,7 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
     try {
       await updateCommentMutate.mutate({id, editingComment});
       setEditingComment(editingComment);
-      setIsEdit(!isEdit);
+      setEditingCommentId(null);
       successTopCenter({message: '수정이 완료되었습니다', timeout: 2000});
     } catch (error) {
       console.log('updateCommentError', error);
@@ -138,7 +157,8 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
   };
 
   // 수정버튼 클릭
-  const startEditing = (currentContent: string) => {
+  const startEditing = (id: number, currentContent: string) => {
+    setEditingCommentId(id);
     setIsEdit(true);
     setEditingComment(currentContent);
     setCurrentComment(currentContent);
@@ -187,29 +207,28 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
           return (
             <div className={styles['comment-box']} key={comment.id}>
               <div className={styles['comment-user']}>
-                {isEdit ? (
-                  <div>
-                    <input onChange={e => setEditingComment(e.target.value)} value={editingComment} maxLength={50} />
-                  </div>
+                {editingCommentId === comment.id ? (
+                  <input onChange={e => setEditingComment(e.target.value)} value={editingComment} maxLength={50} />
                 ) : (
-                  <div>
-                    <p>{comment.content}</p>
-                  </div>
+                  <p>{comment.content}</p>
                 )}
                 <span className={styles['user-name']}>{comment.profiles.username}</span>
               </div>
               <div className={styles['comment-user']}>
-                <span className={styles['comment-date']}>{comment.write_date?.substring(0, 10)}</span>
+                <span className={styles['comment-date']}>
+                  {' '}
+                  {moment(comment.write_date).locale('ko').format('yyyy년 MM월 DD일 A hh:mm')}
+                </span>
                 {userId === comment.user_id && (
                   <div className={styles['comment-button']}>
-                    {isEdit ? (
+                    {editingCommentId === comment.id ? (
                       <div>
-                        <button onClick={isEditButtonHandler}>취소 |</button>
+                        <button onClick={() => isEditButtonHandler(comment.id)}>취소 |</button>
                         <button onClick={() => completeButtonHandler(comment.id)}>완료</button>
                       </div>
                     ) : (
                       <div>
-                        <button onClick={() => startEditing(comment.content!)}>수정 |</button>
+                        <button onClick={() => startEditing(comment.id, comment.content!)}>수정 |</button>
                         <button onClick={() => deleteButtonHandler(comment.id)}>삭제</button>
                       </div>
                     )}

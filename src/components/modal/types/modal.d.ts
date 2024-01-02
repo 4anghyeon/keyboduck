@@ -1,3 +1,3 @@
-export interface ModalDefaultType {
+interface ModalDefaultType {
   onClickToggleHandler: () => void;
 }

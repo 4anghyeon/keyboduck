@@ -4,6 +4,8 @@ import {useState} from 'react';
 import {useCallback} from 'react';
 import {useKeyboard} from '@/hooks/useKeyboard';
 import {ReviewModal} from './ReviewModal';
+import {FaSearch} from 'react-icons/fa';
+import {AiOutlineCloseCircle} from 'react-icons/ai';
 
 interface SearchKeyboardProps {
   onSelectedKeyboard: (keyboardId: number) => void;
@@ -24,6 +26,7 @@ const SearchKeyboard: React.FC<SearchKeyboardProps> = ({onSelectedKeyboard}) => 
   const clickOpenModal = useCallback(() => {
     setIsOpenModal(!isOpenModal);
     setFilteredKeyboardList(data?.keyboardList || null);
+    setKeyboardName('');
   }, [isOpenModal, data]);
 
   const selectKeyboard = (keyboard: Keyboard): void => {
@@ -31,9 +34,12 @@ const SearchKeyboard: React.FC<SearchKeyboardProps> = ({onSelectedKeyboard}) => 
     setKeyboardName(keyboard.name);
     onSelectedKeyboard(keyboard.id);
   };
+  const nameInputChangehandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyboardName(e.target.value);
+  };
 
-  const nameInputChangehandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const search: string = e.target.value.toLocaleLowerCase();
+  const searchButtonHandler = (): void => {
+    const search: string = keyboardName.toLowerCase();
     const filteredList = data?.keyboardList?.filter(keyboard => {
       return keyboard.name.toLowerCase().includes(search);
     });
@@ -41,8 +47,8 @@ const SearchKeyboard: React.FC<SearchKeyboardProps> = ({onSelectedKeyboard}) => 
     setKeyboardName(search);
   };
 
-  const handleInputClick = (e: React.MouseEvent<HTMLInputElement>): void => {
-    e.stopPropagation();
+  const closeModalButtonHandler = () => {
+    setIsOpenModal(false);
   };
 
   return (
@@ -52,20 +58,25 @@ const SearchKeyboard: React.FC<SearchKeyboardProps> = ({onSelectedKeyboard}) => 
         {isOpenModal && (
           <div>
             <ReviewModal onClickToggleHandler={clickOpenModal}>
+              <button className={styles['close-button']} onClick={closeModalButtonHandler}>
+                <AiOutlineCloseCircle size={30} />
+              </button>
               <div className={styles['modal-comment-container']}>
                 <input
                   type="text"
                   value={keyboardName}
                   className={styles['modal-comment']}
                   placeholder="키보드를 검색하세요"
-                  onClick={handleInputClick}
                   onChange={nameInputChangehandler}
                 />
+                <button onClick={searchButtonHandler}>
+                  <FaSearch />
+                </button>
               </div>
               <ul className={styles.keyboard}>
                 {filteredKeyboardList?.map(keyboard => {
                   return (
-                    <li key={keyboard.id} onClick={() => selectKeyboard(keyboard)}>
+                    <li className={styles['select-button']} key={keyboard.id} onClick={() => selectKeyboard(keyboard)}>
                       {keyboard.name}
                     </li>
                   );
