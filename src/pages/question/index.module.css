@@ -1,7 +1,7 @@
 /* keycolor :  #83E0A5 , #B0B0B0*/
 .qna-container {
   width: 100%;
-  height: auto;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,7 +46,8 @@
   gap: 20px;
 }
 .qna-search-select {
-  width: 15%;
+  width: 10%;
+  padding-left: 5px;
 }
 .qna-list {
   width: 60%;
