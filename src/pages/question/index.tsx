@@ -13,7 +13,7 @@ import {GrPowerReset} from 'react-icons/gr';
 import {Tables} from '@/shared/supabase/types/supabase';
 import {FaSearch} from 'react-icons/fa';
 
-export const OPTION = ['전체', '가격', '성능', '고장', '기타'];
+const OPTION = ['전체', '가격', '성능', '고장', '기타'];
 
 const Question = () => {
   const {
