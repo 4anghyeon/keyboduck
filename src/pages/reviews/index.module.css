@@ -1,11 +1,11 @@
 .container {
-  width: 100vw;
+  width: 60vw;
   height: 100%;
-  padding: 150px 250px 100px 250px;
+  margin: 70px auto 100px auto;
 }
 
 .title {
-  font-size: 50px;
+  font-size: 35px;
   font-family: Pretendard-Bold;
 }
 
@@ -14,7 +14,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 20px;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .search-wrap input {
@@ -40,17 +40,17 @@
 }
 
 .search-wrap button:hover {
-  background-color: #b0b0b0;
+  transform: scale(1.1);
+  transition: all 0.3s;
 }
 
 .grid-container {
   width: 100%;
   height: 100%;
   display: grid;
-  justify-content: center;
+  justify-content: space-between;
   grid-template-columns: repeat(3, 1fr);
-  place-items: center;
-  gap: 50px;
+  gap: 30px;
   margin: 50px auto;
 }
 
@@ -82,12 +82,6 @@
   padding: 10px 15px;
 }
 
-.content-wrap span {
-  height: 100%;
-  color: black;
-  font-size: 20px;
-  font-family: Pretendard-Medium;
-}
 .user-wrap {
   display: flex;
   justify-content: space-between;
@@ -118,6 +112,24 @@
   color: black;
 }
 
+.title-comment {
+  display: flex;
+  align-items: center;
+}
+
+.title-comment p {
+  height: 100%;
+  color: black;
+  font-size: 20px;
+  font-family: Pretendard-Medium;
+}
+
+.title-comment span {
+  color: #b0b0b0;
+  font-size: 15px;
+  margin-left: 10px;
+}
+
 .write-wrap {
   width: 100%;
   height: 50px;
@@ -125,6 +137,7 @@
   justify-content: flex-end;
   margin: 50px auto 0 auto;
 }
+
 .write-btn {
   width: 200px;
   height: 50px;

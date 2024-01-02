@@ -13,6 +13,8 @@ import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
 import {useToast} from '@/hooks/useToast';
 import {useRouter} from 'next/router';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 interface Review {
   content: string | null;
@@ -35,7 +37,6 @@ const ReviewPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchReview, setSearchReview] = useState('');
   const [filteredReview, setFilteredReview] = useState<Review[] | null>(null);
-  // const [sortedReview, setSortedReview] = useState([]);
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const {warnTopCenter} = useToast();
   const router = useRouter();
@@ -138,9 +139,11 @@ const ReviewPage = () => {
                             <Image src={defaultImg} alt="유저프로필" className={styles['user-profile']} />
                             <p>{review.profiles.username}</p>
                           </div>
-                          <p>{review.write_date?.substring(0, 10)}</p>
+                          <p>{moment(review.write_date).locale('ko').add(-9, 'h').format('yyyy년 MM월 DD일')}</p>
                         </div>
-                        <span>{review.title}</span>
+                        <div className={styles['title-comment']}>
+                          <p>{review.title}</p>
+                        </div>
                       </div>
                     </div>
                   </Link>

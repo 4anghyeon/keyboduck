@@ -8,20 +8,14 @@ import {MdDeleteForever} from 'react-icons/md';
 import SearchKeyboard from '@/components/review/SearchKeyboard';
 import {useEffect} from 'react';
 import {supabase} from '@/shared/supabase/supabase';
-import router from 'next/router';
+import {useRouter} from 'next/router';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
-import {useQuery} from '@tanstack/react-query';
-import {fetchReview} from '@/pages/api/review';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {fetchReview, updateReview} from '@/pages/api/review';
+import {queryClient} from '@/pages/_app';
 
 const ReviewWrite = () => {
-  const [edittitle, setEditTitle] = useState<string>('');
-  const [editcontent, setEditContent] = useState<string>('');
-  const [imageFile, setImageFile] = useState<string[]>([]);
-  const [userId, setUserId] = useState<string>('');
-  const [selectedKeyboardId, setSelectedKeyboardId] = useState<number | null>(null);
-  const userInfo = useSelector((state: RootState) => state.userSlice);
-
   const {data: fetchReviewData} = useQuery({
     queryKey: ['fetchReviewList'],
     queryFn: fetchReview,
@@ -29,21 +23,47 @@ const ReviewWrite = () => {
     staleTime: 3000,
   });
 
-  const;
+  const router = useRouter();
+  const reviewId: number | null = Number(router.query.reviewId);
+  const findEditReview = fetchReviewData?.data?.find(review => review.id === reviewId);
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const [imageFile, setImageFile] = useState<string[]>([]);
+  const [userId, setUserId] = useState<string>('');
+  const [editSelectedKeyboardId, setEditSelectedKeyboardId] = useState(0);
+
+  const userInfo = useSelector((state: RootState) => state.userSlice);
 
   const fileInput = useRef<HTMLInputElement>(null);
-  const {warnTopCenter, errorTopCenter} = useToast();
+  const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
+
+  const updateReviewtMutate = useMutation({
+    mutationFn: updateReview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['fetchReviewList']});
+    },
+  });
 
   useEffect(() => {
     if (userInfo.id !== '') setUserId(userInfo.id);
   }, [userInfo]);
 
-  const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setEditTitle(event.target.value);
-  const contentChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void =>
-    setEditContent(event.target.value);
+  useEffect(() => {
+    if (findEditReview) {
+      setTitle(findEditReview.title!);
+      setContent(findEditReview.content!);
+      setEditSelectedKeyboardId(findEditReview.keyboard_id!);
+      if (findEditReview.photo && findEditReview.photo.length > 0) {
+        setImageFile(findEditReview.photo);
+      }
+    }
+  }, [findEditReview]);
+
+  const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
+  const contentChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>): void => setContent(event.target.value);
 
   const selectKeyboardHandler = (keyboardId: number) => {
-    setSelectedKeyboardId(keyboardId);
+    setEditSelectedKeyboardId(keyboardId);
   };
   // 이미지 파일 미리보기, 최대5장
   const processImageFiles = (files: FileList, existingImageFiles: string[]): string[] => {
@@ -100,13 +120,13 @@ const ReviewWrite = () => {
     return new File([blob], 'upload.png', {type: 'image/png'});
   };
 
-  // 리뷰 등록하기
-  const onSubmitButtonHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (selectedKeyboardId === null) {
+  // 리뷰 수정하기
+  const onSubmitButtonHandler = async () => {
+    if (editSelectedKeyboardId === null) {
       warnTopCenter({message: '키보드를 선택해주세요', timeout: 2000});
       return;
     }
-    if (!edittitle) {
+    if (!title) {
       warnTopCenter({message: '제목을 입력해주세요', timeout: 2000});
       return;
     }
@@ -114,7 +134,7 @@ const ReviewWrite = () => {
       warnTopCenter({message: '이미지를 업로드해주세요', timeout: 2000});
       return;
     }
-    if (!editcontent) {
+    if (!content) {
       warnTopCenter({message: '내용을 입력해주세요', timeout: 2000});
       return;
     }
@@ -147,18 +167,41 @@ const ReviewWrite = () => {
       const supabaseUrl = 'https://eaxjoqjnwoyrpkpvzosu.supabase.co';
       const publicUrls = uploadPaths.map(path => `${supabaseUrl}/storage/v1/object/public/${bucketName}/${path}`);
 
-      //   if (addReviewData) {
-      //     router.push('/reviews');
-      //   }
-
-      Swal.fire({
-        title: '등록되었습니다',
-        icon: 'success',
+      await updateReviewtMutate.mutate({
+        id: reviewId,
+        keyboard_id: editSelectedKeyboardId,
+        title,
+        content,
+        photo: publicUrls,
       });
+      router.push(`/reviews/${findEditReview?.id}`);
+      successTopCenter({message: '수정이 완료되었습니다', timeout: 2000});
     } catch (error) {
       console.log(error);
-      errorTopCenter({message: '등록에 실패하였습니다🙅🏻‍♀️', timeout: 2000});
+      errorTopCenter({message: '수정에 실패하였습니다🙅🏻‍♀️', timeout: 2000});
     }
+  };
+
+  // 취소하기
+  const clickCancelEdit = () => {
+    Swal.fire({
+      title: '취소하시겠습니까?',
+      text: '⚠️ 변경된 내용은 저장되지 않습니다',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#83e0a5',
+      cancelButtonColor: '#b0b0b0',
+      confirmButtonText: '네',
+      cancelButtonText: '아니요',
+    }).then(result => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: '취소되었습니다',
+          icon: 'success',
+        });
+        router.push(`/reviews/${findEditReview?.id}`);
+      }
+    });
   };
 
   return (
@@ -170,7 +213,7 @@ const ReviewWrite = () => {
           <div className={styles.title}>
             <input
               type="text"
-              value={edittitle}
+              value={title}
               onChange={titleChangeHandler}
               placeholder="제목을 입력해주세요(최대 15자)"
               maxLength={15}
@@ -211,7 +254,7 @@ const ReviewWrite = () => {
             </div>
             <div className={styles.contents}>
               <textarea
-                value={editcontent}
+                value={content}
                 onChange={contentChangeHandler}
                 placeholder="내용을 입력해주세요(최대 300자)"
                 maxLength={300}
@@ -220,7 +263,7 @@ const ReviewWrite = () => {
           </div>
         </div>
         <div className={styles['submit-btn']}>
-          <button>취소하기</button>
+          <button onClick={clickCancelEdit}>취소하기</button>
           <button onClick={onSubmitButtonHandler}>수정하기</button>
         </div>
       </div>

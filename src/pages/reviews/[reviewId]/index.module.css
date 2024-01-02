@@ -1,7 +1,7 @@
 .container {
-  width: 100vw;
+  width: 60vw;
   height: 100%;
-  padding: 150px 300px;
+  margin: 70px auto 100px auto;
 }
 
 .title-wrap {
@@ -11,8 +11,15 @@
 }
 
 .title {
-  font-size: 50px;
+  font-size: 35px;
   font-family: Pretendard-Medium;
+}
+
+.title span {
+  font-size: 25px;
+  font-family: Pretendard-Light;
+  color: #b0b0b0;
+  margin-left: 15px;
 }
 
 .keyboard-wrap {

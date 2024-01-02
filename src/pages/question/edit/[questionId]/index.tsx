@@ -48,6 +48,7 @@ const EditQuestion = () => {
   const clickCompletionQuestion = (id: number) => {
     editQuestionMutation.mutate({id, title, content, category});
   };
+
   const clickCancelEdit = () => {
     if (
       title !== findEditQuestion?.title ||

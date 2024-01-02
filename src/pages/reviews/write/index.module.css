@@ -1,11 +1,11 @@
 .container {
-  width: 100vw;
+  width: 60vw;
   height: 100%;
-  padding: 150px 300px;
+  margin: 70px auto 100px auto;
 }
 
 .title {
-  font-size: 50px;
+  font-size: 35px;
   font-family: Pretendard-Bold;
 }
 
@@ -32,7 +32,11 @@
   color: #b0b0b0;
 }
 
-.image-drag {
+.image-drag input {
+  display: none;
+}
+
+.image-drag label {
   width: 100%;
   height: 60px;
   border-radius: 10px;
@@ -40,13 +44,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.image-drag input {
-  display: none;
-}
-
-.image-drag label {
   font-size: 15px;
   color: #b0b0b0;
 }

@@ -16,8 +16,18 @@ import {queryClient} from '@/pages/_app';
 import {useRouter} from 'next/router';
 import Swal from 'sweetalert2';
 import {useAlertMessage} from '@/hooks/useAlertMessage';
+import moment from 'moment';
+import 'moment/locale/ko';
 
-const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string}) => {
+const ReviewDetailComment = ({
+  title,
+  authorId,
+  commentCountUpdate,
+}: {
+  title: string;
+  authorId: string;
+  commentCountUpdate: (count: number) => void;
+}) => {
   const [comment, setComment] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
   const [currentComment, setCurrentComment] = useState<string>('');
@@ -73,6 +83,10 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
   useEffect(() => {
     if (userInfo.id !== '') setUserId(userInfo.id);
   }, [userInfo]);
+
+  useEffect(() => {
+    commentCountUpdate(reviewCommentFilter?.length ?? 0);
+  }, [reviewCommentFilter, commentCountUpdate]);
 
   const commentChangeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setComment(event.target.value);
 
@@ -198,7 +212,10 @@ const ReviewDetailComment = ({title, authorId}: {title: string; authorId: string
                 <span className={styles['user-name']}>{comment.profiles.username}</span>
               </div>
               <div className={styles['comment-user']}>
-                <span className={styles['comment-date']}>{comment.write_date?.substring(0, 10)}</span>
+                <span className={styles['comment-date']}>
+                  {' '}
+                  {moment(comment.write_date).locale('ko').format('yyyy년 MM월 DD일 A hh:mm')}
+                </span>
                 {userId === comment.user_id && (
                   <div className={styles['comment-button']}>
                     {editingCommentId === comment.id ? (

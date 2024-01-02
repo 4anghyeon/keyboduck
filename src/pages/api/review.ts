@@ -33,5 +33,6 @@ export const updateReview = async ({
   content: string;
   photo: string[];
 }) => {
-  await supabase.from('review').update({keyboard_id, title, content, photo}).eq('id', id).select();
+  const {data} = await supabase.from('review').update({keyboard_id, title, content, photo}).eq('id', id).select();
+  console.log('값', data);
 };

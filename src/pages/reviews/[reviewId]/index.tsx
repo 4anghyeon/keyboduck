@@ -16,10 +16,13 @@ import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
 import {useEffect} from 'react';
 import Link from 'next/link';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 const ReviewDetail: React.FC = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [userId, setUserId] = useState<string>('');
+  const [commentCount, setCommentCount] = useState(0);
   const {data: keyboardData} = useKeyboard();
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
@@ -52,6 +55,9 @@ const ReviewDetail: React.FC = () => {
     if (userInfo.id !== '') setUserId(userInfo.id);
   }, [userInfo]);
 
+  const commentCountUpdate = (count: number) => {
+    setCommentCount(count);
+  };
   // 리뷰 작성 시 선택한 키보드 이름 가져오기
   const selectKeyboardName = keyboardData?.keyboardList?.find(keyboard => {
     return keyboard.id === detailReviewId?.keyboard_id;
@@ -111,7 +117,10 @@ const ReviewDetail: React.FC = () => {
       <div className={styles.container}>
         <div>
           <div className={styles['title-wrap']}>
-            <h1 className={styles.title}>{detailReviewId?.title}</h1>
+            <h1 className={styles.title}>
+              {detailReviewId?.title}
+              <span>[{commentCount}]</span>
+            </h1>
             <div className={styles['keyboard-wrap']}>
               <p>{selectKeyboardName?.name}</p>
               <div className={styles['user-profile']}>
@@ -120,7 +129,7 @@ const ReviewDetail: React.FC = () => {
               </div>
             </div>
             <div className={styles.wrap}>
-              <span>{detailReviewId?.write_date!.replace('T', ' ').substring(0, 16)}</span>
+              <span> {moment(detailReviewId?.write_date).locale('ko').format('yyyy년 MM월 DD일 A hh:mm')}</span>
               {userId === detailReviewId?.user_id && (
                 <div>
                   <Link href={`/reviews/edit/${reviewId}`}>
@@ -159,7 +168,11 @@ const ReviewDetail: React.FC = () => {
             <p>{detailReviewId?.content}</p>
           </div>
         </div>
-        <ReviewDetailComment title={detailReviewId?.title ?? ''} authorId={detailReviewId?.user_id ?? ''} />
+        <ReviewDetailComment
+          title={detailReviewId?.title ?? ''}
+          authorId={detailReviewId?.user_id ?? ''}
+          commentCountUpdate={commentCountUpdate}
+        />
       </div>
     </div>
   );
