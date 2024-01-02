@@ -39,7 +39,6 @@ const Question = () => {
     setSearchQuestions(filteredList!);
     setIsSearching(true);
 
-    // router.push 대신에 router.push의 as 옵션을 사용하여 쿼리 매개변수 변경
     router.push(`/question?keyword=${search}`, undefined, {shallow: true});
   };
 
