@@ -193,7 +193,7 @@ const MyPage = () => {
       {category ? (
         <div className={filteredReviewData?.length === 0 ? mypage['noreview-h1'] : mypage['grid-container']}>
           {filteredReviewData?.length === 0 ? (
-            <h1 className={mypage['review-h1']}>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</h1>
+            <p className={mypage['review-h1']}>등록된 리뷰가 없습니다. 리뷰를 남겨주세요💁🏻‍♀️</p>
           ) : (
             filteredReviewData?.map(review => {
               return (
@@ -223,7 +223,7 @@ const MyPage = () => {
       ) : (
         <div className={likelist?.length === 0 ? mypage['noreview-h1'] : mypage['grid-container']}>
           {likelist?.length === 0 ? (
-            <h1 className={mypage['review-h1']}>좋아요한 게시물이 없습니다. 좋아요를 남겨보세요💁🏻‍♀️</h1>
+            <p className={mypage['review-h1']}>좋아요한 게시물이 없습니다. 좋아요를 남겨보세요💁🏻‍♀️</p>
           ) : (
             likelist?.map(item => {
               return (
