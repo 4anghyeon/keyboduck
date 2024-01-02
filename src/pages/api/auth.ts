@@ -46,10 +46,14 @@ export const signUpNewUser = async (
     password: password,
     options: {
       // emailRedirectTo: email,
+      //메타데이터는 용량한계가 있음
       data: {
         username: nickname,
         avatar_url: photourl,
       },
     },
   });
+  console.log(data);
+  console.log(error);
+  // data uid 이용
 };

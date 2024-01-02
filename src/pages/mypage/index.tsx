@@ -20,9 +20,11 @@ const MyPage = () => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [defaultuserName, setDefaultUserName] = useState<string>(auth.username);
   const [userName, setUserName] = useState<string>('');
-  const [profileImg, setProfileImg] = useState<string | ArrayBuffer | null>(auth.avatar);
+  const [profileImg, setProfileImg] = useState<string | null>(auth.avatar);
   const fileInput = useRef<HTMLInputElement>(null);
   const [category, setCategory] = useState<boolean>(true);
+  const [imageFile, setImageFile] = useState<File>();
+
   const {
     isLoading,
     isError,
@@ -47,7 +49,7 @@ const MyPage = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLFormElement>) => {
     if (e.target.files[0]) {
-      setProfileImg(e.target!.files[0]);
+      setImageFile(e.target!.files[0]);
     } else {
       setProfileImg(auth.avatar);
       return;
@@ -55,7 +57,7 @@ const MyPage = () => {
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        setProfileImg(reader.result);
+        setProfileImg(reader.result?.toString() ?? '');
       }
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -75,7 +77,7 @@ const MyPage = () => {
         .update({avatar_url: profileImg?.toString(), username: userName})
         .eq('id', auth.id)
         .select();
-      dispatch(setUserInfo([{id: auth.id, avatar_url: profileImg?.toString(), username: userName}]));
+      dispatch(setUserInfo([{id: auth.id, avatar_url: auth.avatar, username: userName}]));
     }
 
     if (data!.length >= 1 || userName.length < 2) {
@@ -86,14 +88,25 @@ const MyPage = () => {
   };
 
   const updateImg = async () => {
+    let uploadUrl = auth.avatar;
+    if (imageFile) {
+      console.log(profileImg);
+      let {data: uploadData, error: uploadError} = await supabase.storage
+        .from('avatars')
+        .upload(`profiles/${Date.now()}_${Math.floor(Math.random() * 1000)}.png`, imageFile, {
+          contentType: 'image/png',
+        });
+
+      const bucketName = 'avatars';
+      const supabaseUrl = 'https://eaxjoqjnwoyrpkpvzosu.supabase.co';
+      uploadUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${uploadData?.path}`;
+      setProfileImg(uploadUrl);
+    }
+
     setIsValid(!isValid);
     successTopRight({message: '프로필이 업데이트 되었습니다!', timeout: 2000});
-    const {data, error} = await supabase
-      .from('profiles')
-      .update({avatar_url: profileImg?.toString()})
-      .eq('id', auth.id)
-      .select();
-    dispatch(setUserInfo([{id: auth.id, avatar_url: profileImg?.toString(), username: defaultuserName}]));
+    const {data, error} = await supabase.from('profiles').update({avatar_url: uploadUrl}).eq('id', auth.id).select();
+    dispatch(setUserInfo([{id: auth.id, avatar_url: uploadUrl, username: defaultuserName}]));
     if (error) alert('오류입니다');
   };
 
@@ -104,7 +117,7 @@ const MyPage = () => {
           <img
             style={{border: 'none'}}
             className={isValid === false ? mypage.unvalidimgbox : mypage.imgbox}
-            src={profileImg?.toString()}
+            src={profileImg ?? ''}
             onClick={() => {
               if (isValid) fileInput.current!.click();
             }}

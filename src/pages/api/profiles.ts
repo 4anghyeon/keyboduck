@@ -6,5 +6,7 @@ import {Tables} from '@/shared/supabase/types/supabase';
 
 export const findUser = async (userId: string) => {
   const {data, error} = await supabase.from('profiles').select('*').eq('id', userId).returns<Tables<'profiles'>[]>();
+  console.log(data);
+  console.log(error);
   return data;
 };
