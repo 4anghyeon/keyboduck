@@ -91,10 +91,14 @@ const Question = () => {
 
   // 현재 페이지
   const [page, setPage] = useState(1);
-  // 게시물 총 개수
-  const total = filteredQuestions?.length || 0;
   // 한 페이지에 보여질 게시물 개수
   const limit = 10;
+
+  // 검색 중인지 여부에 따라 다른 목록을 사용
+  const displayQuestions = isSearching ? isSearchingfilteredQuestions : filteredQuestions;
+
+  // 게시물 총 개수
+  const total = displayQuestions?.length || 0;
   // 페이지의 총 개수
   const numPages = Math.ceil(total / limit);
   // 첫 게시물의 인덱스
@@ -156,12 +160,8 @@ const Question = () => {
           <div className={styles['nothing']}>
             <p>{isSearching ? '검색 결과가 없습니다😭' : '게시물이 없습니다😭'}</p>
           </div>
-        ) : isSearching ? (
-          isSearchingfilteredQuestions
-            .slice(offset, offset + limit)
-            .map(question => <QuestionList key={question.id} question={question} />)
         ) : (
-          filteredQuestions
+          displayQuestions
             ?.slice(offset, offset + limit)
             .map(question => <QuestionList key={question.id} question={question} />)
         )}
