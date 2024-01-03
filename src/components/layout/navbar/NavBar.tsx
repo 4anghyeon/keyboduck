@@ -56,7 +56,7 @@ const NavBar = () => {
         case 'USER_UPDATED':
           // profile에서 가져온 데이터를 넣어야함
           findUser(session?.user.id!).then(user => {
-            dispatch(setUserInfo(user));
+            if (user) dispatch(setUserInfo(user));
           });
 
           if (session?.user) {
@@ -90,6 +90,7 @@ const NavBar = () => {
           break;
         case 'SIGNED_OUT':
           // 로그아웃을 할 경우 현재 로그인 정보를 날리고, 모든 구독을 취소한다.
+          console.log('here');
           isLoggedIn.current = false;
           dispatch(logoutUser());
           alertMessageChannel?.unsubscribe();
