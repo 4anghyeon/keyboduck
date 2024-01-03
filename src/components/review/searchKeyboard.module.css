@@ -37,7 +37,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 25px; /* margin-top: 20px; */
+  gap: 25px;
 }
 
 .modal-comment-container button {

@@ -112,67 +112,65 @@ const ReviewDetail: React.FC = () => {
   }
 
   return (
-    <div>
-      <div className={styles.container}>
-        <div>
-          <div className={styles['title-wrap']}>
-            <h1 className={styles.title}>
-              {detailReviewId?.title}
-              <span>[{commentCount}]</span>
-            </h1>
-            <div className={styles['keyboard-wrap']}>
-              <p>{selectKeyboardName?.name}</p>
-              <div className={styles['user-profile']}>
-                <img src={detailReviewId?.profiles.avatar_url!} alt="profile-image" width={60} height={60} />
-                <p>{detailReviewId?.profiles.username}</p>
-              </div>
-            </div>
-            <div className={styles.wrap}>
-              <span> {moment(detailReviewId?.write_date).locale('ko').format('yyyy년 MM월 DD일 A hh:mm')}</span>
-              {userId === detailReviewId?.user_id && (
-                <div>
-                  <Link href={`/reviews/edit/${reviewId}`}>
-                    <button>수정 |</button>
-                  </Link>
-                  <button onClick={() => deleteButtonHandler(detailReviewId?.id!)}>삭제</button>
-                </div>
-              )}
+    <div className={styles.container}>
+      <div>
+        <div className={styles['title-wrap']}>
+          <h1 className={styles.title}>
+            {detailReviewId?.title}
+            <span>[{commentCount}]</span>
+          </h1>
+          <div className={styles['keyboard-wrap']}>
+            <p>{selectKeyboardName?.name}</p>
+            <div className={styles['user-profile']}>
+              <img src={detailReviewId?.profiles.avatar_url!} alt="profile-image" width={60} height={60} />
+              <p>{detailReviewId?.profiles.username}</p>
             </div>
           </div>
-          {showMultiImages ? (
-            <div className={styles['image-slide']}>
-              <button onClick={prevImageButtonHandler}>
-                <MdOutlineArrowBackIos />
-              </button>
-              <div className={styles['image-container']}>
-                <img src={detailReviewId?.photo?.[currentImage]} alt="Review Image" />
+          <div className={styles.wrap}>
+            <span> {moment(detailReviewId?.write_date).locale('ko').format('yyyy년 MM월 DD일 A hh:mm')}</span>
+            {userId === detailReviewId?.user_id && (
+              <div>
+                <Link href={`/reviews/edit/${reviewId}`}>
+                  <button>수정 |</button>
+                </Link>
+                <button onClick={() => deleteButtonHandler(detailReviewId?.id!)}>삭제</button>
               </div>
-              <button onClick={nextImageButtonHandler}>
-                <MdOutlineArrowForwardIos />
-              </button>
-            </div>
-          ) : (
-            detailReviewId?.photo?.length === 1 && (
-              <div className={styles['image-container']}>
-                <img src={detailReviewId.photo[0]} alt="Review Image" />
-              </div>
-            )
-          )}
-          <div className={styles.progressBar}>
-            {Array.from({length: totalImages}, (_, index) => (
-              <span key={index} className={`${styles.circle} ${index === currentImage ? styles.active : ''}`} />
-            ))}
-          </div>
-          <div className={styles.contents}>
-            <p>{detailReviewId?.content}</p>
+            )}
           </div>
         </div>
-        <ReviewDetailComment
-          title={detailReviewId?.title ?? ''}
-          authorId={detailReviewId?.user_id ?? ''}
-          commentCountUpdate={commentCountUpdate}
-        />
+        {showMultiImages ? (
+          <div className={styles['image-slide']}>
+            <button onClick={prevImageButtonHandler}>
+              <MdOutlineArrowBackIos />
+            </button>
+            <div className={styles['image-container']}>
+              <img src={detailReviewId?.photo?.[currentImage]} alt="Review Image" />
+            </div>
+            <button onClick={nextImageButtonHandler}>
+              <MdOutlineArrowForwardIos />
+            </button>
+          </div>
+        ) : (
+          detailReviewId?.photo?.length === 1 && (
+            <div className={styles['image-container']}>
+              <img src={detailReviewId.photo[0]} alt="Review Image" />
+            </div>
+          )
+        )}
+        <div className={styles.progressBar}>
+          {Array.from({length: totalImages}, (_, index) => (
+            <span key={index} className={`${styles.circle} ${index === currentImage ? styles.active : ''}`} />
+          ))}
+        </div>
+        <div className={styles.contents}>
+          <p>{detailReviewId?.content}</p>
+        </div>
       </div>
+      <ReviewDetailComment
+        title={detailReviewId?.title ?? ''}
+        authorId={detailReviewId?.user_id ?? ''}
+        commentCountUpdate={commentCountUpdate}
+      />
     </div>
   );
 };
