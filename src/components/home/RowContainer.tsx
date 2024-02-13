@@ -45,7 +45,11 @@ const RowContainer = (props: Props) => {
       )}
 
       {cardIndex < props.keyboardList.length - 1 && (
-        <button className={[styles['next-button'], styles['button']].join(' ')} onClick={onClickNextButton}>
+        <button
+          name={'다음 버튼'}
+          className={[styles['next-button'], styles['button']].join(' ')}
+          onClick={onClickNextButton}
+        >
           <MdOutlineArrowForwardIos />
         </button>
       )}
