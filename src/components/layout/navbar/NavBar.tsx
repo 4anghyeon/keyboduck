@@ -15,9 +15,11 @@ import {RootState} from '@/redux/store';
 import {RealtimeChannel} from '@supabase/realtime-js';
 import {BiSolidBell, BiSolidBellRing} from 'react-icons/bi';
 import {ALERT_MESSAGE_QUERY_KEY, useAlertMessage} from '@/hooks/useAlertMessage';
-import MessageListContainer from '@/components/layout/navbar/MessageListContainer';
 import {queryClient} from '@/pages/_app';
 import {findUser} from '@/pages/api/profiles';
+import dynamic from 'next/dynamic';
+
+const MessageListContainer = dynamic(import('@/components/layout/navbar/MessageListContainer'));
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
