@@ -1,5 +1,17 @@
 import {supabase} from '@/shared/supabase/supabase';
 import {useToast} from '@/hooks/useToast';
+import {Tables} from '@/shared/supabase/types/supabase';
+
+interface Props {
+  userName: string;
+  profileImg: string | null;
+  auth: UserType;
+}
+
+interface ImgProps {
+  uploadUrl: string;
+  auth: UserType;
+}
 
 // github 회원가입,로그인
 export const signInWithGithub = async () => {
@@ -53,4 +65,40 @@ export const signUpNewUser = async (
       },
     },
   });
+};
+
+export const findUserName = async (userName: string) => {
+  const {data, error} = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('username', userName)
+    .returns<Tables<'profiles'>[]>();
+  return data;
+};
+
+export const updateUserData = async ({userName, profileImg, auth}: Props) => {
+  await supabase
+    .from('profiles')
+    .update({avatar_url: profileImg?.toString(), username: userName})
+    .eq('id', auth.id)
+    .select();
+};
+
+export const updateImage = async ({uploadUrl, auth}: ImgProps) => {
+  const {error} = await supabase.from('profiles').update({avatar_url: uploadUrl}).eq('id', auth.id).select();
+  return error;
+};
+
+export const bringId = async (idValue: string) => {
+  const {data} = await supabase.from('profiles').select('email').eq('email', idValue).returns<Tables<'profiles'>[]>();
+  return data;
+};
+
+export const bringUserName = async (nickNameValue: string) => {
+  const {data} = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('username', nickNameValue)
+    .returns<Tables<'profiles'>[]>();
+  return data;
 };

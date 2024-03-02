@@ -5,6 +5,7 @@ import {supabase} from '@/shared/supabase/supabase';
 import {useToast} from '@/hooks/useToast';
 import {Tables} from '@/shared/supabase/types/supabase';
 import {useRouter} from 'next/navigation';
+import {useConfirmId} from '@/hooks/useAuth';
 
 const Signup = () => {
   const [idValue, setIdValue] = useState<string>('');
@@ -21,6 +22,14 @@ const Signup = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const {successTopRight, errorTopRight} = useToast();
+  const {determineId, determineUserName} = useConfirmId({
+    idValue,
+    setIdValid,
+    setIdValue,
+    nickNameValue,
+    setNicknameValid,
+    setNicknameValue,
+  });
 
   const handleSignUp = async () => {
     // storage 업로드
@@ -60,6 +69,14 @@ const Signup = () => {
     e.preventDefault();
   };
 
+  const confirmId = () => {
+    determineId();
+  };
+
+  const confirmUserName = () => {
+    determineUserName();
+  };
+
   useEffect(() => {
     // id 비밀번호 닉네임... 다 만족할때 isValid를 true로 만드는 조건 작성
     if (!idValue.includes('@')) {
@@ -85,44 +102,6 @@ const Signup = () => {
 
     setIsValid(true);
   }, [idValue, pwValue, pwConfirmValue, nickNameValue, idVaild, nicknameValid]);
-
-  const confirmId = async () => {
-    const {data, error} = await supabase
-      .from('profiles')
-      .select('email')
-      .eq('email', idValue)
-      .returns<Tables<'profiles'>[]>();
-
-    // 이메일 사용가능
-    if (data?.length === 0 && idValue.includes('@')) {
-      successTopRight({message: '사용가능한 이메일이에요!', timeout: 2000});
-      setIdValid(true);
-    }
-
-    // 이메일 사용중
-    if (data!.length >= 1 || !idValue.includes('@')) {
-      errorTopRight({message: '이메일 형식오류 혹은 사용중인 이메일이에요!', timeout: 2000});
-      setIdValue('');
-    }
-    if (error) alert('오류입니다');
-  };
-
-  const confirmUserName = async () => {
-    const {data, error} = await supabase
-      .from('profiles')
-      .select('username')
-      .eq('username', nickNameValue)
-      .returns<Tables<'profiles'>[]>();
-    if (data?.length === 0 && nickNameValue.length >= 2) {
-      successTopRight({message: '사용가능한 닉네임이에요!', timeout: 2000});
-      setNicknameValid(true);
-    }
-    if (data!.length >= 1 || nickNameValue.length < 2) {
-      errorTopRight({message: '사용중인 닉네임 혹은 닉네임을 2글자 이상 써주세요!', timeout: 2000});
-      setNicknameValue('');
-    }
-    if (error) alert('오류입니다');
-  };
 
   return (
     <div className={signup.wrapper}>
