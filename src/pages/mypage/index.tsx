@@ -1,35 +1,30 @@
 import React, {useEffect, useRef, useState} from 'react';
 import mypage from './index.module.css';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
 import Link from 'next/link';
 import {useQuery} from '@tanstack/react-query';
 import {fetchReview} from '../api/review';
 import {useToast} from '@/hooks/useToast';
-import {supabase} from '@/shared/supabase/supabase';
-import {Tables} from '@/shared/supabase/types/supabase';
-import {setUserInfo} from '@/redux/modules/userSlice';
 import {useKeyboardLike} from '@/hooks/useKeyboardLike';
+import {useUpdateImg, useUpdateUserName} from '@/hooks/useUpdateUser';
 
 const MyPage = () => {
   const auth = useSelector((state: RootState) => {
     return state.userSlice;
   });
-  const dispatch = useDispatch();
-  const {successTopRight, errorTopRight} = useToast();
+
+  const {errorTopRight} = useToast();
   const [isValid, setIsValid] = useState<boolean>(false);
   const [defaultuserName, setDefaultUserName] = useState<string>(auth.username);
   const [userName, setUserName] = useState<string>('');
   const [profileImg, setProfileImg] = useState<string | null>(auth.avatar);
   const fileInput = useRef<HTMLInputElement>(null);
   const [category, setCategory] = useState<boolean>(true);
-  const [imageFile, setImageFile] = useState<File>();
-
-  const {
-    isLoading,
-    isError,
-    data: fetchReviewData,
-  } = useQuery({
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const {userProfile, error, userData} = useUpdateUserName({userName, setIsValid, isValid, auth});
+  const {ImgData} = useUpdateImg({auth, imageFile, setProfileImg, setIsValid, isValid, defaultuserName});
+  const {data: fetchReviewData} = useQuery({
     queryKey: ['fetchReviewList'],
     queryFn: fetchReview,
     refetchOnWindowFocus: false,
@@ -41,11 +36,6 @@ const MyPage = () => {
   const filteredReviewData = fetchReviewData?.data?.filter(item => {
     return item.user_id === auth.id;
   });
-
-  useEffect(() => {
-    setDefaultUserName(auth.username);
-    setProfileImg(auth.avatar);
-  }, [auth, isValid]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLFormElement>) => {
     if (e.target.files[0]) {
@@ -63,51 +53,22 @@ const MyPage = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const updateUserName = async () => {
-    const {data, error} = await supabase
-      .from('profiles')
-      .select('username')
-      .eq('username', userName)
-      .returns<Tables<'profiles'>[]>();
-    if (data?.length === 0 && userName.length >= 2) {
-      setIsValid(!isValid);
-      successTopRight({message: '프로필이 업데이트 되었습니다!', timeout: 2000});
-      const {data, error} = await supabase
-        .from('profiles')
-        .update({avatar_url: profileImg?.toString(), username: userName})
-        .eq('id', auth.id)
-        .select();
-      dispatch(setUserInfo([{id: auth.id, avatar_url: auth.avatar, username: userName}]));
+  const updateUserName = () => {
+    if (userProfile?.length === 0 && userName.length >= 2) {
+      userData({userName, profileImg, auth});
     }
 
-    if (data!.length >= 1 || userName.length < 2) {
+    if (userProfile!.length >= 1 || userName.length < 2) {
       errorTopRight({message: '사용중인 닉네임 혹은 닉네임을 2글자 이상 써주세요!', timeout: 2000});
       setUserName('');
     }
     if (error) alert('오류입니다');
   };
 
-  const updateImg = async () => {
-    let uploadUrl = auth.avatar;
-    if (imageFile) {
-      let {data: uploadData, error: uploadError} = await supabase.storage
-        .from('avatars')
-        .upload(`profiles/${Date.now()}_${Math.floor(Math.random() * 1000)}.png`, imageFile, {
-          contentType: 'image/png',
-        });
-
-      const bucketName = 'avatars';
-      const supabaseUrl = 'https://eaxjoqjnwoyrpkpvzosu.supabase.co';
-      uploadUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${uploadData?.path}`;
-      setProfileImg(uploadUrl);
-    }
-
-    setIsValid(!isValid);
-    successTopRight({message: '프로필이 업데이트 되었습니다!', timeout: 2000});
-    const {data, error} = await supabase.from('profiles').update({avatar_url: uploadUrl}).eq('id', auth.id).select();
-    dispatch(setUserInfo([{id: auth.id, avatar_url: uploadUrl, username: defaultuserName}]));
-    if (error) alert('오류입니다');
-  };
+  useEffect(() => {
+    setDefaultUserName(auth.username);
+    setProfileImg(auth.avatar);
+  }, [auth, isValid]);
 
   return (
     <div className={mypage.wrapper}>
@@ -123,7 +84,12 @@ const MyPage = () => {
           />
         </div>
         {isValid ? (
-          <button className={mypage.compeletebutton} onClick={updateImg}>
+          <button
+            className={mypage.compeletebutton}
+            onClick={() => {
+              ImgData();
+            }}
+          >
             사진 수정완료
           </button>
         ) : null}
@@ -154,6 +120,7 @@ const MyPage = () => {
             <input
               className={mypage.nicknameinput}
               value={userName}
+              placeholder={`${defaultuserName}`}
               onChange={e => {
                 setUserName(e.target.value);
               }}

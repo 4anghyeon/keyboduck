@@ -1,25 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import login from './index.module.css';
 import {signInWithGithub, googleLogin} from '../api/auth';
 import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/navigation';
 import {useToast} from '@/hooks/useToast';
 const LoginPage = () => {
-  // 정보 테스트용 useEffect
-  useEffect(() => {
-    const hello = async () => {
-      const {
-        data: {user},
-      } = await supabase.auth.getUser();
-    };
-    hello();
-  }, []);
-
   const [idValue, setIdValue] = useState<string>('');
   const [pwValue, setPwValue] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(false);
   const router = useRouter();
-  const {successTopRight, errorTopRight} = useToast();
+  const {errorTopRight} = useToast();
   const clickLoginHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
@@ -57,7 +47,7 @@ const LoginPage = () => {
             placeholder="이메일 형식으로 입력해주세요"
             value={idValue}
             onChange={handleIdInput}
-          ></input>
+          />
         </div>
         <div className={login.input}>
           <p className={login.ptagposition}>비밀번호</p>
@@ -68,7 +58,7 @@ const LoginPage = () => {
             value={pwValue}
             onChange={handlePwInput}
             minLength={4}
-          ></input>
+          />
         </div>
       </form>
       <div className={login.buttonbox}>
