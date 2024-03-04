@@ -2,8 +2,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import signup from './index.module.css';
 import {signUpNewUser} from '../api/auth';
 import {supabase} from '@/shared/supabase/supabase';
-import {useToast} from '@/hooks/useToast';
-import {Tables} from '@/shared/supabase/types/supabase';
 import {useRouter} from 'next/navigation';
 import {useConfirmId} from '@/hooks/useAuth';
 
@@ -21,7 +19,6 @@ const Signup = () => {
   const [imageFile, setImageFile] = useState<File>();
   const fileInput = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const {successTopRight, errorTopRight} = useToast();
   const {determineId, determineUserName} = useConfirmId({
     idValue,
     setIdValid,
@@ -69,14 +66,6 @@ const Signup = () => {
     e.preventDefault();
   };
 
-  const confirmId = () => {
-    determineId();
-  };
-
-  const confirmUserName = () => {
-    determineUserName();
-  };
-
   useEffect(() => {
     // id 비밀번호 닉네임... 다 만족할때 isValid를 true로 만드는 조건 작성
     if (!idValue.includes('@')) {
@@ -117,7 +106,7 @@ const Signup = () => {
               setIdValid(false);
             }}
           />
-          <button className={signup.button} onClick={confirmId}>
+          <button className={signup.button} onClick={() => determineId()}>
             중복확인
           </button>
         </div>
@@ -156,7 +145,7 @@ const Signup = () => {
               setNicknameValid(false);
             }}
           />
-          <button className={signup.button} onClick={confirmUserName}>
+          <button className={signup.button} onClick={() => determineUserName()}>
             중복확인
           </button>
         </div>
