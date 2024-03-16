@@ -92,7 +92,6 @@ const NavBar = () => {
           break;
         case 'SIGNED_OUT':
           // 로그아웃을 할 경우 현재 로그인 정보를 날리고, 모든 구독을 취소한다.
-          console.log('here');
           isLoggedIn.current = false;
           dispatch(logoutUser());
           alertMessageChannel?.unsubscribe();

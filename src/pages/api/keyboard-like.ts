@@ -16,7 +16,7 @@ export const findLikeByKeyboardId = async (keyboardId: number) => {
 };
 
 /**
- * 좋아요 테이을에 값을 추가한다.
+ * 좋아요 테이블에 값을 추가한다.
  * @param keyboardId
  * @param userId
  */

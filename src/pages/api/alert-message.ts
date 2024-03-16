@@ -39,6 +39,7 @@ export const findAllMessageByUserId = async ({userId, pageParam = 0}: {userId: s
  * @param userId -- 메시지를 받는 유저 아이디
  * @param targetId -- 글 아이디 (리뷰글 아이디, 질문글 아이디)
  */
+
 export const addAlertMessageByIdAndTarget = async ({type, message, userId, targetId}: AlertMessageArgs) => {
   await supabase
     .from('alert_message')

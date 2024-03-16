@@ -216,7 +216,6 @@ const ReviewDetailComment = ({
               </div>
               <div className={styles['comment-user']}>
                 <span className={styles['comment-date']}>
-                  {' '}
                   {moment(comment.write_date).locale('ko').format('yyyy년 MM월 DD일 A hh:mm')}
                 </span>
                 {userId === comment.user_id && (
