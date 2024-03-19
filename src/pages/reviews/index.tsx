@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 import {FaSearch} from 'react-icons/fa';
 import styles from './index.module.css';
@@ -6,8 +5,7 @@ import Link from 'next/link';
 import {useQuery} from '@tanstack/react-query';
 import {fetchReview} from '../api/review';
 import Loading from '@/components/layout/loading/Loading';
-import {useState} from 'react';
-import {useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
 import {useToast} from '@/hooks/useToast';
