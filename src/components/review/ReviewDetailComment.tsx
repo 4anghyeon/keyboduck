@@ -3,18 +3,9 @@ import styles from './reviewDetailComment.module.css';
 import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/redux/store';
-import {
-  addReviewComment,
-  deleteReviewComment,
-  fetchReviewComment,
-  updateReviewComment,
-} from '@/pages/api/review-comment';
-import {useMutation, useQuery} from '@tanstack/react-query';
 import {useToast} from '@/hooks/useToast';
-import {queryClient} from '@/pages/_app';
 import {useRouter} from 'next/router';
 import Swal from 'sweetalert2';
-import {useAlertMessage} from '@/hooks/useAlertMessage';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useReviewComment from '@/hooks/useReviewComment';
@@ -36,7 +27,6 @@ const ReviewDetailComment = ({
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const router = useRouter();
   const reviewId: number | null = Number(router.query.reviewId);
-  // const {addAlertMessage} = useAlertMessage();
   const userInfo = useSelector((state: RootState) => state.userSlice);
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
 
@@ -48,42 +38,6 @@ const ReviewDetailComment = ({
     userId,
     comment,
   );
-  // const {data: reviewCommentData} = useQuery({
-  //   queryKey: ['fetchReviewCommentList'],
-  //   queryFn: fetchReviewComment,
-  //   refetchOnWindowFocus: false,
-  //   staleTime: 3000,
-  // });
-
-  // const addCommentMutate = useMutation({
-  //   mutationFn: async () => await addReviewComment(userId, comment, reviewId),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({queryKey: ['fetchReviewCommentList']});
-
-  //     if (authorId !== userInfo.id) {
-  //       addAlertMessage({
-  //         type: 'comment',
-  //         message: `작성하신 리뷰 ${title} 에 댓글이 달렸습니다.`,
-  //         userId: authorId,
-  //         targetId: reviewId,
-  //       });
-  //     }
-  //   },
-  // });
-
-  // const deleteCommentMutate = useMutation({
-  //   mutationFn: deleteReviewComment,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({queryKey: ['fetchReviewCommentList']});
-  //   },
-  // });
-
-  // const updateCommentMutate = useMutation({
-  //   mutationFn: updateReviewComment,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({queryKey: ['fetchReviewCommentList']});
-  //   },
-  // });
 
   // 각 게시물 마다의 댓글 보여주기
   const reviewCommentFilter = reviewCommentData?.data?.filter(review => {

@@ -13,6 +13,20 @@ export const fetchReview = async () => {
   return {data: fetchReviewData, error};
 };
 
+// 리뷰 등록하기
+export const addReviewData = async (
+  title: string,
+  selectedKeyboardId: number,
+  content: string,
+  userId: string,
+  publicUrls: string[],
+): Promise<void> => {
+  await supabase
+    .from('review')
+    .insert({title, keyboard_id: selectedKeyboardId, content, user_id: userId, photo: publicUrls})
+    .select();
+};
+
 // 리뷰 삭제하기
 export const deleteReview = async (id: number) => {
   await supabase.from('review').delete().eq('id', id);

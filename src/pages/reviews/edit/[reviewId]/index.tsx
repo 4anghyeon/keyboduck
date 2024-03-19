@@ -1,12 +1,10 @@
 import React from 'react';
 import styles from './index.module.css';
-import {useState} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import Swal from 'sweetalert2';
-import {useRef} from 'react';
 import {useToast} from '@/hooks/useToast';
 import {MdDeleteForever} from 'react-icons/md';
 import SearchKeyboard from '@/components/review/SearchKeyboard';
-import {useEffect} from 'react';
 import {supabase} from '@/shared/supabase/supabase';
 import {useRouter} from 'next/router';
 import {useSelector} from 'react-redux';
@@ -14,6 +12,7 @@ import {RootState} from '@/redux/store';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {fetchReview, updateReview} from '@/pages/api/review';
 import {queryClient} from '@/pages/_app';
+import useImageUpload from '@/hooks/useImageUpload';
 
 const ReviewWrite = () => {
   const {data: fetchReviewData} = useQuery({
@@ -28,7 +27,6 @@ const ReviewWrite = () => {
   const findEditReview = fetchReviewData?.data?.find(review => review.id === reviewId);
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [imageFile, setImageFile] = useState<string[]>([]);
   const [userId, setUserId] = useState<string>('');
   const [editSelectedKeyboardId, setEditSelectedKeyboardId] = useState(0);
 
@@ -36,6 +34,8 @@ const ReviewWrite = () => {
 
   const fileInput = useRef<HTMLInputElement>(null);
   const {successTopCenter, warnTopCenter, errorTopCenter} = useToast();
+  const {imageFile, setImageFile, handleDragOver, handleDrop, imageUploadHandler, imageDeleteHandler, fetchImageFile} =
+    useImageUpload();
 
   const updateReviewtMutate = useMutation({
     mutationFn: updateReview,
@@ -64,60 +64,6 @@ const ReviewWrite = () => {
 
   const selectKeyboardHandler = (keyboardId: number) => {
     setEditSelectedKeyboardId(keyboardId);
-  };
-  // 이미지 파일 미리보기, 최대5장
-  const processImageFiles = (files: FileList, existingImageFiles: string[]): string[] => {
-    let imageFiles: string[] = [...existingImageFiles];
-
-    for (let i = 0; i < files.length; i++) {
-      const file: File = files[i];
-      const reviewImageUrl: string = URL.createObjectURL(file);
-      imageFiles.push(reviewImageUrl);
-    }
-
-    if (imageFiles.length > 5) {
-      warnTopCenter({message: '최대 5장 까지만 업로드 할 수 있습니다', timeout: 2000});
-      imageFiles = imageFiles.slice(0, 5);
-    }
-    return imageFiles;
-  };
-
-  // 이미지 드래그 앤 드롭으로 가져오기
-  const handleDragOver = (event: React.DragEvent<HTMLLabelElement>) => {
-    event.preventDefault();
-  };
-
-  const handleDrop = (event: React.DragEvent<HTMLLabelElement>) => {
-    event.preventDefault();
-
-    if (!event.dataTransfer.files) return;
-
-    const droppedFiles: FileList = event.dataTransfer.files;
-    const processedImageFiles = processImageFiles(droppedFiles, imageFile);
-    setImageFile(processedImageFiles);
-  };
-
-  // 이미지 클릭해서 업로드하기
-  const imageUploadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return;
-
-    const files: FileList = event.target.files;
-    const processedImageFiles = processImageFiles(files, imageFile);
-    setImageFile(processedImageFiles);
-  };
-
-  // 이미지 삭제
-  const imageDeleteHandler = (index: number) => {
-    const updatedImageFiles = [...imageFile];
-    updatedImageFiles.splice(index, 1);
-    setImageFile(updatedImageFiles);
-  };
-
-  // blob형태를 url로 변환
-  const fetchImageFile = async (blobUrl: string): Promise<File> => {
-    const response = await fetch(blobUrl);
-    const blob = await response.blob();
-    return new File([blob], 'upload.png', {type: 'image/png'});
   };
 
   // 리뷰 수정하기
@@ -237,18 +183,11 @@ const ReviewWrite = () => {
 
             <div className={styles['image-preview']}>
               {imageFile?.map((imageFile, index) => (
-                <div>
+                <div key={index}>
                   <button onClick={() => imageDeleteHandler(index)} className={styles['delete-button']}>
                     <MdDeleteForever />
                   </button>
-                  <img
-                    key={index}
-                    src={imageFile}
-                    alt="preview"
-                    className={styles['images']}
-                    width={300}
-                    height={300}
-                  />
+                  <img src={imageFile} alt="preview" className={styles['images']} width={300} height={300} />
                 </div>
               ))}
             </div>
